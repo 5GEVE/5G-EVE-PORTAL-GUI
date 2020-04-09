@@ -24,6 +24,7 @@ import { DescriptorsESchedulerComponent } from './descriptors-e-scheduler/descri
 import { ExperimentsComponent } from './experiments/experiments.component';
 import { ExperimentsDetailsComponent } from './experiments-details/experiments-details.component';
 import { SitesSwitchComponent } from './sites-switch/sites-switch.component';
+import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
 import { LoginComponent } from './login/login.component';
 
 
@@ -54,6 +55,7 @@ export const AppRoutes: Routes = [
     { path: 'onboard_exp_blueprint', component: BlueprintsEStepperComponent},
     { path: 'experiments', component: ExperimentsComponent },
     { path: 'experiments_details', component: ExperimentsDetailsComponent },
+    { path: 'tickets', component: TicketingSystemComponent },
     { path: 'login', component: LoginComponent},
 
     
