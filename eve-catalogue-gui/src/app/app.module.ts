@@ -75,6 +75,7 @@ import { ExperimentSubToolbarComponent } from './experiment-sub-toolbar/experime
 import { ExperimentsMgmtDialogComponent } from './experiments-mgmt-dialog/experiments-mgmt-dialog.component';
 import { ExperimentsExecuteDialogComponent } from './experiments-execute-dialog/experiments-execute-dialog.component';
 import { ExperimentsResultsDialogComponent } from './experiments-results-dialog/experiments-results-dialog.component';
+import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +116,8 @@ import { ExperimentsResultsDialogComponent } from './experiments-results-dialog/
     ExperimentSubToolbarComponent,
     ExperimentsMgmtDialogComponent,
     ExperimentsExecuteDialogComponent,
-    ExperimentsResultsDialogComponent
+    ExperimentsResultsDialogComponent,
+    TicketingSystemComponent
   ],
   imports: [
     BrowserModule,

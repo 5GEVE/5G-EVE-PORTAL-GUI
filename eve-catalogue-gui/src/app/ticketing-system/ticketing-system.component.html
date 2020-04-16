@@ -1,0 +1,180 @@
+<!-- Title Header-->
+<!--<app-content-header title="Tickets"></app-content-header>-->
+
+<mat-toolbar style="background-color: transparent;">
+    <span><button mat-button [matMenuTriggerFor]="user_menu"><mat-icon>person</mat-icon> {{username}} <mat-icon>keyboard_arrow_down</mat-icon></button></span>
+    <mat-menu #user_menu="matMenu">
+        <button mat-menu-item (click)="logout();">Logout</button>
+    </mat-menu>
+</mat-toolbar>
+
+<div class="contentBlock">
+    <!-- Action buttons -->
+    <section class="mat-typography title-group">
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle value="bold"  (click)="goTo('add')"  *ngIf="getTicketingStatus() != 'add'">
+                <mat-icon aria-hidden="false" aria-label="">post_add</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="bold"   *ngIf="getTicketingStatus() == 'list'" (click)="ngOnInit()">
+                <mat-icon aria-hidden="false" aria-label="">refresh</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="bold"   (click)="goTo('list')"  *ngIf="getTicketingStatus() != 'list'">
+                <mat-icon aria-hidden="false" >keyboard_arrow_left</mat-icon>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <mat-divider></mat-divider>
+    </section>
+
+    <!-- Content -->
+    <!-- Tickets list -->
+    <table mat-table [dataSource]="tickets" class="mat-elevation-z8" *ngIf="getTicketingStatus() == 'list'&&!fetching">
+
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="product">
+            <th mat-header-cell *matHeaderCellDef> Product </th>
+            <td mat-cell *matCellDef="let element"> {{element.product}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="component">
+            <th mat-header-cell *matHeaderCellDef> Component </th>
+            <td mat-cell *matCellDef="let element"> {{element.component}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="summary">
+            <th mat-header-cell *matHeaderCellDef> Summary </th>
+            <td mat-cell *matCellDef="let element"> {{element.summary}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element"> 
+            <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                <mat-button-toggle value="bold">
+                    <mat-icon aria-hidden="false" aria-label="Example edit icon">edit</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="italic">
+                    <mat-icon aria-hidden="false" aria-label="Example folder icon">folder</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="element-row" (click)=ticketDetails(element)></tr>
+
+    </table>
+    <mat-paginator #paginator
+        [length]="totalTickets" [pageSize]="numTickets" [pageIndex]="currentPage"
+        showFirstLastButtons 
+        (page)="pageEvents($event)"
+        *ngIf="getTicketingStatus() == 'list'&&!fetching">
+    </mat-paginator>
+
+    <!-- New ticket form -->
+    <mat-card class="my-card" *ngIf="getTicketingStatus() == 'add'">
+
+        <mat-card-title>
+            <div class="addTicket-card-header">
+                Add new ticket
+            </div>
+        </mat-card-title>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+            <form class="my-form" [formGroup]="addTicketForm" (ngSubmit)="onSubmit()">
+
+                <mat-form-field class="full-width">
+                    <mat-select placeholder="Select a Product" name="product" [(value)]="product" formControlName="product" required (selectionChange)="getComponents(product)">
+                    <mat-option *ngFor="let product of products" [value]="product.name" >{{ product.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-select placeholder="Select a Component" name="component" [(value)]="component" formControlName="component" required>
+                    <mat-option *ngFor="let component of components" [value]="component.name" >{{ component.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Summary</mat-label>
+                    <input  matInput  formControlName="summary" placeholder="Summary" name="summary"  required>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description" placeholder="Ticket details" name="description" required></textarea>
+                </mat-form-field>
+                
+                <mat-form-field class="full-width">
+                    <mat-select formControlName="assignedTo" placeholder="Select and admin user to assign the ticket" name="assignedTo" [(value)]="assignedTo" required>
+                    <mat-option *ngFor="let user of users" [value]="user" >{{ user }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="newTicketButtonContainer">
+                    <button mat-raised-button (click)="onSubmit()" color="primary" class="newTicketButton">Create</button>
+                </div>
+            </form>
+        </mat-card-content>
+        
+    </mat-card>
+        
+
+    <!-- Ticket Details -->
+    <div class="detailsContainer" *ngIf="getTicketingStatus() == 'details'">
+
+        <section class="ticketSummary">
+            <h1>Ticket: {{selectedTicket.summary}}</h1>
+            <mat-divider></mat-divider>
+        </section>
+
+        <section class="commentsHeader">
+            <h2>Comments</h2>
+        </section>
+
+        <mat-card *ngFor="let comment of selectedTicketComments" class="details-card">
+            <mat-card-title>
+                <div class="ticketCreator">
+                    {{ comment.creator }} <span class="commented-on">commented on {{ comment.time }}</span>
+                </div>
+            </mat-card-title>
+
+            <mat-divider></mat-divider>
+            <mat-card-content class="ticketDescription">
+                {{ comment.text }}
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="details-card">
+            <mat-card-content>
+                <form class="comments-form" [formGroup]="addTicketCommentForm" (ngSubmit)="createComment()">
+                    
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Add a new comment</mat-label>
+                        <textarea matInput 
+                            formControlName="commentDescription" 
+                            placeholder="Comment" 
+                            name="commentDescription" required
+                            cdkTextareaAutosize
+                            cdkAutosizeMinRows="6"
+                            cdkAutosizeMaxRows="12">
+                        </textarea>
+                    </mat-form-field>
+                </form>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="createComment()" color="primary">Add new comment</button>
+            </mat-card-actions>
+        </mat-card>
+
+    </div>
+</div>
+      
