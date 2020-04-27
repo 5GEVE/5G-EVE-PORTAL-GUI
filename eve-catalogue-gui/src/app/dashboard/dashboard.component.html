@@ -13,9 +13,12 @@
         <mat-card-content >
             <div style="float: left;"><img src="../../assets/images/library_books_white.png" class="card-image"></div>
             <div class="card-title">
-                <button class="card-actions" mat-button (click)="goTo(card.path);">
+                <button class="card-actions" mat-button *ngIf="!card.readOnly" (click)="goTo(card.path);">
                     <b>{{card.title}}</b><br/>Onboard <mat-icon>add_circle</mat-icon>
                 </button>
+                <button class="card-actions" mat-button *ngIf="card.readOnly" (click)="goTo(card.path);">
+                  <b>{{card.title}}</b><br/>List <mat-icon>view_list</mat-icon>
+              </button>
             </div>       
         </mat-card-content>
       </mat-card>

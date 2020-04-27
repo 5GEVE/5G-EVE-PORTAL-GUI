@@ -20,11 +20,12 @@ import { DescriptorsVsService } from '../descriptors-vs.service';
 export class DashboardComponent implements OnInit {
 
   cards = [
-    { title: 'Vertical Service Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_vs' },
-    { title: 'Execution Context Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_ec' },
-    { title: 'Test Case Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_tc' },
-    { title: 'Experiments Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_exp' },
-    { title: 'Virtual Network Functions', subtitle: '', cols: 1, rows: 1, path: '' }
+    { title: 'Vertical Service Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_vs', readOnly: false },
+    { title: 'Execution Context Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_ec', readOnly: false },
+    { title: 'Test Case Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_tc', readOnly: false },
+    { title: 'Experiments Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_exp', readOnly: false },
+    { title: 'Virtual Network Functions', subtitle: '', cols: 1, rows: 1, path: '/nfv_vnf', readOnly: true },
+    { title: 'Network Services', subtitle: '', cols: 1, rows: 1, path: '/nfv_ns', readOnly: true }
   ];
 
   vsBCounter: number = 0;

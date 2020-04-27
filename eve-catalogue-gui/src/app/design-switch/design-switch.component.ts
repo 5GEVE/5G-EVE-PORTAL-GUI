@@ -13,7 +13,8 @@ export class DesignSwitchComponent implements OnInit {
     { title: 'Onboard Test Case', subtitle: '', cols: 1, rows: 1, path: '/blueprints_tc', icon: 'input' },
     { title: 'Onboard VS Blueprint', subtitle: '', cols: 1, rows: 1, path: '/blueprints_vs', icon: 'input' },
     { title: 'Onboard Experiment Blueprint', subtitle: '', cols: 1, rows: 1, path: '/blueprints_exp', icon: 'input' },
-    { title: 'Navigate 5G EVE Catalogue', subtitle: '', cols: 2, rows: 1, path: '/dashboard', icon: 'menu_open' }  
+    { title: 'Navigate NFV VNFs Catalogue', subtitle: '', cols: 1, rows: 1, path: '/dashboard', icon: 'menu_open' },
+    { title: 'Navigate NFV NSDs Catalogue', subtitle: '', cols: 1, rows: 1, path: '/dashboard', icon: 'menu_open' }  
   ];
 
   constructor() { }
