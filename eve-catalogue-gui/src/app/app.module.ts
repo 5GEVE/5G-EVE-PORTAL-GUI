@@ -76,6 +76,9 @@ import { ExperimentsMgmtDialogComponent } from './experiments-mgmt-dialog/experi
 import { ExperimentsExecuteDialogComponent } from './experiments-execute-dialog/experiments-execute-dialog.component';
 import { ExperimentsResultsDialogComponent } from './experiments-results-dialog/experiments-results-dialog.component';
 import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
+import { NfvVnfDialogComponent } from './nfv-vnf-dialog/nfv-vnf-dialog.component';
+import { NfvNsDialogComponent } from './nfv-ns-dialog/nfv-ns-dialog.component';
+import { NfvNsGraphDialogComponent } from './nfv-ns-graph-dialog/nfv-ns-graph-dialog.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +120,10 @@ import { TicketingSystemComponent } from './ticketing-system/ticketing-system.co
     ExperimentsMgmtDialogComponent,
     ExperimentsExecuteDialogComponent,
     ExperimentsResultsDialogComponent,
-    TicketingSystemComponent
+    TicketingSystemComponent,
+    NfvVnfDialogComponent,
+    NfvNsDialogComponent,
+    NfvNsGraphDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -160,7 +166,10 @@ import { TicketingSystemComponent } from './ticketing-system/ticketing-system.co
   entryComponents: [
     ExperimentsMgmtDialogComponent,
     ExperimentsExecuteDialogComponent,
-    ExperimentsResultsDialogComponent
+    ExperimentsResultsDialogComponent,
+    NfvVnfDialogComponent,
+    NfvNsDialogComponent,
+    NfvNsGraphDialogComponent
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

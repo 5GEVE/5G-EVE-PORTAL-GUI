@@ -2,13 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { NfvNsDataSource } from './nfv-ns-datasource';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { parse } from 'js-yaml';
+import { dump } from 'js-yaml';
 import { NsdsService } from '../nsds.service';
 import { NsdInfo } from './nsd-info';
+import { NfvNsDialogComponent } from '../nfv-ns-dialog/nfv-ns-dialog.component';
+import { NfvNsGraphDialogComponent } from '../nfv-ns-graph-dialog/nfv-ns-graph-dialog.component';
 
+export interface DialogData {
+  descriptorId: string;
+  descriptorContent: string;
+}
 
 @Component({
   selector: 'app-nfv-ns',
@@ -25,7 +31,7 @@ export class NfvNsComponent implements OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['name', 'version', 'provider', 'opstate', 'onstate', 'onstates', 'buttons'];
 
-  constructor(private nsdsService: NsdsService,
+  constructor(private nsdsService: NsdsService, public dialog: MatDialog,
     private router: Router) {}
 
   ngOnInit() {
@@ -49,7 +55,24 @@ export class NfvNsComponent implements OnInit {
   viewNsDescriptor(nsdInfoId: string) {
     this.nsdsService.getNsDescriptor(nsdInfoId).subscribe((nsDescriptor: any) =>
       {
-        console.log(nsDescriptor);
+        //console.log(nsDescriptor);
+        //console.log(dump(nsDescriptor, 4, null));
+        const dialogRef = this.dialog.open(NfvNsDialogComponent, {
+          width: '60%',
+          data: {descriptorId: nsDescriptor['metadata']['descriptorId'], descriptorContent: nsDescriptor}
+        });
+      });
+  }
+
+  viewNsGraph(nsdInfoId: string) {
+    this.nsdsService.getNsDescriptor(nsdInfoId).subscribe((nsDescriptor: any) =>
+      {
+        //console.log(nsDescriptor);
+        //console.log(dump(nsDescriptor, 4, null));
+        const dialogRef = this.dialog.open(NfvNsGraphDialogComponent, {
+          width: '60%',
+          data: {descriptorId: nsDescriptor['metadata']['descriptorId'], descriptorContent: nsDescriptor}
+        });
       });
   }
 }

@@ -47,7 +47,8 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let row">
         <mat-button-toggle-group name="operations" aria-label="Operations" class="margin-all">
-          <mat-button-toggle value="view_descriptor" (click)="viewVnfDescriptor(row.id)"><mat-icon>remove_red_eye</mat-icon></mat-button-toggle>
+          <mat-button-toggle value="view_descriptor" (click)="viewVnfDescriptor(row.id)"><mat-icon>description</mat-icon></mat-button-toggle>
+          <mat-button-toggle value="view_descriptor_graph" (click)="viewVnfGraph(row.id)"><mat-icon>device_hub</mat-icon></mat-button-toggle>
         </mat-button-toggle-group>
       </td>
     </ng-container>
