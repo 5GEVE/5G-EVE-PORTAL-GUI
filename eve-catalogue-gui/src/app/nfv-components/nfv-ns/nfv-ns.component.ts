@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NfvNsDataSource } from './nfv-ns-datasource';
 import { Router } from '@angular/router';
 import { dump } from 'js-yaml';
-import { NsdsService } from '../nsds.service';
+import { NsdsService } from '../../nsds.service';
 import { NsdInfo } from './nsd-info';
 import { NfvNsDialogComponent } from '../nfv-ns-dialog/nfv-ns-dialog.component';
 import { NfvNsGraphDialogComponent } from '../nfv-ns-graph-dialog/nfv-ns-graph-dialog.component';

@@ -9,9 +9,9 @@ import { DescriptorsVsComponent } from './descriptors-vs/descriptors-vs.componen
 import { DescriptorsTcComponent } from './descriptors-tc/descriptors-tc.component';
 import { DescriptorsEcComponent } from './descriptors-ec/descriptors-ec.component';
 import { DescriptorsEComponent } from './descriptors-e/descriptors-e.component';
-import { NfvNsComponent } from './nfv-ns/nfv-ns.component';
-import { NfvPnfComponent } from './nfv-pnf/nfv-pnf.component';
-import { NfvVnfComponent } from './nfv-vnf/nfv-vnf.component';
+import { NfvNsComponent } from './nfv-components/nfv-ns/nfv-ns.component';
+import { NfvPnfComponent } from './nfv-components/nfv-pnf/nfv-pnf.component';
+import { NfvVnfComponent } from './nfv-components/nfv-vnf/nfv-vnf.component';
 import { BlueprintsEDetailsComponent } from './blueprints-e-details/blueprints-e-details.component';
 import { BlueprintsEcDetailsComponent } from './blueprints-ec-details/blueprints-ec-details.component';
 import { BlueprintsVsDetailsComponent } from './blueprints-vs-details/blueprints-vs-details.component';

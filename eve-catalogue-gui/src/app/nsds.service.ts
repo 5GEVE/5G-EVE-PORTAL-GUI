@@ -4,7 +4,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
-import { NsdInfo } from './nfv-ns/nsd-info';
+import { NsdInfo } from './nfv-components/nfv-ns/nsd-info';
 import { load } from 'js-yaml';
 import { map } from 'rxjs/operators';
 

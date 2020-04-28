@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { DialogData } from '../nfv-ns/nfv-ns.component';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { VsbDetailsService } from '../vsb-details.service';
+import { VsbDetailsService } from '../../vsb-details.service';
 import { dump } from 'js-yaml';
 
 @Component({

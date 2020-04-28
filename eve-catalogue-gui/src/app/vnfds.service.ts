@@ -4,7 +4,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
-import { VnfPkgInfo } from './nfv-vnf/vnf-pkg-info';
+import { VnfPkgInfo } from './nfv-components/nfv-vnf/vnf-pkg-info';
 import { load } from 'js-yaml';
 import { map } from 'rxjs/operators';
 

@@ -45,9 +45,9 @@ import { BlueprintsEComponent } from './blueprints-e/blueprints-e.component';
 import { DescriptorsVsComponent } from './descriptors-vs/descriptors-vs.component';
 import { DescriptorsEcComponent } from './descriptors-ec/descriptors-ec.component';
 import { DescriptorsEComponent } from './descriptors-e/descriptors-e.component';
-import { NfvNsComponent } from './nfv-ns/nfv-ns.component';
-import { NfvVnfComponent } from './nfv-vnf/nfv-vnf.component';
-import { NfvPnfComponent } from './nfv-pnf/nfv-pnf.component';
+import { NfvNsComponent } from './nfv-components/nfv-ns/nfv-ns.component';
+import { NfvVnfComponent } from './nfv-components/nfv-vnf/nfv-vnf.component';
+import { NfvPnfComponent } from './nfv-components/nfv-pnf/nfv-pnf.component';
 import { BlueprintsVsStepperComponent } from './blueprints-vs-stepper/blueprints-vs-stepper.component';
 import { BlueprintsEStepperComponent } from './blueprints-e-stepper/blueprints-e-stepper.component';
 import { BlueprintsEDetailsComponent } from './blueprints-e-details/blueprints-e-details.component';
@@ -76,9 +76,10 @@ import { ExperimentsMgmtDialogComponent } from './experiments-mgmt-dialog/experi
 import { ExperimentsExecuteDialogComponent } from './experiments-execute-dialog/experiments-execute-dialog.component';
 import { ExperimentsResultsDialogComponent } from './experiments-results-dialog/experiments-results-dialog.component';
 import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
-import { NfvVnfDialogComponent } from './nfv-vnf-dialog/nfv-vnf-dialog.component';
-import { NfvNsDialogComponent } from './nfv-ns-dialog/nfv-ns-dialog.component';
-import { NfvNsGraphDialogComponent } from './nfv-ns-graph-dialog/nfv-ns-graph-dialog.component';
+import { NfvVnfDialogComponent } from './nfv-components/nfv-vnf-dialog/nfv-vnf-dialog.component';
+import { NfvNsDialogComponent } from './nfv-components/nfv-ns-dialog/nfv-ns-dialog.component';
+import { NfvNsGraphDialogComponent } from './nfv-components/nfv-ns-graph-dialog/nfv-ns-graph-dialog.component';
+import { NfvVnfGraphDialogComponent } from './nfv-components/nfv-vnf-graph-dialog/nfv-vnf-graph-dialog.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +124,8 @@ import { NfvNsGraphDialogComponent } from './nfv-ns-graph-dialog/nfv-ns-graph-di
     TicketingSystemComponent,
     NfvVnfDialogComponent,
     NfvNsDialogComponent,
-    NfvNsGraphDialogComponent
+    NfvNsGraphDialogComponent,
+    NfvVnfGraphDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -169,7 +171,8 @@ import { NfvNsGraphDialogComponent } from './nfv-ns-graph-dialog/nfv-ns-graph-di
     ExperimentsResultsDialogComponent,
     NfvVnfDialogComponent,
     NfvNsDialogComponent,
-    NfvNsGraphDialogComponent
+    NfvNsGraphDialogComponent,
+    NfvVnfGraphDialogComponent
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
