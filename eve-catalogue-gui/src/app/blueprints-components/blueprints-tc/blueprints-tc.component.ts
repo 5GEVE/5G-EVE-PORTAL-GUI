@@ -5,9 +5,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { TcBlueprintInfo } from './tc-blueprint-info';
 import { BlueprintsTcDataSource } from './blueprints-tc-datasource';
-import { BlueprintsTcService } from '../blueprints-tc.service';
+import { BlueprintsTcService } from '../../blueprints-tc.service';
 import { FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
-import { DescriptorsTcService } from '../descriptors-tc.service';
+import { DescriptorsTcService } from '../../descriptors-tc.service';
 
 @Component({
   selector: 'app-blueprints-tc',

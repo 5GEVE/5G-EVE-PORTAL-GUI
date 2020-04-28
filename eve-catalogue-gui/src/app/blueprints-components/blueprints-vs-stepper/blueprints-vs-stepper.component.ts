@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
-import { BlueprintsVsService } from '../blueprints-vs.service';
+import { BlueprintsVsService } from '../../blueprints-vs.service';
 
 @Component({
   selector: 'app-blueprints-vs-stepper',

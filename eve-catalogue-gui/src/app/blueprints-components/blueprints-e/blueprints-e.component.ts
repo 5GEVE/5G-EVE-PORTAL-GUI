@@ -4,9 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { BlueprintsEDataSource } from './blueprints-e-datasource';
 import { ExpBlueprintInfo } from './exp-blueprint-info';
-import { BlueprintsExpService } from '../blueprints-exp.service';
+import { BlueprintsExpService } from '../../blueprints-exp.service';
 import { Router } from '@angular/router';
-import { BlueprintsVsService } from '../blueprints-vs.service';
+import { BlueprintsVsService } from '../../blueprints-vs.service';
 
 @Component({
   selector: 'app-blueprints-e',

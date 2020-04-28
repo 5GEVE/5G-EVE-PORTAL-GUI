@@ -4,10 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { BlueprintsVsDataSource } from './blueprints-vs-datasource';
-import { BlueprintsVsService } from '../blueprints-vs.service';
+import { BlueprintsVsService } from '../../blueprints-vs.service';
 import { VsBlueprintInfo } from './vs-blueprint-info';
-import { VsbDetailsService } from  '../vsb-details.service';
-import { DescriptorsVsService } from '../descriptors-vs.service';
+import { VsbDetailsService } from  '../../vsb-details.service';
+import { DescriptorsVsService } from '../../descriptors-vs.service';
 
 @Component({
   selector: 'app-blueprints-vs',

@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { BlueprintsEDetailsDataSource, BlueprintsEDetailsItemKV } from './blueprints-e-details-datasource';
-import { BlueprintsExpService } from '../blueprints-exp.service';
+import { BlueprintsExpService } from '../../blueprints-exp.service';
 import { ExpBlueprintInfo } from '../blueprints-e/exp-blueprint-info';
 import { CtxBlueprintInfo } from '../blueprints-ec/ctx-blueprint-info';
 import { TcBlueprintInfo } from '../blueprints-tc/tc-blueprint-info';
-import { BlueprintsEcService } from '../blueprints-ec.service';
-import { BlueprintsTcService } from '../blueprints-tc.service';
-import { BlueprintsVsService} from '../blueprints-vs.service';
+import { BlueprintsEcService } from '../../blueprints-ec.service';
+import { BlueprintsTcService } from '../../blueprints-tc.service';
+import { BlueprintsVsService} from '../../blueprints-vs.service';
 import { VsBlueprintInfo } from '../blueprints-vs/vs-blueprint-info';
 
 @Component({

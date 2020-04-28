@@ -3,11 +3,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { BlueprintsEcDataSource } from './blueprints-ec-datasource';
-import { BlueprintsEcService } from '../blueprints-ec.service';
+import { BlueprintsEcService } from '../../blueprints-ec.service';
 import { Router } from '@angular/router';
 import { CtxBlueprintInfo } from './ctx-blueprint-info';
-import { EcbDetailsService } from '../ecb-details.service';
-import { DescriptorsEcService } from '../descriptors-ec.service';
+import { EcbDetailsService } from '../../ecb-details.service';
+import { DescriptorsEcService } from '../../descriptors-ec.service';
 
 @Component({
   selector: 'app-blueprints-ec',

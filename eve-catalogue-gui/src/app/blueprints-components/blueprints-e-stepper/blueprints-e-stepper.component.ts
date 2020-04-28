@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { VsBlueprintInfo } from '../blueprints-vs/vs-blueprint-info';
-import { BlueprintsVsService } from '../blueprints-vs.service';
-import { BlueprintsEcService } from '../blueprints-ec.service';
+import { BlueprintsVsService } from '../../blueprints-vs.service';
+import { BlueprintsEcService } from '../../blueprints-ec.service';
 import { CtxBlueprintInfo } from '../blueprints-ec/ctx-blueprint-info';
-import { BlueprintsTcService } from '../blueprints-tc.service';
+import { BlueprintsTcService } from '../../blueprints-tc.service';
 import { TcBlueprintInfo } from '../blueprints-tc/tc-blueprint-info';
-import { BlueprintsExpService } from '../blueprints-exp.service';
+import { BlueprintsExpService } from '../../blueprints-exp.service';
 
 export interface Site {
   value: string;

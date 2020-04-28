@@ -3,13 +3,13 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 import { BlueprintsVsService } from '../blueprints-vs.service';
 import { BlueprintsExpService } from '../blueprints-exp.service';
-import { VsBlueprintInfo } from '../blueprints-vs/vs-blueprint-info';
-import { ExpBlueprintInfo } from '../blueprints-e/exp-blueprint-info';
-import { VsBlueprint } from '../blueprints-vs/vs-blueprint';
+import { VsBlueprintInfo } from '../blueprints-components/blueprints-vs/vs-blueprint-info';
+import { ExpBlueprintInfo } from '../blueprints-components/blueprints-e/exp-blueprint-info';
+import { VsBlueprint } from '../blueprints-components/blueprints-vs/vs-blueprint';
 import { BlueprintsEcService } from '../blueprints-ec.service';
 import { BlueprintsTcService } from '../blueprints-tc.service';
-import { CtxBlueprintInfo } from '../blueprints-ec/ctx-blueprint-info';
-import { TcBlueprintInfo } from '../blueprints-tc/tc-blueprint-info';
+import { CtxBlueprintInfo } from '../blueprints-components/blueprints-ec/ctx-blueprint-info';
+import { TcBlueprintInfo } from '../blueprints-components/blueprints-tc/tc-blueprint-info';
 import { DOCUMENT } from '@angular/common';
 
 export interface ViewValue {

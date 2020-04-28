@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTable } from '@angular/material';
 import { BlueprintsCtxDetailsItemKV, BlueprintsEcDetailsDataSource } from './blueprints-ec-details-datasource';
-import { BlueprintsEcService } from '../blueprints-ec.service';
-import { EcbDetailsService } from '../ecb-details.service';
+import { BlueprintsEcService } from '../../blueprints-ec.service';
+import { EcbDetailsService } from '../../ecb-details.service';
 import { CtxBlueprintInfo } from '../blueprints-ec/ctx-blueprint-info';
 
 @Component({

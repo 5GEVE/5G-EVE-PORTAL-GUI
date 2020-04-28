@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExpDescriptorInfo } from '../descriptors-e/exp-descriptor-info';
-import { ExpBlueprintInfo } from '../blueprints-e/exp-blueprint-info';
+import { ExpBlueprintInfo } from '../blueprints-components/blueprints-e/exp-blueprint-info';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 import { BlueprintsExpService } from '../blueprints-exp.service';
 import { ExperimentsService } from '../experiments.service';

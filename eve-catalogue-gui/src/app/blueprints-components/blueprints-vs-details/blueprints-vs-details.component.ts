@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { VsbDetailsService } from '../vsb-details.service';
+import { VsbDetailsService } from '../../vsb-details.service';
 import { MatSort, MatTable } from '@angular/material';
 import { BlueprintsVsDetailsItemKV, BlueprintsVsDetailsDataSource } from './blueprints-vs-details.datasource';
 import { VsBlueprintInfo } from '../blueprints-vs/vs-blueprint-info';
-import { BlueprintsVsService } from '../blueprints-vs.service';
+import { BlueprintsVsService } from '../../blueprints-vs.service';
 import { CtxBlueprintInfo } from '../blueprints-ec/ctx-blueprint-info';
-import { BlueprintsEcService } from '../blueprints-ec.service';
-import { DescriptorsVsService } from '../descriptors-vs.service';
-import { VsDescriptorInfo } from '../descriptors-vs/vs-descriptor-info';
+import { BlueprintsEcService } from '../../blueprints-ec.service';
+import { DescriptorsVsService } from '../../descriptors-vs.service';
+import { VsDescriptorInfo } from '../../descriptors-vs/vs-descriptor-info';
 
 @Component({
   selector: 'app-blueprints-vs-details',
