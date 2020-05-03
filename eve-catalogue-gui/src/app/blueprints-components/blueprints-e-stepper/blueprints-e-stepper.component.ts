@@ -61,6 +61,14 @@ export class BlueprintsEStepperComponent implements OnInit {
     "OTHER"
   ];
 
+
+  graphTypes: String[] = [
+    "LINE",
+    "PIE",
+    "COUNTER",
+    "GAUGE"
+  ];
+
   collectionTypes: String[] = [
     "CUMULATIVE",
     "DELTA",
@@ -149,6 +157,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       interval: '',
       metricCollectionType: '',
       metricId: '',
+      metricGraphType: '',
       name: '',
       unit: ''
     });
@@ -403,12 +412,15 @@ export class BlueprintsEStepperComponent implements OnInit {
 
         var metrics = this.fifthFormGroup.controls.metric_items as FormArray;
         var metric_controls = metrics.controls;
+        console.log(metric_controls);
         var metricsObj = [];
 
         for (var j = 0; j < metric_controls.length; j++) {
-          metricsObj.push(metric_controls[j].value);
+          if(metric_controls[j].value['iMetricType'] !== ''){
+            metricsObj.push(metric_controls[j].value);
+          }
         }
-        expBlueprint['metrics'] = metricsObj;
+          expBlueprint['metrics'] = metricsObj;
         //console.log(expBlueprint);
 
 
@@ -418,26 +430,28 @@ export class BlueprintsEStepperComponent implements OnInit {
 
         for (var j = 0; j < kpi_controls.length; j++) {
           var temp = kpi_controls[j].value;
-          var mIds = temp['metricIds'].split(',');
+          if (temp['kpiId'] !== '') {
+            var mIds = temp['metricIds'].split(',');
 
-          var newKpiObj = JSON.parse('{}');
-          newKpiObj['formula'] = temp['formula'];
-          newKpiObj['interval'] = temp['interval'];
-          newKpiObj['name'] = temp['name'];
-          newKpiObj['kpiId'] = temp['kpiId'];
-          newKpiObj['unit'] = temp['unit'];
-          newKpiObj['metricIds'] = [];
-          for (var h = 0; h < mIds.length; h++) {
-            newKpiObj['metricIds'].push(mIds[h].trim());
+            var newKpiObj = JSON.parse('{}');
+            newKpiObj['formula'] = temp['formula'];
+            newKpiObj['interval'] = temp['interval'];
+            newKpiObj['name'] = temp['name'];
+            newKpiObj['kpiId'] = temp['kpiId'];
+            newKpiObj['unit'] = temp['unit'];
+            newKpiObj['metricIds'] = [];
+            for (var h = 0; h < mIds.length; h++) {
+              newKpiObj['metricIds'].push(mIds[h].trim());
+            }
+            kpisObj.push(newKpiObj);
           }
-          kpisObj.push(newKpiObj);
           //console.log(kpisObj);
        }
-        expBlueprint['kpis'] = kpisObj;
+          expBlueprint['kpis'] = kpisObj;
 
         onBoardExpRequest['expBlueprint'] = expBlueprint;
 
-        console.log('onBoardVsRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
+        //console.log('onBoardVsRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
 
         this.blueprintsExpService.postExpBlueprint(onBoardExpRequest)
         .subscribe(expBlueprintId => console.log("EXP Blueprint with id " + expBlueprintId));

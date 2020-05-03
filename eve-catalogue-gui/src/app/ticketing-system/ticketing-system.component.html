@@ -8,7 +8,7 @@
     </mat-menu>
 </mat-toolbar>
 
-<div class="contentBlock">
+<div class="contentBlock" style="background: transparent; padding: 30px; padding-bottom: 10%;">
     <!-- Action buttons -->
     <section class="mat-typography title-group">
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
@@ -54,10 +54,10 @@
             <th mat-header-cell *matHeaderCellDef> Summary </th>
             <td mat-cell *matCellDef="let element"> {{element.summary}} </td>
         </ng-container>
-        
+
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let element"> 
+            <td mat-cell *matCellDef="let element">
             <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
                 <mat-button-toggle value="bold">
                     <mat-icon aria-hidden="false" aria-label="Example edit icon">edit</mat-icon>
@@ -75,7 +75,7 @@
     </table>
     <mat-paginator #paginator
         [length]="totalTickets" [pageSize]="numTickets" [pageIndex]="currentPage"
-        showFirstLastButtons 
+        showFirstLastButtons
         (page)="pageEvents($event)"
         *ngIf="getTicketingStatus() == 'list'&&!fetching">
     </mat-paginator>
@@ -113,7 +113,7 @@
                     <mat-label>Description</mat-label>
                     <textarea matInput formControlName="description" placeholder="Ticket details" name="description" required></textarea>
                 </mat-form-field>
-                
+
                 <mat-form-field class="full-width">
                     <mat-select formControlName="assignedTo" placeholder="Select and admin user to assign the ticket" name="assignedTo" [(value)]="assignedTo" required>
                     <mat-option *ngFor="let user of users" [value]="user" >{{ user }}</mat-option>
@@ -124,9 +124,9 @@
                 </div>
             </form>
         </mat-card-content>
-        
+
     </mat-card>
-        
+
 
     <!-- Ticket Details -->
     <div class="detailsContainer" *ngIf="getTicketingStatus() == 'details'">
@@ -156,12 +156,12 @@
         <mat-card class="details-card">
             <mat-card-content>
                 <form class="comments-form" [formGroup]="addTicketCommentForm" (ngSubmit)="createComment()">
-                    
+
                     <mat-form-field class="example-full-width">
                         <mat-label>Add a new comment</mat-label>
-                        <textarea matInput 
-                            formControlName="commentDescription" 
-                            placeholder="Comment" 
+                        <textarea matInput
+                            formControlName="commentDescription"
+                            placeholder="Comment"
                             name="commentDescription" required
                             cdkTextareaAutosize
                             cdkAutosizeMinRows="6"
@@ -177,4 +177,3 @@
 
     </div>
 </div>
-      
