@@ -80,6 +80,7 @@ import { NfvVnfDialogComponent } from './nfv-components/nfv-vnf-dialog/nfv-vnf-d
 import { NfvNsDialogComponent } from './nfv-components/nfv-ns-dialog/nfv-ns-dialog.component';
 import { NfvNsGraphDialogComponent } from './nfv-components/nfv-ns-graph-dialog/nfv-ns-graph-dialog.component';
 import { NfvVnfGraphDialogComponent } from './nfv-components/nfv-vnf-graph-dialog/nfv-vnf-graph-dialog.component';
+import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboard/experiment-metric-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +126,8 @@ import { NfvVnfGraphDialogComponent } from './nfv-components/nfv-vnf-graph-dialo
     NfvVnfDialogComponent,
     NfvNsDialogComponent,
     NfvNsGraphDialogComponent,
-    NfvVnfGraphDialogComponent
+    NfvVnfGraphDialogComponent,
+    ExperimentMetricDashboardComponent
   ],
   imports: [
     BrowserModule,

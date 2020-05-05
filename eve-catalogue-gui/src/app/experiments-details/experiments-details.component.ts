@@ -55,6 +55,7 @@ export class ExperimentsDetailsComponent implements OnInit {
       }
 
       this.tableData.push({key: "Target Sites", value: this.experiment.targetSites});
+      this.tableData.push({key: "Target Use Case", value: [this.experiment.useCase]});
       //this.tableData.push({key: "Id", value: [this.experiment.experimentId]});
       if (this.getRole().indexOf('SITE_MANAGER') >= 0) {
         if(this.experiment.tenantId != null){this.tableData.push({key: "Tenant Id", value: [this.experiment.tenantId]});}

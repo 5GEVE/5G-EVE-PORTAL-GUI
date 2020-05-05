@@ -26,6 +26,7 @@ import { ExperimentsDetailsComponent } from './experiments-details/experiments-d
 import { SitesSwitchComponent } from './sites-switch/sites-switch.component';
 import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
 import { LoginComponent } from './login/login.component';
+import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboard/experiment-metric-dashboard.component';
 
 
 export const AppRoutes: Routes = [
@@ -57,8 +58,9 @@ export const AppRoutes: Routes = [
     { path: 'experiments_details', component: ExperimentsDetailsComponent },
     { path: 'tickets', component: TicketingSystemComponent },
     { path: 'login', component: LoginComponent},
+    { path: 'metrics_dashboard', component: ExperimentMetricDashboardComponent},
 
-    
+
     // otherwise redirect to home
     { path: '**', redirectTo: '/portal_home' }
 ];

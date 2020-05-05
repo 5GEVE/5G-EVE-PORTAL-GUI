@@ -15,4 +15,5 @@ export class ExperimentInfo {
     nfvNsInstanceId: string;
     name: string;
     executions: Execution[];
+    useCase: string;
 }
