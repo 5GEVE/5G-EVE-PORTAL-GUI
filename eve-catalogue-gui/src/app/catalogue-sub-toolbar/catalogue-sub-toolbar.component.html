@@ -14,6 +14,7 @@
             Descriptors <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
     </span>
+    <span><button mat-button routerLink="/tickets"><mat-icon>list</mat-icon> Tickets </button></span>
     <span><button mat-button (click)="backClicked();"><mat-icon>arrow_back</mat-icon> Back </button></span>    
     <span class="fill-remaining-space"></span>
     <span *ngIf="getRole().indexOf('DESIGNER') >= 0;"><img src="../../assets/images/kd-ic-sdk-green.png" class="logo"></span>
