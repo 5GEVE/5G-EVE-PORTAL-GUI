@@ -39,7 +39,9 @@ export class BlueprintsTcComponent implements OnInit {
       description: [''],
       name: ['', Validators.required],
       version: ['', Validators.required],
-      script: ['', Validators.required],
+      executionScript: ['', Validators.required],
+      resetConfigScript: ['', Validators.required],
+      configurationScript: ['', Validators.required],
       user_items: this._formBuilder.array([this.createUserItem()]),
       infra_items: this._formBuilder.array([this.createInfraItem()])
     });
@@ -126,12 +128,16 @@ export class BlueprintsTcComponent implements OnInit {
 
       var description = this.tcFormGroup.get('description').value;
       var name = this.tcFormGroup.get('name').value;
-      var script = this.tcFormGroup.get('script').value;
+      var executionScript = this.tcFormGroup.get('executionScript').value;
+      var configurationScript = this.tcFormGroup.get('configurationScript').value;
+      var resetConfigScript = this.tcFormGroup.get('resetConfigScript').value;
       var version = this.tcFormGroup.get('version').value;
 
       testCaseBlueprint['description'] = description;
       testCaseBlueprint['name'] = name;
-      testCaseBlueprint['script'] = script;
+      testCaseBlueprint['executionScript'] = executionScript;
+      testCaseBlueprint['configurationScript'] = configurationScript;
+      testCaseBlueprint['resetConfigScript'] = resetConfigScript;
       testCaseBlueprint['version'] = version;
 
       var userParams = this.tcFormGroup.controls.user_items as FormArray;
