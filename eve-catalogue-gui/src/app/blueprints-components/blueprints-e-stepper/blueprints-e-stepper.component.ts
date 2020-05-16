@@ -169,6 +169,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       interval: '',
       metricIds: '',
       kpiId: '',
+      kpiGraphType:'',
       name: '',
       unit: ''
     });
@@ -437,6 +438,7 @@ export class BlueprintsEStepperComponent implements OnInit {
             newKpiObj['formula'] = temp['formula'];
             newKpiObj['interval'] = temp['interval'];
             newKpiObj['name'] = temp['name'];
+            newKpiObj['kpiGraphType'] = temp['kpiGraphType'];
             newKpiObj['kpiId'] = temp['kpiId'];
             newKpiObj['unit'] = temp['unit'];
             newKpiObj['metricIds'] = [];

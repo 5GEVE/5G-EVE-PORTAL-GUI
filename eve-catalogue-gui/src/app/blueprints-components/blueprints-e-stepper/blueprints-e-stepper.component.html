@@ -281,7 +281,18 @@
                                     <input matInput placeholder="KPI Id" formControlName="kpiId">
                                 </mat-form-field>
                             </td>
-                            <td></td>
+                            <td>
+                              <mat-form-field appearance="outline" color=primary class="data-full-width">
+                                <mat-label>Graph Type</mat-label>
+                                <mat-select formControlName="kpiGraphType" name="kpiGraphType">
+                                    <mat-option *ngFor="let type of graphTypes" [value]="type">
+                                        {{type}}
+                                    </mat-option>
+                                </mat-select>
+
+                              </mat-form-field>
+
+                            </td>
                         </tr>
                         <tr>
                             <td>
