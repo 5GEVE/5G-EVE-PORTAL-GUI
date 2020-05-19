@@ -122,7 +122,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       selectVsbCtrl: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
-      selectCbsCtrl: ['', Validators.required]
+      selectCbsCtrl: ['']
     });
     this.thirdFormGroup = this._formBuilder.group({
       uploadNsdCtrl: ['', Validators.required]
