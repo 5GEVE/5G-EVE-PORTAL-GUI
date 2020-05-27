@@ -76,6 +76,11 @@ import { ExperimentsMgmtDialogComponent } from './experiments-mgmt-dialog/experi
 import { ExperimentsExecuteDialogComponent } from './experiments-execute-dialog/experiments-execute-dialog.component';
 import { ExperimentsResultsDialogComponent } from './experiments-results-dialog/experiments-results-dialog.component';
 import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
+import { FilesServiceComponent } from './files-service/files-service.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FileServiceDialogComponent } from './file-service-dialog/file-service-dialog.component';
+import { FileDialogComponent } from './file-dialog/file-dialog.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +122,11 @@ import { TicketingSystemComponent } from './ticketing-system/ticketing-system.co
     ExperimentsMgmtDialogComponent,
     ExperimentsExecuteDialogComponent,
     ExperimentsResultsDialogComponent,
-    TicketingSystemComponent
+    TicketingSystemComponent,
+    FilesServiceComponent,
+    FileServiceDialogComponent,
+    FileDialogComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -155,12 +164,16 @@ import { TicketingSystemComponent } from './ticketing-system/ticketing-system.co
     FormsModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     HttpClientModule,
-    CytoscapeModule
+    CytoscapeModule,
+    MatProgressBarModule,
+    MatSlideToggleModule
   ],
   entryComponents: [
     ExperimentsMgmtDialogComponent,
     ExperimentsExecuteDialogComponent,
-    ExperimentsResultsDialogComponent
+    ExperimentsResultsDialogComponent,
+    FileServiceDialogComponent,
+    FileDialogComponent
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

@@ -8,6 +8,7 @@ export const environment = {
     lcmBaseUrl: 'http://10.50.80.18:8084/portal/elm/',
     rbacBaseUrl: 'http://10.5.7.11:8090/portal/rbac/', /*portal/rbac/*/
     tsbBaseUrl: 'http://10.5.7.11:9090/portal/tsb/',
+    fsBaseUrl: 'http://10.5.7.11:9191/portal/fs/',
     ibnBaseUrl: 'http://10.50.80.36:8080/Intent/IntentPage.jsp',
     apiUrl: 'http://10.50.80.18',
     backServerUrl: ''

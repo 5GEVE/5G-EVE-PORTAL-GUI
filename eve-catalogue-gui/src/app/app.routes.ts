@@ -25,6 +25,7 @@ import { ExperimentsComponent } from './experiments/experiments.component';
 import { ExperimentsDetailsComponent } from './experiments-details/experiments-details.component';
 import { SitesSwitchComponent } from './sites-switch/sites-switch.component';
 import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
+import { FilesServiceComponent } from './files-service/files-service.component';
 import { LoginComponent } from './login/login.component';
 
 
@@ -56,6 +57,7 @@ export const AppRoutes: Routes = [
     { path: 'experiments', component: ExperimentsComponent },
     { path: 'experiments_details', component: ExperimentsDetailsComponent },
     { path: 'tickets', component: TicketingSystemComponent },
+    { path: 'vnfs', component: FilesServiceComponent },
     { path: 'login', component: LoginComponent},
 
     
