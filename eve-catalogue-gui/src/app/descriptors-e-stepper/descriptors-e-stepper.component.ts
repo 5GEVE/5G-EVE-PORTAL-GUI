@@ -180,7 +180,7 @@ export class DescriptorsEStepperComponent implements OnInit {
     onBoardExpRequest['tenantId'] = localStorage.getItem('username');
     onBoardExpRequest['kpiThresholds'] = {};
 
-    if (this.expBlueprint['kpis']) {
+    if (this.expBlueprint['kpis'] !== undefined && this.expBlueprint['kpis'] !== []) {
       for (var j = 0; j < this.expBlueprint['kpis'].length; j++) {
         onBoardExpRequest['kpiThresholds'][this.expBlueprint['kpis'][j]['kpiId']] =
           this.document.getElementById('metric_' + this.expBlueprint['kpis'][j]['kpiId']).value;
@@ -191,11 +191,14 @@ export class DescriptorsEStepperComponent implements OnInit {
       var tempCtx = {};
       tempCtx['blueprintId'] = this.ctxBlueprints[i].value;
       tempCtx['parameters'] = {}
-      for (var j = 0; j < this.ctxBlueprints[i]['item']['parameters'].length; j++) {
-        tempCtx['parameters'][this.ctxBlueprints[i]['item']['parameters'][j]['parameterId']] =
-        this.document.getElementById(this.ctxBlueprints[i]['item']['parameters'][j]['parameterId']).value;
+      if (this.ctxBlueprints[i]['item']['parameters'] !== [] && this.ctxBlueprints[i]['item']['parameters'] !== undefined) {
+        for (var j = 0; j < this.ctxBlueprints[i]['item']['parameters'].length; j++) {
+          tempCtx['parameters'][this.ctxBlueprints[i]['item']['parameters'][j]['parameterId']] =
+          this.document.getElementById(this.ctxBlueprints[i]['item']['parameters'][j]['parameterId']).value;
+        }
+        onBoardExpRequest['contextDetails'].push(tempCtx);
       }
-      onBoardExpRequest['contextDetails'].push(tempCtx);
+
     }
 
     onBoardExpRequest['vsDescriptor']['name'] = this.secondFormGroup.get('vsDescName').value;
