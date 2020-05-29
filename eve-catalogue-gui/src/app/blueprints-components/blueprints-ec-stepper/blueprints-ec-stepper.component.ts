@@ -41,7 +41,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
       nsdVersion: ['', Validators.required],
       nsFlavourId: ['', Validators.required],
       nsInstLevel: ['', Validators.required],
-      items: this._formBuilder.array([this.createItem()])
+      items: this._formBuilder.array([])
     });
   }
 
@@ -53,15 +53,23 @@ export class BlueprintsEcStepperComponent implements OnInit {
     });
   }
 
-  addItem(): void {
-    this.items = this.thirdFormGroup.get('items') as FormArray;
-    this.items.push(this.createItem());
+  hideNextShowSubmit($event:any){
+    var submit = document.getElementById("submitButton");
+    var next = document.getElementById("nextButton");
+    var uploadFile = document.getElementById("uploadFile");
+    if ($event.source.checked){
+      submit.style.display = 'inline';
+      next.style.display = 'none';
+      this.secondFormGroup.controls['secondCtrl'].disable();
+    } else {
+      next.style.display = 'inline';
+      submit.style.display = 'none';
+      this.secondFormGroup.controls['secondCtrl'].enable();
+    }
+
   }
 
-  removeItem() {
-    this.items = this.thirdFormGroup.get('items') as FormArray;
-    this.items.removeAt(this.items.length - 1);
-  }
+
 
   onUploadedCtxb(event: any, ctxbs: File[]) {
     //console.log(event);
@@ -80,9 +88,14 @@ export class BlueprintsEcStepperComponent implements OnInit {
     Promise.all(promises).then(fileContents => {
         this.ctxbObj = JSON.parse(fileContents[0]);
 
-        console.log(JSON.stringify(this.ctxbObj, null, 4));
-
-        this.translationParams = this.ctxbObj['parameters'];
+        //console.log(JSON.stringify(this.ctxbObj, null, 4));
+        if (this.ctxbObj['parameters'] !== undefined){
+          for (var i = 0; i < this.ctxbObj['parameters'].length; i++){
+            this.items = this.thirdFormGroup.get('items') as FormArray;
+            this.items.push(this.createItem());
+            this.translationParams.push(this.ctxbObj['parameters'][i]['parameterId']);
+          }
+        }
     });
   }
 
@@ -157,38 +170,67 @@ export class BlueprintsEcStepperComponent implements OnInit {
               onBoardCtxRequest['nsds'].push(JSON.parse(fileContents[i]));
             }
 
-            var translationRule = JSON.parse('{}');
+            if (this.translationParams === []){
+              var translationRule = JSON.parse('{}');
 
-            var blueprintId = onBoardCtxRequest.ctxBlueprint.blueprintId;
-            var nsdId = this.thirdFormGroup.get('nsdId').value;
-            var nsdVersion = this.thirdFormGroup.get('nsdVersion').value;
-            var nsFlavourId = this.thirdFormGroup.get('nsFlavourId').value;
-            var nsInstLevel = this.thirdFormGroup.get('nsInstLevel').value;
+              var blueprintId = onBoardCtxRequest.ctxBlueprint.blueprintId;
+              var nsdId = this.thirdFormGroup.get('nsdId').value;
+              var nsdVersion = this.thirdFormGroup.get('nsdVersion').value;
+              var nsFlavourId = this.thirdFormGroup.get('nsFlavourId').value;
+              var nsInstLevel = this.thirdFormGroup.get('nsInstLevel').value;
 
-            //translationRule['blueprintId'] = blueprintId;
-            translationRule['nsdId'] = nsdId;
-            translationRule['nsdVersion'] = nsdVersion;
-            translationRule['nsFlavourId'] = nsFlavourId;
-            translationRule['nsInstantiationLevelId'] = nsInstLevel;
+              //translationRule['blueprintId'] = blueprintId;
+              translationRule['nsdId'] = nsdId;
+              translationRule['nsdVersion'] = nsdVersion;
+              translationRule['nsFlavourId'] = nsFlavourId;
+              translationRule['nsInstantiationLevelId'] = nsInstLevel;
 
-            var paramsRows = this.thirdFormGroup.controls.items as FormArray;
-            var controls = paramsRows.controls;
-            var paramsObj = [];
+              var paramsRows = this.thirdFormGroup.controls.items as FormArray;
+              var controls = paramsRows.controls;
+              var paramsObj = [];
 
-            for (var j = 0; j < controls.length; j++) {
-              paramsObj.push(controls[j].value);
-              //console.log(paramsObj);
+              for (var j = 0; j < controls.length; j++) {
+                paramsObj.push(controls[j].value);
+                //console.log(paramsObj);
+              }
+              translationRule['input'] = paramsObj;
+              onBoardCtxRequest.translationRules.push(translationRule);
+
+              console.log('onBoardCtxRequest: ' + JSON.stringify(onBoardCtxRequest, null, 4));
             }
-            translationRule['input'] = paramsObj;
-            onBoardCtxRequest.translationRules.push(translationRule);
 
-            console.log('onBoardCtxRequest: ' + JSON.stringify(onBoardCtxRequest, null, 4));
 
             this.blueprintsEcService.postCtxBlueprint(onBoardCtxRequest)
             .subscribe(ctxBlueprintId => console.log("Ctx Blueprint with id " + ctxBlueprintId));
         });
       }
     }
+  }
+
+  createOnBoardCtxBlueprintRequestWithoutNsd(blueprints: File[]) {
+      var onBoardCtxRequest = JSON.parse('{}');
+      if (blueprints.length > 0) {
+        var blueprint = blueprints[0];
+
+        let promises = [];
+        let blueprintPromise = new Promise(resolve => {
+            let reader = new FileReader();
+            reader.readAsText(blueprint);
+            reader.onload = () => resolve(reader.result);
+        });
+        promises.push(blueprintPromise);
+
+        Promise.all(promises).then(fileContents => {
+          onBoardCtxRequest['ctxBlueprint'] = JSON.parse(fileContents[0]);
+
+
+            var blueprintId = onBoardCtxRequest.ctxBlueprint.blueprintId;
+            console.log('onBoardCtxRequest: ' + JSON.stringify(onBoardCtxRequest, null, 4));
+
+            this.blueprintsEcService.postCtxBlueprint(onBoardCtxRequest)
+            .subscribe(ctxBlueprintId => console.log("Ctx Blueprint with id " + ctxBlueprintId));
+        });
+      }
   }
 
 }

@@ -56,17 +56,23 @@ export class BlueprintsEcDetailsComponent implements OnInit {
         this.tableData.push({key: "Version", value: [ctxBlueprint['version']]});
         this.tableData.push({key: "Description", value: [ctxBlueprint['description']]});
         var values = [];
+        if(ctxBlueprint['parameters'] !== undefined){
+          for (var i = 0; i < ctxBlueprint['parameters'].length; i++) {
+            values.push(ctxBlueprint['parameters'][i]['parameterName']);
+          }
+          this.tableData.push({key: "Configuration options", value: values});
 
-        for (var i = 0; i < ctxBlueprint['parameters'].length; i++) {
-          values.push(ctxBlueprint['parameters'][i]['parameterName']);
         }
-        this.tableData.push({key: "Configuration options", value: values});
 
         values = [];
 
         var atomicComponents = ctxBlueprint['atomicComponents'];
         for (var i = 0; i < atomicComponents.length; i++) {
-          values.push(atomicComponents[i]['componentId']);
+          if(atomicComponents[i]['placement'] !== undefined && atomicComponents[i]['placement'] !== ''){
+            values.push(atomicComponents[i]['componentId'] + " (" + atomicComponents[i]['placement'].toLowerCase() + ")");
+          } else {
+            values.push(atomicComponents[i]['componentId']);
+          }
         }
         this.tableData.push({key: "Components", value: values});
 

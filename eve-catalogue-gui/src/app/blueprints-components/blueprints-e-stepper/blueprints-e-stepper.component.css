@@ -2,7 +2,7 @@
     margin-top: 2%;
     width: 90%;
     height: 80%;
-    margin-left:5%; 
+    margin-left:5%;
     margin-right:5%;
 }
 
@@ -11,7 +11,7 @@
     max-width: 700px;
     width: 100%;
 }
-  
+
 .data-full-width {
     width: 100%;
 }
@@ -35,12 +35,26 @@ td {
 
 .input-label {
     font-style: oblique;
-    font-weight: bold; 
-    display: block; 
-    width: 100px; 
+    font-weight: bold;
+    display: block;
+    width: 100px;
     float: left;
 }
 
 p {
     font-size: 12px;
+}
+
+#onDemandType, #onDemandTypeBack {
+  display: inline ;
+}
+
+#staticType, #staticTypeBack {
+  display: none;
+}
+.invisible{
+  display: block;
+  visibility: hidden;
+  height: 0;
+  width: 0;
 }

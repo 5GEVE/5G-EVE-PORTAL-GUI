@@ -23,6 +23,7 @@ export class CatalogueSubToolbarComponent implements OnInit {
   }
 
   goTo() {
+    /*
     if (localStorage.getItem('role').indexOf('DESIGNER') >= 0) {
       this.router.navigate(['/design_experiment']);
     }
@@ -30,6 +31,8 @@ export class CatalogueSubToolbarComponent implements OnInit {
     if (localStorage.getItem('role').indexOf('EXPERIMENTER') >= 0) {
       this.router.navigate(['/request_experiment']);
     }
+    */
+   this.router.navigate(['/portal_home']);
   }
 
   backClicked() {

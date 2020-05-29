@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { VsBlueprintInfo } from '../blueprints-vs/vs-blueprint-info';
 import { BlueprintsVsService } from '../../blueprints-vs.service';
@@ -7,6 +7,8 @@ import { CtxBlueprintInfo } from '../blueprints-ec/ctx-blueprint-info';
 import { BlueprintsTcService } from '../../blueprints-tc.service';
 import { TcBlueprintInfo } from '../blueprints-tc/tc-blueprint-info';
 import { BlueprintsExpService } from '../../blueprints-exp.service';
+import { MatStepper } from '@angular/material/stepper';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 export interface Site {
   value: string;
@@ -20,18 +22,33 @@ export interface Blueprint {
   obj: Object;
 }
 
+export interface Metric {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-blueprints-e-stepper',
   templateUrl: './blueprints-e-stepper.component.html',
-  styleUrls: ['./blueprints-e-stepper.component.css']
+  styleUrls: ['./blueprints-e-stepper.component.css'],
+  providers: [{
+    provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}
+  }]
+
 })
 
 export class BlueprintsEStepperComponent implements OnInit {
 
+
+
+  @ViewChild('stepper', {static: false}) stepper: MatStepper;
   isLinear = true;
+  currentStep = 0;
+
 
   selectedSite: string;
   selectedVsb: string;
+  deploymentType: string;
   expBlueprintName: string;
   selectedCbs: string[] = [];
   uploadedNsdName: string;
@@ -49,16 +66,22 @@ export class BlueprintsEStepperComponent implements OnInit {
     {value: 'FRANCE_NICE', viewValue: 'Nice, France'}
   ];
 
-  metricTypes: String[] = [
-    "LOST_PKT",
-    "RECEIVED_PKT",
-    "SENT_PKT",
-    "BANDWIDTH",
-    "LATENCY",
-    "JITTER",
-    "CPU_CONSUMPTION",
-    "MEMORY_CONSUMPTION",
-    "OTHER"
+
+  deployTypes: String[] = [
+    "ON_DEMAND",
+    "STATIC"
+  ];
+
+  metricTypes: Metric[] = [
+    {value: 'USER_DATA_RATE_DL', viewValue: 'USER_DATA_RATE_DL'},
+    {value: 'USER_DATA_RATE_UL', viewValue: 'USER_DATA_RATE_UL'},
+    {value: 'PEAK_DATA_RATE_DL', viewValue: 'MPEAK_DATA_RATE_DL'},
+    {value: 'PEAK_DATA_RATE_UL', viewValue: 'PEAK_DATA_RATE_UL'},
+    {value: 'CAPACITY', viewValue: 'CAPACITY'},
+    {value: 'LATENCY_UP', viewValue: 'LATENCY_USERPLANE'},
+    {value: 'LATENCY_CP', viewValue: 'LATENCY_CONTROLPLANE'},
+    {value: 'DEVICE_DENSITY', viewValue: 'DEVICE_DENSITY'},
+    {value: 'MOBILITY', viewValue: 'MOBILITY'}
   ];
 
 
@@ -115,14 +138,15 @@ export class BlueprintsEStepperComponent implements OnInit {
       bpIdCtrl: ['', Validators.required],
       bpNameCtrl: ['', Validators.required],
       bpVersionCtrl: ['', Validators.required],
-      bpDescriptionCtrl: ['']
+      bpDescriptionCtrl: [''],
+      deploymentTypeCtrl: ['', Validators.required]
     });
     this.firstFormGroup = this._formBuilder.group({
       selectSiteCtrl: ['', Validators.required],
       selectVsbCtrl: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
-      selectCbsCtrl: ['']
+      selectCbsCtrl: ['', Validators.required]
     });
     this.thirdFormGroup = this._formBuilder.group({
       uploadNsdCtrl: ['', Validators.required]
@@ -132,7 +156,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       nsdVersionCtrl: ['', Validators.required],
       nsFlavourIdCtrl: ['', Validators.required],
       nsInstLevelIdCtrl: ['', Validators.required],
-      items: this._formBuilder.array([this.createItem()])
+      items: this._formBuilder.array([])
     });
     this.fifthFormGroup = this._formBuilder.group({
       metric_items: this._formBuilder.array([this.createMetricItem()]),
@@ -142,6 +166,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       selectTcbsCtrl: ['', Validators.required]
     });
   }
+
 
   createItem(): FormGroup {
     return this._formBuilder.group({
@@ -163,6 +188,8 @@ export class BlueprintsEStepperComponent implements OnInit {
     });
   }
 
+  selectedIndex = 0;
+
   createKPIItem(): FormGroup {
     return this._formBuilder.group({
       formula: '',
@@ -175,15 +202,22 @@ export class BlueprintsEStepperComponent implements OnInit {
     });
   }
 
-  addItem(): void {
-    this.items = this.fourthFormGroup.get('items') as FormArray;
-    this.items.push(this.createItem());
+  goToStepIndex(index: number) {
+    this.stepper.selectedIndex = index;
   }
 
-  removeItem() {
-    this.items = this.fourthFormGroup.get('items') as FormArray;
-    this.items.removeAt(this.items.length - 1);
+  onStepChanged(event) {
+      this.currentStep = event.selectedIndex;
   }
+
+  disableCtxb($event){
+    if ($event.source.checked){
+      this.secondFormGroup.controls['selectCbsCtrl'].disable();
+    } else {
+      this.secondFormGroup.controls['selectCbsCtrl'].enable();
+    }
+  }
+
 
   addMetricItem(): void {
     this.metric_items = this.fifthFormGroup.get('metric_items') as FormArray;
@@ -205,6 +239,26 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.kpi_items.removeAt(this.kpi_items.length - 1);
   }
 
+  onDeploymentTypeSelected(event: any){
+    this.deploymentType = event.value;
+    var staticType = document.getElementById("staticType")
+    var onDemandType = document.getElementById("onDemandType")
+    var staticTypeBack = document.getElementById("staticTypeBack")
+    var onDemandTypeBack = document.getElementById("onDemandTypeBack")
+
+    if(event.value === 'STATIC'){
+      staticType.style.display = 'inline';
+      onDemandType.style.display = 'none';
+      staticTypeBack.style.display = 'inline';
+      onDemandTypeBack.style.display = 'none';
+    } else {
+      staticType.style.display = 'none';
+      onDemandType.style.display = 'inline';
+      staticTypeBack.style.display = 'none';
+      onDemandTypeBack.style.display = 'inline';
+    }
+  }
+
   onSiteSelected(event: any) {
     //console.log(event);
     this.selectedSite = event.value;
@@ -216,14 +270,24 @@ export class BlueprintsEStepperComponent implements OnInit {
 
     for (var i = 0; i < this.vsbs.length; i ++) {
       if (this.vsbs[i]['obj']['blueprintId'] == event.value) {
-        for (var j = 0; j < this.vsbs[i]['obj']['parameters'].length; j++) {
-          this.translationParams.push(this.vsbs[i]['obj']['parameters'][j]);
+        if(this.vsbs[i]['obj']['parameters'] !== undefined){
+          for (var j = 0; j < this.vsbs[i]['obj']['parameters'].length; j++) {
+            this.translationParams.push(this.vsbs[i]['obj']['parameters'][j]['parameterId']);
+            this.items = this.fourthFormGroup.get('items') as FormArray;
+            this.items.push(this.createItem());
+          }
+          //console.log(this.translationParams);
         }
-        //console.log(this.translationParams);
       }
     }
   }
-
+  verifyForm(step: number){
+    if(step == 0){
+      if(this.zeroFormGroup.valid){
+        alert("ok");
+      }
+    }
+  }
   onNameGiven(event: any) {
     //console.log(event);
     this.expBlueprintName = event.target.value;
@@ -235,8 +299,13 @@ export class BlueprintsEStepperComponent implements OnInit {
 
     for (var i = 0; i < this.ctxbs.length; i ++) {
       if (this.ctxbs[i]['obj']['blueprintId'] == event.value) {
-        for (var j = 0; j < this.ctxbs[i]['obj']['parameters'].length; j++) {
-          this.translationParams.push(this.ctxbs[i]['obj']['parameters'][j]);
+        if (this.ctxbs[i]['obj']['parameters'] === []){
+          for (var j = 0; j < this.ctxbs[i]['obj']['parameters'].length; j++) {
+            this.items = this.fourthFormGroup.get('items') as FormArray;
+            this.items.push(this.createItem());
+            this.translationParams.push(this.ctxbs[i]['obj']['parameters'][j]['parameterId']);
+          }
+
         }
         //console.log(this.translationParams);
       }
@@ -350,16 +419,21 @@ export class BlueprintsEStepperComponent implements OnInit {
     return this.tcbs.filter(x => x.sites.indexOf(this.selectedSite) >= 0);
   }
 
+
   createOnBoardExpBlueprintRequest(nsds: File[]) {
     var onBoardExpRequest = JSON.parse('{}');
-    onBoardExpRequest['nsds'] = [];
-    onBoardExpRequest['translationRules'] = [];
+    if (this.deploymentType !== "STATIC"){
+      onBoardExpRequest['nsds'] = [];
+      onBoardExpRequest['translationRules'] = [];
+    }
+
 
     var expBlueprint = JSON.parse('{}');
 
     let promises = [];
 
-    for (let nsd of nsds) {
+    if (this.deploymentType !== "STATIC"){
+      for (let nsd of nsds) {
         let nsdPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(nsd);
@@ -367,22 +441,44 @@ export class BlueprintsEStepperComponent implements OnInit {
         });
         promises.push(nsdPromise);
     }
-
+  }
     Promise.all(promises).then(fileContents => {
-        for (var i = 0; i < fileContents.length; i++) {
+      if (this.deploymentType !== "STATIC"){
+
+      for (var i = 0; i < fileContents.length; i++) {
           onBoardExpRequest['nsds'].push(JSON.parse(fileContents[i]));
         }
 
-        var translationRule = JSON.parse('{}');
+        if (this.translationParams === []){
+          var translationRule = JSON.parse('{}');
+          var nsdId = this.fourthFormGroup.get('nsdIdCtrl').value;
+          var nsdVersion = this.fourthFormGroup.get('nsdVersionCtrl').value;
+          var nsFlavourId = this.fourthFormGroup.get('nsFlavourIdCtrl').value;
+          var nsInstLevel = this.fourthFormGroup.get('nsInstLevelIdCtrl').value;
+          translationRule['blueprintId'] = blueprintId;
+          translationRule['nsdId'] = nsdId;
+          translationRule['nsdVersion'] = nsdVersion;
+          translationRule['nsFlavourId'] = nsFlavourId;
+          translationRule['nsInstantiationLevelId'] = nsInstLevel;
+
+          var paramsRows = this.fourthFormGroup.controls.items as FormArray;
+          var controls = paramsRows.controls;
+          var paramsObj = [];
+
+          for (var j = 0; j < controls.length; j++) {
+            paramsObj.push(controls[j].value);
+            //console.log(paramsObj);
+          }
+          translationRule['input'] = paramsObj;
+          onBoardExpRequest.translationRules.push(translationRule);
+        }
+
+      }
 
         var blueprintId = this.zeroFormGroup.get('bpIdCtrl').value;
         var blueprintName = this.zeroFormGroup.get('bpNameCtrl').value;
         var bluepritnVersion = this.zeroFormGroup.get('bpVersionCtrl').value;
         var blueprintDesc = this.zeroFormGroup.get('bpDescriptionCtrl').value;
-        var nsdId = this.fourthFormGroup.get('nsdIdCtrl').value;
-        var nsdVersion = this.fourthFormGroup.get('nsdVersionCtrl').value;
-        var nsFlavourId = this.fourthFormGroup.get('nsFlavourIdCtrl').value;
-        var nsInstLevel = this.fourthFormGroup.get('nsInstLevelIdCtrl').value;
 
         //expBlueprint['expBlueprintId'] = blueprintId;
         expBlueprint['description'] = blueprintDesc;
@@ -393,23 +489,8 @@ export class BlueprintsEStepperComponent implements OnInit {
         expBlueprint['ctxBlueprintIds'] = this.selectedCbs;
         expBlueprint['tcBlueprintIds'] = this.selectedTcbs;
         expBlueprint['sites'] = [this.selectedSite];
+        expBlueprint['deploymentType'] = this.zeroFormGroup.get('deploymentTypeCtrl').value;
 
-        translationRule['blueprintId'] = blueprintId;
-        translationRule['nsdId'] = nsdId;
-        translationRule['nsdVersion'] = nsdVersion;
-        translationRule['nsFlavourId'] = nsFlavourId;
-        translationRule['nsInstantiationLevelId'] = nsInstLevel;
-
-        var paramsRows = this.fourthFormGroup.controls.items as FormArray;
-        var controls = paramsRows.controls;
-        var paramsObj = [];
-
-        for (var j = 0; j < controls.length; j++) {
-          paramsObj.push(controls[j].value);
-          //console.log(paramsObj);
-        }
-        translationRule['input'] = paramsObj;
-        onBoardExpRequest.translationRules.push(translationRule);
 
         var metrics = this.fifthFormGroup.controls.metric_items as FormArray;
         var metric_controls = metrics.controls;

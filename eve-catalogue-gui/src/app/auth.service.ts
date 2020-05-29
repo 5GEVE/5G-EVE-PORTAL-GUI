@@ -218,7 +218,7 @@ export class AuthService {
           }
         } else {
           console.log(error.status + " after " + operation);
-          this.log(`${operation} failed: ${error.message}`, 'FAILED', false);
+          this.log(`${operation} failed: ${error.error}`, 'FAILED', false);
         }
       }
 
@@ -229,8 +229,8 @@ export class AuthService {
 
   /** Log a Service message with the MessageService */
   log(message: string, action: string, reload: boolean) {
-    this.messageService.add(`BluepritsTcService: ${message}`);
-    this.openSnackBar(`BluepritsTcService: ${message}`, action, reload);
+    this.messageService.add(`${message}`);
+    this.openSnackBar(`${message}`, action, reload);
   }
 
   openSnackBar(message: string, action: string, reload: boolean) {

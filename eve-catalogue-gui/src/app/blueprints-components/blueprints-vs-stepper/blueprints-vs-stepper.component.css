@@ -28,3 +28,17 @@ td {
 .margin-all {
     margin: 10px;
 }
+#submitButton {
+  display: none ;
+}
+
+#nextButton {
+  display: inline;
+
+}
+.invisible{
+  display: block;
+  visibility: hidden;
+  height: 0;
+  width: 0;
+}

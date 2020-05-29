@@ -6,6 +6,7 @@ import { ExperimentsDetailsDataSource, ExperimentsDetailsItemKV } from './experi
 import { ExperimentsService } from '../experiments.service';
 import { ExperimentInfo } from '../experiments/experiment-info';
 import { Execution } from '../experiments/execution';
+import { SapInfo} from '../experiments/sapInfo';
 import { ExpDescriptorInfo } from '../descriptors-e/exp-descriptor-info';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 
@@ -27,6 +28,10 @@ export class ExperimentsDetailsComponent implements OnInit {
   experiment: ExperimentInfo;
 
   executions: Execution[];
+
+  sapInfos: SapInfo[];
+
+  cps: ExperimentsDetailsItemKV[] = [];
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['key', 'value'];
@@ -69,6 +74,14 @@ export class ExperimentsDetailsComponent implements OnInit {
       this.tableData.push({key: "Time Slot", value: ['Start Date: ' + startDate.toLocaleString(), 'Stop Date: ' + stopDate.toLocaleString()]});
       //this.tableData.push({key: "NFV Instance Id", value: [this.experiment.nfvNsInstanceId]});
 
+      console.log(this.experiment);
+      var values = [];
+      if(this.experiment['sapInfo'] !== undefined){
+        for (var i = 0 ; i < this.experiment['sapInfo'].length; i++){
+          values.push(this.experiment['sapInfo'][i]['sapdId'] + " - "+ this.experiment['sapInfo'][i]['address']);
+        }
+      }
+      this.tableData.push({key: "Sap Info", value: values});
       this.executions = this.experiment.executions;
 
       this.dataSource = new ExperimentsDetailsDataSource(this.tableData);

@@ -40,8 +40,8 @@ export class BlueprintsTcComponent implements OnInit {
       name: ['', Validators.required],
       version: ['', Validators.required],
       executionScript: ['', Validators.required],
-      resetConfigScript: ['', Validators.required],
-      configurationScript: ['', Validators.required],
+      resetConfigScript: [''],
+      configurationScript: [''],
       user_items: this._formBuilder.array([this.createUserItem()]),
       infra_items: this._formBuilder.array([this.createInfraItem()])
     });

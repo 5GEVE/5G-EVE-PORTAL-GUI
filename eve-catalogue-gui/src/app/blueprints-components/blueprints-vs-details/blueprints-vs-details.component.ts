@@ -64,17 +64,21 @@ export class BlueprintsVsDetailsComponent implements OnInit {
         this.tableData.push({key: "Version", value: [vsBlueprint['version']]});
         this.tableData.push({key: "Description", value: [vsBlueprint['description']]});
         var values = [];
-
-        for (var i = 0; i < vsBlueprint['parameters'].length; i++) {
-          values.push(vsBlueprint['parameters'][i]['parameterName']);
+        if( vsBlueprint['parameters'] !== undefined){
+          for (var i = 0; i < vsBlueprint['parameters'].length; i++) {
+            values.push(vsBlueprint['parameters'][i]['parameterName']);
+          }
+          this.tableData.push({key: "Parameters", value: values});
         }
-        this.tableData.push({key: "Parameters", value: values});
-
         values = [];
 
         var atomicComponents = vsBlueprint['atomicComponents'];
         for (var i = 0; i < atomicComponents.length; i++) {
-          values.push(atomicComponents[i]['componentId']);
+          if(atomicComponents[i]['placement'] !== undefined && atomicComponents[i]['placement'] !== ''){
+            values.push(atomicComponents[i]['componentId'] + " (" + atomicComponents[i]['placement'].toLowerCase() + ")");
+          } else {
+            values.push(atomicComponents[i]['componentId']);
+          }
         }
         this.tableData.push({key: "Components", value: values});
 
@@ -87,15 +91,17 @@ export class BlueprintsVsDetailsComponent implements OnInit {
         this.tableData.push({key: "Endpoints", value: values});
 
         values = [];
-        for (var i = 0; i < vsBlueprint['compatibleContextBlueprint'].length; i++) {
-          for(var j = 0; j < ctxBlueprintInfos.length; j ++){
-            if (vsBlueprint['compatibleContextBlueprint'][i] === ctxBlueprintInfos[j]['ctxBlueprintId']){
-              values.push(ctxBlueprintInfos[j]['name']);
+        if( vsBlueprint['compatibleContextBlueprint'] !== undefined){
+          for (var i = 0; i < vsBlueprint['compatibleContextBlueprint'].length; i++) {
+            for(var j = 0; j < ctxBlueprintInfos.length; j ++){
+              if (vsBlueprint['compatibleContextBlueprint'][i] === ctxBlueprintInfos[j]['ctxBlueprintId']){
+                values.push(ctxBlueprintInfos[j]['name']);
+              }
             }
           }
-        }
-        this.tableData.push({key: "Context Blueprints", value: values});
 
+          this.tableData.push({key: "Context Blueprints", value: values});
+        }
         values = [];
 
         for (var i = 0; i < vsBlueprint['compatibleSites'].length; i++) {

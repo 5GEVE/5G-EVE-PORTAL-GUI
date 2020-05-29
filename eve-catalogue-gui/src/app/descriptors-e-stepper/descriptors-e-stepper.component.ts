@@ -88,7 +88,7 @@ export class DescriptorsEStepperComponent implements OnInit {
       vsDescName: ['', Validators.required],
       vsDescVersion: ['', Validators.required],
       managementType: [''],
-      qosParam: ['', Validators.required],
+      qosParam: [''],
       ssType: [''],
       isPublic: [false]/*,
       priorityType: ['', Validators.required],
@@ -131,9 +131,12 @@ export class DescriptorsEStepperComponent implements OnInit {
     var tcBlueprintIds = this.expBlueprint['tcBlueprintIds'];
     //console.log(ctxBlueprintIds);
     //console.log(tcBlueprintIds);
-    for (var i = 0; i < ctxBlueprintIds.length; i++) {
-      this.getCtxBlueprint(ctxBlueprintIds[i]);
+    if (ctxBlueprintIds !== undefined){
+      for (var i = 0; i < ctxBlueprintIds.length; i++) {
+        this.getCtxBlueprint(ctxBlueprintIds[i]);
+      }
     }
+
 
     for (var i = 0; i < tcBlueprintIds.length; i++) {
       this.getTcBlueprint(tcBlueprintIds[i]);
@@ -207,12 +210,16 @@ export class DescriptorsEStepperComponent implements OnInit {
 
     var qosParameters = {};
 
-    for (var i = 0; i < this.vsBlueprint['parameters'].length; i++) {
-      qosParameters[this.vsBlueprint['parameters'][i]['parameterId']] =
-        this.document.getElementById('qos_' + this.vsBlueprint['parameters'][i]['parameterId']).value;
+    if(this.vsBlueprint['parameters'] !== undefined){
+      for (var i = 0; i < this.vsBlueprint['parameters'].length; i++) {
+        qosParameters[this.vsBlueprint['parameters'][i]['parameterId']] =
+          this.document.getElementById('qos_' + this.vsBlueprint['parameters'][i]['parameterId']).value;
+      }
+      onBoardExpRequest['vsDescriptor']['qosParameters'] = qosParameters;
     }
 
-    onBoardExpRequest['vsDescriptor']['qosParameters'] = qosParameters;
+
+
     /*onBoardExpRequest['vsDescriptor']['serviceConstraints'] = [];
 
     for (var i = 0; i < this.vsBlueprint['atomicComponents'].length; i++) {
@@ -236,13 +243,16 @@ export class DescriptorsEStepperComponent implements OnInit {
     for (var i = 0; i < this.tcBlueprints.length; i++) {
       var tempTc = {};
       tempTc['blueprintId'] = this.tcBlueprints[i].value;
-      tempTc['parameters'] = {}
-      if (this.tcBlueprints[i]['item']['userParameters']) {
-        let userParams = new Map(Object.entries(this.tcBlueprints[i]['item']['userParameters']));
-        for (let key of userParams.keys()) {
-          tempTc['parameters'][key] = this.document.getElementById("user_" + key).value;
+      if(tempTc['parameters'] !== undefined){
+        tempTc['parameters'] = {}
+        if (this.tcBlueprints[i]['item']['userParameters']) {
+          let userParams = new Map(Object.entries(this.tcBlueprints[i]['item']['userParameters']));
+          for (let key of userParams.keys()) {
+            tempTc['parameters'][key] = this.document.getElementById("user_" + key).value;
+          }
         }
       }
+
       /*
       if (this.tcBlueprints[i]['item']['infrastructureParameters']) {
         let infraParams = new Map(Object.entries(this.tcBlueprints[i]['item']['infrastructureParameters']));

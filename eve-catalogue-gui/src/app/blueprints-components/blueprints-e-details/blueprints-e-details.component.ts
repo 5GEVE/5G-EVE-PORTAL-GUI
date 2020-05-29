@@ -89,15 +89,17 @@ export class BlueprintsEDetailsComponent implements OnInit {
 
 
         values = [];
-
-        for (var i = 0; i < expBlueprint['ctxBlueprintIds'].length; i++) {
-          for (var j = 0; j < ctxBlueprintsList.length; j++){
-            if (ctxBlueprintsList[j]['ctxBlueprintId'] === expBlueprint['ctxBlueprintIds'][i]){
-              values.push(ctxBlueprintsList[j]['name']);
+        if(expBlueprint['ctxBlueprintIds'] !== undefined){
+          for (var i = 0; i < expBlueprint['ctxBlueprintIds'].length; i++) {
+            for (var j = 0; j < ctxBlueprintsList.length; j++){
+              if (ctxBlueprintsList[j]['ctxBlueprintId'] === expBlueprint['ctxBlueprintIds'][i]){
+                values.push(ctxBlueprintsList[j]['name']);
+              }
             }
           }
+          this.tableData.push({key: "Execution Contexts", value: values});
+
         }
-        this.tableData.push({key: "Execution Contexts", value: values});
 
         values = [];
 
@@ -119,12 +121,12 @@ export class BlueprintsEDetailsComponent implements OnInit {
         this.tableData.push({key: "Active ExpDs", value: values});
 */
         values = [];
-
-        for (var i = 0; i < expBlueprintInfo['onBoardedNsdInfoId'].length; i++) {
-          values.push(expBlueprintInfo['onBoardedNsdInfoId'][i]);
+        if (expBlueprintInfo['onBoardedNsdInfoId'] !== undefined){
+          for (var i = 0; i < expBlueprintInfo['onBoardedNsdInfoId'].length; i++) {
+            values.push(expBlueprintInfo['onBoardedNsdInfoId'][i]);
+          }
+          this.tableData.push({key: "Onboarded NSDs", value: values});
         }
-        this.tableData.push({key: "Onboarded NSDs", value: values});
-
         this.dataSource = new BlueprintsEDetailsDataSource(this.tableData);
         this.dataSource.sort = this.sort;
         this.table.dataSource = this.dataSource;
