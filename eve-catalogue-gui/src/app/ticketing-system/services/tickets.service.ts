@@ -7,6 +7,8 @@ import { environment } from '../../environments/environments';
 @Injectable({ providedIn: 'root' })
 export class TicketService {
 
+    //TODO: global variable -- bugzilla_service
+    //baseUrl:string = "http://172.16.0.8:9090";
     private baseUrl = environment.tsbBaseUrl;
 
     constructor(private http: HttpClient) 
@@ -35,7 +37,7 @@ export class TicketService {
         return this.http.get(url, header)
             .pipe(
                 tap((data: JSON) => {
-                    //this.log('tickets_service > getTickets done!');
+                    this.log('tickets_service > getTickets done!');
                     return data;
                 }),
                 catchError(this.handleError<JSON>('getTickets'))
@@ -48,23 +50,19 @@ export class TicketService {
         return this.http.get(this.baseUrl + 'tickets/' + id , header)
             .pipe(
                 tap((data: JSON) => {
-                    //this.log('tickets_service > getTicket with id ' + id + 'done!');
+                    this.log('tickets_service > getTicket with id ' + id + 'done!');
                     return data;
                 }),
                 catchError(this.handleError<JSON>('getTickets'))
         ); 
     }
 
-    createTicket(productName: string, componentName: string, summary: string, description: string){
+    createTicket(productName: string, componentName: string, summary: string, description: string, assigned_to: string){
         let userToken = localStorage.getItem('token')
-        /*let data = {
+        let data = {
             "product": productName, "component": componentName, 
             "summary": summary, "description": description,
             "assigned_to": assigned_to
-        };*/
-        let data = {
-            "product": productName, "component": componentName, 
-            "summary": summary, "description": description
         };
         let header = {headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + userToken})};
         return this.http.post(this.baseUrl + 'tickets', data, header)
@@ -83,7 +81,7 @@ export class TicketService {
         return this.http.get(this.baseUrl + 'tickets/' + ticketId + '/comments', header)
             .pipe(
                 tap((data: JSON) => {
-                    //this.log('tickets_service > comments of ticket ' + ticketId + ' correctly fetched');
+                    this.log('tickets_service > comments of ticket ' + ticketId + ' correctly fetched');
                     return data;
                 }),
                 catchError(this.handleError<JSON>('getTickets'))
@@ -99,7 +97,7 @@ export class TicketService {
         return this.http.post(this.baseUrl + 'tickets/' + ticketId + '/comments', data, header)
             .pipe(
                 tap((data: JSON) => {
-                    //this.log('auth_service > Comment for ticket ' + ticketId + ' correctly created');
+                    this.log('auth_service > Comment for ticket ' + ticketId + ' correctly created');
                     return data;
                 }),
                 catchError(this.handleError<JSON>('createTicket'))
@@ -116,7 +114,7 @@ export class TicketService {
         return this.http.get(this.baseUrl + 'products', header)
             .pipe(
                 tap((data: JSON) => {
-                    //this.log('tickets_service > getProducts done!');
+                    this.log('tickets_service > getProducts done!');
                     return data;
                 }),
                 catchError(this.handleError<JSON>('getProducts'))
@@ -129,7 +127,7 @@ export class TicketService {
         return this.http.get(this.baseUrl + 'components' + '?product_id=' + productId, header)
             .pipe(
                 tap((data: JSON) => {
-                    //this.log('tickets_service > getComponents done!');
+                    this.log('tickets_service > getComponents done!');
                     return data;
                 }),
                 catchError(this.handleError<JSON>('getComponents'))
@@ -142,7 +140,7 @@ export class TicketService {
         return this.http.get(this.baseUrl + 'adminusers', header)
             .pipe(
                 tap((data: JSON) => {
-                    //this.log('auth_service > getAdminUsers done!');
+                    this.log('auth_service > getAdminUsers done!');
                     return data;
                 }),
                 catchError(this.handleError<JSON>('getAdminUsers'))
