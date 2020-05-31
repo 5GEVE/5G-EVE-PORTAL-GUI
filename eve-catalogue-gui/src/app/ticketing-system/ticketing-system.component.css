@@ -95,4 +95,8 @@ table {
   .newTicketButtonContainer{
     margin-top: 20px;
   }
+
+  .my-spinner{
+    margin: auto;
+  }
   
