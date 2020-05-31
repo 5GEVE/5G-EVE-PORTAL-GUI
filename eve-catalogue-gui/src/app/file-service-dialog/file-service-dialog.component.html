@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Change File Status</h1>
+<mat-dialog-content [formGroup]="expMgmtForm">
+    <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="selectedStatus">
+            <mat-option value="PENDING">PENDING</mat-option>
+            <mat-option value="READY">READY</mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onNoClick()">Close</button>
+    <button mat-raised-button color="accent" (click)="confirmSelection()" cdkFocusInitial>Submit</button>
+</mat-dialog-actions>
