@@ -1,4 +1,5 @@
 import { Execution } from './execution';
+import {SapInfo} from './sapInfo';
 
 export class ExperimentInfo {
     experimentId: string;
@@ -14,5 +15,7 @@ export class ExperimentInfo {
     };
     nfvNsInstanceId: string;
     name: string;
+    sapInfos: SapInfo[];
     executions: Execution[];
+    useCase: string;
 }

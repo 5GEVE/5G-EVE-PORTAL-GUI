@@ -1,23 +1,23 @@
 import { Routes } from '@angular/router';
 import { PortalHomeComponent } from './portal-home/portal-home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { BlueprintsVsComponent } from './blueprints-vs/blueprints-vs.component';
-import { BlueprintsTcComponent } from './blueprints-tc/blueprints-tc.component';
-import { BlueprintsEcComponent } from './blueprints-ec/blueprints-ec.component';
-import { BlueprintsEComponent } from './blueprints-e/blueprints-e.component';
+import { BlueprintsVsComponent } from './blueprints-components/blueprints-vs/blueprints-vs.component';
+import { BlueprintsTcComponent } from './blueprints-components/blueprints-tc/blueprints-tc.component';
+import { BlueprintsEcComponent } from './blueprints-components/blueprints-ec/blueprints-ec.component';
+import { BlueprintsEComponent } from './blueprints-components/blueprints-e/blueprints-e.component';
 import { DescriptorsVsComponent } from './descriptors-vs/descriptors-vs.component';
 import { DescriptorsTcComponent } from './descriptors-tc/descriptors-tc.component';
 import { DescriptorsEcComponent } from './descriptors-ec/descriptors-ec.component';
 import { DescriptorsEComponent } from './descriptors-e/descriptors-e.component';
-import { NfvNsComponent } from './nfv-ns/nfv-ns.component';
-import { NfvPnfComponent } from './nfv-pnf/nfv-pnf.component';
-import { NfvVnfComponent } from './nfv-vnf/nfv-vnf.component';
-import { BlueprintsEDetailsComponent } from './blueprints-e-details/blueprints-e-details.component';
-import { BlueprintsEcDetailsComponent } from './blueprints-ec-details/blueprints-ec-details.component';
-import { BlueprintsVsDetailsComponent } from './blueprints-vs-details/blueprints-vs-details.component';
+import { NfvNsComponent } from './nfv-components/nfv-ns/nfv-ns.component';
+import { NfvPnfComponent } from './nfv-components/nfv-pnf/nfv-pnf.component';
+import { NfvVnfComponent } from './nfv-components/nfv-vnf/nfv-vnf.component';
+import { BlueprintsEDetailsComponent } from './blueprints-components/blueprints-e-details/blueprints-e-details.component';
+import { BlueprintsEcDetailsComponent } from './blueprints-components/blueprints-ec-details/blueprints-ec-details.component';
+import { BlueprintsVsDetailsComponent } from './blueprints-components/blueprints-vs-details/blueprints-vs-details.component';
 import { DescriptorsEDetailsComponent } from './descriptors-e-details/descriptors-e-details.component';
 import { DescriptorsVsDetailsComponent } from './descriptors-vs-details/descriptors-vs-details.component';
-import { BlueprintsEStepperComponent } from './blueprints-e-stepper/blueprints-e-stepper.component';
+import { BlueprintsEStepperComponent } from './blueprints-components/blueprints-e-stepper/blueprints-e-stepper.component';
 import { DesignSwitchComponent } from './design-switch/design-switch.component';
 import { ExperimentSwitchComponent } from './experiment-switch/experiment-switch.component';
 import { DescriptorsESchedulerComponent } from './descriptors-e-scheduler/descriptors-e-scheduler.component';
@@ -25,7 +25,9 @@ import { ExperimentsComponent } from './experiments/experiments.component';
 import { ExperimentsDetailsComponent } from './experiments-details/experiments-details.component';
 import { SitesSwitchComponent } from './sites-switch/sites-switch.component';
 import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
+import { FilesServiceComponent } from './files-service/files-service.component';
 import { LoginComponent } from './login/login.component';
+import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboard/experiment-metric-dashboard.component';
 
 
 export const AppRoutes: Routes = [
@@ -56,9 +58,11 @@ export const AppRoutes: Routes = [
     { path: 'experiments', component: ExperimentsComponent },
     { path: 'experiments_details', component: ExperimentsDetailsComponent },
     { path: 'tickets', component: TicketingSystemComponent },
+    { path: 'vnfs', component: FilesServiceComponent },
     { path: 'login', component: LoginComponent},
+    { path: 'metrics_dashboard', component: ExperimentMetricDashboardComponent},
 
-    
+
     // otherwise redirect to home
     { path: '**', redirectTo: '/portal_home' }
 ];

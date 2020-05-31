@@ -10,8 +10,8 @@
         <form [formGroup]="loginFormGroup" class="rules-form">
             <h2 class="mat-h2">Login</h2>
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                <mat-label>Username</mat-label>
-                <input matInput #username placeholder="Username" formControlName="username" required>
+                <mat-label>Email</mat-label>
+                <input matInput #username placeholder="Email" formControlName="username" required>
             </mat-form-field>
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
                 <mat-label>Password</mat-label>
@@ -24,6 +24,7 @@
             <div class="margin-top">
                 <button mat-raised-button color="accent" class="margin-all" (click)="login();">Submit</button>
             </div>
+
         </form>
     </mat-expansion-panel>
     <mat-expansion-panel class="rules-div">

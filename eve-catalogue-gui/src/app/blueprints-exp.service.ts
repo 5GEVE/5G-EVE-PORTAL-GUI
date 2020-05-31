@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ExpBlueprintInfo } from './blueprints-e/exp-blueprint-info';
+import { ExpBlueprintInfo } from './blueprints-components/blueprints-e/exp-blueprint-info';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
 

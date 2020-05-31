@@ -22,6 +22,7 @@ export class BlueprintsGraphComponent implements OnChanges {
   @Input() public style: any;
   @Input() public layout: any;
   @Input() public zoom: any;
+  @Input() public position: any;
 
   @Output() select: EventEmitter<any> = new EventEmitter<any>();
 
@@ -37,18 +38,27 @@ export class BlueprintsGraphComponent implements OnChanges {
       max: 1.5
     };
 
+    this.position = function(node) {
+      return {
+       row: node.data('row'),
+       col: node.data('col')
+      }
+    };
+
     this.style = this.style || cytoscape.stylesheet()
       .selector('node')
         .css({
           'shape': 'data(shapeType)',
-          'content': 'data(name)',
-          'text-valign': 'center',
+          //'content': 'data(name)',
+          //'text-valign': 'center',
           'text-outline-width': 0,
           'text-width': 2,
           //'text-outline-color': '#000',
           'background-color': 'data(colorCode)',
           'color': '#000',
-          'label': 'data(name)'
+          'label': 'data(name)',
+          'text-valign': 'top',
+          'text-halign': 'center'
         })
       .selector(':selected')
         .css({
@@ -97,6 +107,18 @@ export class BlueprintsGraphComponent implements OnChanges {
 			.selector('.sap')
 				.css({
 					'background-image': 'assets/images/sap_icon_grey_50.png',
+					'width': 50,//'mapData(weight, 40, 80, 20, 60)',
+					'height': 50
+        })
+      .selector('.vdu')
+				.css({
+					'background-image': 'assets/images/vdu_icon_80.png',
+					'width': 80,//'mapData(weight, 40, 80, 20, 60)',
+					'height': 80
+				})
+			.selector('.extcp')
+				.css({
+					'background-image': 'assets/images/cp_icon_50.png',
 					'width': 50,//'mapData(weight, 40, 80, 20, 60)',
 					'height': 50
 				})

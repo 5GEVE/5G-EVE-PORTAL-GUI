@@ -143,6 +143,14 @@ export class ExperimentsComponent implements OnInit {
     this.router.navigate(["/experiments_details"]);
   }
 
+
+  viewMetrics(expId: string) {
+    //console.log(expId);
+    localStorage.setItem('expId', expId);
+
+    this.router.navigate(["/metrics_dashboard"]);
+  }
+
   onStatusSelected(event: any) {
     var selectedState = event.value;
     this.dataSource.filter = selectedState.trim();

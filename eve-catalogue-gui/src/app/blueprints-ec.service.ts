@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CtxBlueprintInfo } from './blueprints-ec/ctx-blueprint-info';
+import { CtxBlueprintInfo } from './blueprints-components/blueprints-ec/ctx-blueprint-info';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
 

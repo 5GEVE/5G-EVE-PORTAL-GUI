@@ -11,6 +11,8 @@ import { DescriptorsEcService } from '../descriptors-ec.service';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 import { DescriptorsTcService } from '../descriptors-tc.service';
 import { DescriptorsVsService } from '../descriptors-vs.service';
+import { VnfdsService } from '../vnfds.service';
+import { NsdsService } from '../nsds.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,19 +22,22 @@ import { DescriptorsVsService } from '../descriptors-vs.service';
 export class DashboardComponent implements OnInit {
 
   cards = [
-    { title: 'Vertical Service Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_vs' },
-    { title: 'Execution Context Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_ec' },
-    { title: 'Test Case Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_tc' },
-    { title: 'Experiments Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_exp' },
-    { title: 'Virtual Network Functions', subtitle: '', cols: 1, rows: 1, path: '' }
+    { title: 'Vertical Service Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_vs', readOnly: false },
+    { title: 'Execution Context Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_ec', readOnly: false },
+    { title: 'Test Case Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_tc', readOnly: false },
+    { title: 'Experiments Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_exp', readOnly: false },
+    { title: 'Virtual Network Functions', subtitle: '', cols: 1, rows: 1, path: '/nfv_vnf', readOnly: true },
+    { title: 'Network Services', subtitle: '', cols: 1, rows: 1, path: '/nfv_ns', readOnly: true }
   ];
 
   vsBCounter: number = 0;
   ecBCounter: number = 0;
   tcBCounter: number = 0;
   expBCounter: number = 0;
+  vnfdCounter: number = 0;
+  nsdCounter: number = 0;
 
-  counters: number[] = [this.vsBCounter, this.ecBCounter, this.tcBCounter, this.expBCounter];
+  counters: number[] = [this.vsBCounter, this.ecBCounter, this.tcBCounter, this.expBCounter, this.vnfdCounter, this.nsdCounter];
 
   constructor(private breakpointObserver: BreakpointObserver,
     iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
@@ -44,7 +49,9 @@ export class DashboardComponent implements OnInit {
     private descriptorsEcService: DescriptorsEcService,
     private descriptorsExpService: DescriptorsExpService,
     private descriptorsTcService: DescriptorsTcService,
-    private descriptorsVsService: DescriptorsVsService
+    private descriptorsVsService: DescriptorsVsService,
+    private vnfdsService: VnfdsService,
+    private nsdsService: NsdsService
     ) {
       iconRegistry.addSvgIcon(
         'library_add',
@@ -60,6 +67,8 @@ export class DashboardComponent implements OnInit {
       //this.getTcDescriptors();
       this.getExpBlueprints();
       //this.getExpDescriptors();
+      this.getVnfDescriptors();
+      this.getNsDescriptors();
     }
 
     getVsBlueprints() {
@@ -92,6 +101,20 @@ export class DashboardComponent implements OnInit {
         //this.cards.push({ title: 'Virtual Network Functions', subtitle: '', counter: 0, cols: 1, rows: 1, path: '' });
         this.expBCounter = expBlueprints.length;
         this.counters[3] = expBlueprints.length;
+      });
+    }
+
+    getVnfDescriptors() {
+      this.vnfdsService.getVnfPackageInfos().subscribe(vnfds => {
+        this.vnfdCounter = vnfds.length;
+        this.counters[4] = vnfds.length;
+      });
+    }
+
+    getNsDescriptors() {
+      this.nsdsService.getNsdInfos().subscribe(nsds => {
+        this.nsdCounter = nsds.length;
+        this.counters[5] = nsds.length;
       });
     }
 

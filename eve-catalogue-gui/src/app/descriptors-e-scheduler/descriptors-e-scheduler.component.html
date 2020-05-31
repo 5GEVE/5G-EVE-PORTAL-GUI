@@ -24,6 +24,14 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-form-field appearance="outline" class="rules-full-width">
+              <mat-label>Use Case</mat-label>
+              <mat-select formControlName="useCase" name="useCase">
+                  <mat-option *ngFor="let useCase of use_cases" [value]="useCase">
+                      {{useCase}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
             <table>
                 <tr>
                     <td>
