@@ -4,7 +4,6 @@ import { AuthService } from '../auth.service';
 import { TicketService } from './services/tickets.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatPaginator } from '@angular/material';
-import { MatProgressSpinnerModule } from '@angular/material';
 
 export interface PeriodicElement {
   name: string;
@@ -59,7 +58,8 @@ export class TicketingSystemComponent implements OnInit {
       product: ['', Validators.required],
       component: ['', Validators.required],
       summary: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      assignedTo: ['', Validators.required]
     });
     this.addTicketCommentForm = this.formBuilder.group({
       commentDescription: ['', Validators.required],
@@ -79,7 +79,7 @@ export class TicketingSystemComponent implements OnInit {
           this.tickets = data['details']['tickets'];
           this.totalTickets = data['details']['totalTickets'];
           this.numTickets = data['details']['numTickets'];
-          
+          console.log(data)
           this.refreshed = false;
           this.fetching = false;
         },
@@ -148,19 +148,17 @@ export class TicketingSystemComponent implements OnInit {
 
   onSubmit() {
     if (this.addTicketForm.invalid) {
-      //console.log("Invalid Form")
+      console.log("Invalid Form")
       return;
     }
-    this.ticketService.createTicket(this.f.product.value, this.f.component.value, this.f.summary.value, this.f.description.value)
+    this.ticketService.createTicket(this.f.product.value, this.f.component.value, this.f.summary.value, this.f.description.value, this.f.assignedTo.value)
       .pipe()
       .subscribe(
           data => {
-            console.log("getting data from create ticket")
             this.ngOnInit();
           },
           error => {
             if ((error[0] == 401) && (!this.refreshed)) {
-              console.log("error from create ticket")
               this.refreshErrorHandler('createTicket');
             }
             else{
@@ -196,16 +194,14 @@ export class TicketingSystemComponent implements OnInit {
   }
 
   getProducts(){
-    this.fetching = true;
     this.ticketService.getProducts()
     .pipe()
     .subscribe(
         data => {
-          //console.log(data['details']);
+          console.log(data['details']);
           this.products = data['details'];
           this.refreshed = false;
-          this.fetching = false;
-          //console.log(this.products)
+          console.log(this.products)
         },
         error => {
             if ((error[0] == 401) && (!this.refreshed)) {
