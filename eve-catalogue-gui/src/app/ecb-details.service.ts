@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BlueprintsCtxDetailsItemKV } from './blueprints-ec-details/blueprints-ec-details-datasource';
+import { BlueprintsCtxDetailsItemKV } from './blueprints-components/blueprints-ec-details/blueprints-ec-details-datasource';
 
 @Injectable({
   providedIn: 'root'

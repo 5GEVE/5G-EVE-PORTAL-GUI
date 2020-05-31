@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { VsDescriptorInfo } from './descriptors-vs/vs-descriptor-info';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
-import { VsBlueprintInfo } from './blueprints-vs/vs-blueprint-info';
+import { VsBlueprintInfo } from './blueprints-components/blueprints-vs/vs-blueprint-info';
 
 @Injectable({
   providedIn: 'root'

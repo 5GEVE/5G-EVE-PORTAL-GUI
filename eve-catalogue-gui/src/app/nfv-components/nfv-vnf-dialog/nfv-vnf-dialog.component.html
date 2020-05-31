@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>VNFD w/ Id: {{data.descriptorId}}</h1>
+<mat-dialog-content>
+  <textarea matInput value={{vnfd}} disabled rows="25"></textarea>  
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button color="warn" (click)="onNoClick()">Close</button>
+</mat-dialog-actions>
+

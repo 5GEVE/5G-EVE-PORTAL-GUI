@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ExpDescriptorInfo } from '../descriptors-e/exp-descriptor-info';
-import { ExpBlueprintInfo } from '../blueprints-e/exp-blueprint-info';
+import { ExpBlueprintInfo } from '../blueprints-components/blueprints-e/exp-blueprint-info';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 import { BlueprintsExpService } from '../blueprints-exp.service';
 import { ExperimentsService } from '../experiments.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { AuthService, UseCases} from '../auth.service';
 
 export interface ViewValue {
   value: string;
@@ -28,12 +29,14 @@ export class DescriptorsESchedulerComponent implements OnInit {
   availableSites: string[] = [];
   start_date: string = '';
   end_date: string = '';
+  use_cases: string[] = [];
 
   constructor(private _formBuilder: FormBuilder,
     private router: Router,
     private descriptorsExpService: DescriptorsExpService,
     private blueprintsExpService: BlueprintsExpService,
-    private experimentService: ExperimentsService) { }
+    private experimentService: ExperimentsService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.scheduleFormGroup = this._formBuilder.group({
@@ -41,10 +44,20 @@ export class DescriptorsESchedulerComponent implements OnInit {
       expDescriptorId: ['', Validators.required],
       timeSlotStart: [undefined, Validators.required],
       timeSlotEnd: [undefined, Validators.required],
-      targetSite: ['', Validators.required]
+      targetSite: ['', Validators.required],
+      useCase: ['', Validators.required]
+
     });
     this.getExpDescriptors();
+    this.getUseCases();
   }
+
+  getUseCases(){
+    this.authService.getUseCases().subscribe((useCases: UseCases) => {
+      this.use_cases = useCases['details'];
+    });
+  }
+
 
   getExpDescriptors() {
     this.descriptorsExpService.getExpDescriptors().subscribe((expDescriptorsInfos: ExpDescriptorInfo[]) =>
@@ -113,6 +126,7 @@ export class DescriptorsESchedulerComponent implements OnInit {
     var startDate = this.scheduleFormGroup.get('timeSlotStart').value;
     var endDate = this.scheduleFormGroup.get('timeSlotEnd').value;
     var targetSite = this.scheduleFormGroup.get('targetSite').value;
+    var useCase = this.scheduleFormGroup.get('useCase').value;
 
     endDate.setHours(23,59,59,999);
 
@@ -123,6 +137,7 @@ export class DescriptorsESchedulerComponent implements OnInit {
     scheduleExperimentRequest['proposedTimeSlot']['startTime'] = startDate;
     scheduleExperimentRequest['proposedTimeSlot']['stopTime'] = endDate;
     scheduleExperimentRequest['targetSites'] = [targetSite];
+    scheduleExperimentRequest['useCase'] = useCase;
 
     console.log(JSON.stringify(scheduleExperimentRequest, null, 4));
 
