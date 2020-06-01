@@ -49,7 +49,12 @@ export class ExperimentsDetailsComponent implements OnInit {
     this.experimentsService.getExperiment(expId, null).subscribe((experimentInfos: ExperimentInfo[]) => {
       this.descriptorsExpService.getExpDescriptors().subscribe((expDescriptorInfo: ExpDescriptorInfo[]) => {
 //      console.log(experimentInfos);
-      this.experiment = experimentInfos[0];
+      for (var i = 0; i < experimentInfos.length ; i++) {
+        if (experimentInfos[i]['experimentId'] === expId){
+          this.experiment = experimentInfos[i];
+
+        }
+      }
       this.tableData.push({key: "Name", value: [this.experiment.name]});
       this.tableData.push({key: "Status", value: [this.experiment.status]});
 

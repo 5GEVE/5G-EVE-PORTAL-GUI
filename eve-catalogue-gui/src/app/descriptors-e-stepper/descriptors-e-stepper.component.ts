@@ -190,7 +190,7 @@ export class DescriptorsEStepperComponent implements OnInit {
     for (var i = 0; i < this.ctxBlueprints.length; i++) {
       var tempCtx = {};
       tempCtx['blueprintId'] = this.ctxBlueprints[i].value;
-      tempCtx['parameters'] = {}
+      tempCtx['parameters'] = {};
       if (this.ctxBlueprints[i]['item']['parameters'] !== [] && this.ctxBlueprints[i]['item']['parameters'] !== undefined) {
         for (var j = 0; j < this.ctxBlueprints[i]['item']['parameters'].length; j++) {
           tempCtx['parameters'][this.ctxBlueprints[i]['item']['parameters'][j]['parameterId']] =
@@ -246,14 +246,14 @@ export class DescriptorsEStepperComponent implements OnInit {
     for (var i = 0; i < this.tcBlueprints.length; i++) {
       var tempTc = {};
       tempTc['blueprintId'] = this.tcBlueprints[i].value;
-      if(tempTc['parameters'] !== undefined){
-        tempTc['parameters'] = {}
-        if (this.tcBlueprints[i]['item']['userParameters']) {
+      console.log(this.tcBlueprints[i]);
+
+      if(this.tcBlueprints[i]['item']['userParameters'] !== undefined){
+        tempTc['parameters'] = {};
           let userParams = new Map(Object.entries(this.tcBlueprints[i]['item']['userParameters']));
           for (let key of userParams.keys()) {
             tempTc['parameters'][key] = this.document.getElementById("user_" + key).value;
-          }
-        }
+         }
       }
 
       /*

@@ -119,7 +119,6 @@ export class BlueprintsEDetailsComponent implements OnInit {
           values.push(expBlueprintInfo['activeExpdId'][i]);
         }
         this.tableData.push({key: "Active ExpDs", value: values});
-*/
         values = [];
         if (expBlueprintInfo['onBoardedNsdInfoId'] !== undefined){
           for (var i = 0; i < expBlueprintInfo['onBoardedNsdInfoId'].length; i++) {
@@ -127,6 +126,8 @@ export class BlueprintsEDetailsComponent implements OnInit {
           }
           this.tableData.push({key: "Onboarded NSDs", value: values});
         }
+
+*/
         this.dataSource = new BlueprintsEDetailsDataSource(this.tableData);
         this.dataSource.sort = this.sort;
         this.table.dataSource = this.dataSource;

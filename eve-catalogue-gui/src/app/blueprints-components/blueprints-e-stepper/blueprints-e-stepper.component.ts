@@ -75,7 +75,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   metricTypes: Metric[] = [
     {value: 'USER_DATA_RATE_DL', viewValue: 'USER_DATA_RATE_DL'},
     {value: 'USER_DATA_RATE_UL', viewValue: 'USER_DATA_RATE_UL'},
-    {value: 'PEAK_DATA_RATE_DL', viewValue: 'MPEAK_DATA_RATE_DL'},
+    {value: 'PEAK_DATA_RATE_DL', viewValue: 'PEAK_DATA_RATE_DL'},
     {value: 'PEAK_DATA_RATE_UL', viewValue: 'PEAK_DATA_RATE_UL'},
     {value: 'CAPACITY', viewValue: 'CAPACITY'},
     {value: 'LATENCY_UP', viewValue: 'LATENCY_USERPLANE'},
