@@ -1,0 +1,16 @@
+.full-width-table {
+  width: 600px;
+}
+
+.margin-all {
+  margin: 5px;
+}
+
+#submitButton {
+  display: none ;
+}
+
+#nextButton {
+  display: inline;
+
+}

@@ -28,6 +28,11 @@ export class RoleDetails {
   details: Role[];
 }
 
+
+export class UseCases{
+  useCases: string[];
+}
+
 export class RegistrationDetails {
   details: {
     user_id: string;
@@ -50,23 +55,23 @@ export class AuthService {
       })
   };
 
-  constructor(private http: HttpClient, 
-    private messageService: MessageService, 
-    private _snackBar: MatSnackBar, 
+  constructor(private http: HttpClient,
+    private messageService: MessageService,
+    private _snackBar: MatSnackBar,
     private router: Router) { }
 
 
-  registerUser(email: string, username: string, firstName: string, 
+  registerUser(email: string, username: string, firstName: string,
     lastName: string, password: string, role: Role): Observable<RegistrationDetails> {
     let data = {
-        "email": email, 
-        "username": username, 
-        "firstName": firstName, 
+        "email": email,
+        "username": username,
+        "firstName": firstName,
         "lastName": lastName,
         "password": password,
         "roles": [{id: role.id, name: role.name, clientRole: role.clientRole}]
     };
-    
+
     return this.http.post<RegistrationDetails>(this.baseUrl + this.registerUrl, data, this.httpOptions)
         .pipe(
             tap((data: RegistrationDetails) => {
@@ -74,7 +79,7 @@ export class AuthService {
                 return data;
             }),
             catchError(this.handleError<RegistrationDetails>('registerUser'))
-    );        
+    );
   }
 
   getRoles(): Observable<RoleDetails> {
@@ -84,15 +89,23 @@ export class AuthService {
         catchError(this.handleError<RoleDetails>('getExpDescriptor'))
       );
   }
-  
+
+  getUseCases(): Observable<UseCases> {
+    return this.http.get<UseCases>(this.baseUrl + "extra/use-cases", this.httpOptions)
+      .pipe(
+        tap(_ => console.log('fetched rolesDetails - SUCCESS')),
+        catchError(this.handleError<UseCases>('getExpDescriptor'))
+      );
+  }
+
 
   login(loginInfo: Object, redirection: string): Observable<Token> {
     return this.http.post(this.baseUrl + 'login', loginInfo, this.httpOptions)
       .pipe(
-        tap((token: Token) => 
+        tap((token: Token) =>
         {
-          this.log(`login w/ id=${loginInfo['email']}`, 'SUCCESS', false); 
-          localStorage.setItem('token', token.access_token); 
+          this.log(`login w/ id=${loginInfo['email']}`, 'SUCCESS', false);
+          localStorage.setItem('token', token.access_token);
           localStorage.setItem('refreshtoken', token.refresh_token);
           localStorage.setItem('logged', 'true')
           this.parseToken(token.access_token);
@@ -107,11 +120,11 @@ export class AuthService {
   refresh(refreshInfo: Object): Observable<Token> {
     return this.http.post(this.baseUrl + 'refreshtoken', refreshInfo, this.httpOptions)
       .pipe(
-        tap((token: Token) => 
+        tap((token: Token) =>
         {
-          localStorage.setItem('token', token.access_token); 
+          localStorage.setItem('token', token.access_token);
           localStorage.setItem('refreshtoken', token.refresh_token);
-          this.log(`refresh login`, 'SUCCESS', false); 
+          this.log(`refresh login`, 'SUCCESS', false);
         }),
         catchError(this.handleError<Token>('refresh'))
       );
@@ -120,7 +133,7 @@ export class AuthService {
   logout(redirection: string): Observable<Token> {
     return this.http.get(this.baseUrl + 'logout', this.httpOptions)
       .pipe(
-        tap((token: Token) => 
+        tap((token: Token) =>
         {
           this.log(`logout`, 'SUCCESS', false);
           localStorage.removeItem('username');
@@ -167,7 +180,7 @@ export class AuthService {
       if (error.status == 401 /*|| error.status == 400*/) {
         console.log("401 after " + operation);
         if (operation.indexOf('refresh') >= 0 || operation.indexOf('login') >= 0) {
-          // TODO: better job of transforming error for user consumption          
+          // TODO: better job of transforming error for user consumption
           this.log(`${operation} failed: ${error.message}`, 'FAILED', false);
           localStorage.removeItem('username');
           localStorage.removeItem('role');
@@ -188,11 +201,11 @@ export class AuthService {
             }
           });
         }
-        
+
       } else {
         if (error.status == 400) {
           if (operation.indexOf('refresh') >= 0 || operation.indexOf('login') >= 0) {
-            // TODO: better job of transforming error for user consumption          
+            // TODO: better job of transforming error for user consumption
             this.log(`${operation} failed: ${error.message}`, 'FAILED', false);
             localStorage.removeItem('username');
             localStorage.removeItem('role');
@@ -205,7 +218,7 @@ export class AuthService {
           }
         } else {
           console.log(error.status + " after " + operation);
-          this.log(`${operation} failed: ${error.message}`, 'FAILED', false);      
+          this.log(`${operation} failed: ${error.error}`, 'FAILED', false);
         }
       }
 
@@ -216,8 +229,8 @@ export class AuthService {
 
   /** Log a Service message with the MessageService */
   log(message: string, action: string, reload: boolean) {
-    this.messageService.add(`BluepritsTcService: ${message}`);
-    this.openSnackBar(`BluepritsTcService: ${message}`, action, reload);
+    this.messageService.add(`${message}`);
+    this.openSnackBar(`${message}`, action, reload);
   }
 
   openSnackBar(message: string, action: string, reload: boolean) {
@@ -227,6 +240,6 @@ export class AuthService {
       console.log('The snack-bar was dismissed');
       if (reload)
         window.location.reload();
-    });  
+    });
   }
 }

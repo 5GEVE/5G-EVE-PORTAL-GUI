@@ -39,26 +39,26 @@ import { CytoscapeModule } from 'ngx-cytoscape';
 import { AppRoutes } from './app.routes';
 import { SideTopBarComponent } from './side-top-bar/side-top-bar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { BlueprintsVsComponent } from './blueprints-vs/blueprints-vs.component';
-import { BlueprintsEcComponent } from './blueprints-ec/blueprints-ec.component';
-import { BlueprintsEComponent } from './blueprints-e/blueprints-e.component';
+import { BlueprintsVsComponent } from './blueprints-components/blueprints-vs/blueprints-vs.component';
+import { BlueprintsEcComponent } from './blueprints-components/blueprints-ec/blueprints-ec.component';
+import { BlueprintsEComponent } from './blueprints-components/blueprints-e/blueprints-e.component';
 import { DescriptorsVsComponent } from './descriptors-vs/descriptors-vs.component';
 import { DescriptorsEcComponent } from './descriptors-ec/descriptors-ec.component';
 import { DescriptorsEComponent } from './descriptors-e/descriptors-e.component';
-import { NfvNsComponent } from './nfv-ns/nfv-ns.component';
-import { NfvVnfComponent } from './nfv-vnf/nfv-vnf.component';
-import { NfvPnfComponent } from './nfv-pnf/nfv-pnf.component';
-import { BlueprintsVsStepperComponent } from './blueprints-vs-stepper/blueprints-vs-stepper.component';
-import { BlueprintsEStepperComponent } from './blueprints-e-stepper/blueprints-e-stepper.component';
-import { BlueprintsEDetailsComponent } from './blueprints-e-details/blueprints-e-details.component';
+import { NfvNsComponent } from './nfv-components/nfv-ns/nfv-ns.component';
+import { NfvVnfComponent } from './nfv-components/nfv-vnf/nfv-vnf.component';
+import { NfvPnfComponent } from './nfv-components/nfv-pnf/nfv-pnf.component';
+import { BlueprintsVsStepperComponent } from './blueprints-components/blueprints-vs-stepper/blueprints-vs-stepper.component';
+import { BlueprintsEStepperComponent } from './blueprints-components/blueprints-e-stepper/blueprints-e-stepper.component';
+import { BlueprintsEDetailsComponent } from './blueprints-components/blueprints-e-details/blueprints-e-details.component';
 import { LoginComponent } from './login/login.component';
 import { BlueprintsGraphComponent } from './blueprints-graph/blueprints-graph.component';
-import { BlueprintsVsDetailsComponent } from './blueprints-vs-details/blueprints-vs-details.component';
+import { BlueprintsVsDetailsComponent } from './blueprints-components/blueprints-vs-details/blueprints-vs-details.component';
 import { BlueprintsVsService } from './blueprints-vs.service';
 import { MessagesComponent } from './messages/messages.component';
-import { BlueprintsEcDetailsComponent } from './blueprints-ec-details/blueprints-ec-details.component';
-import { BlueprintsEcStepperComponent } from './blueprints-ec-stepper/blueprints-ec-stepper.component';
-import { BlueprintsTcComponent } from './blueprints-tc/blueprints-tc.component';
+import { BlueprintsEcDetailsComponent } from './blueprints-components/blueprints-ec-details/blueprints-ec-details.component';
+import { BlueprintsEcStepperComponent } from './blueprints-components/blueprints-ec-stepper/blueprints-ec-stepper.component';
+import { BlueprintsTcComponent } from './blueprints-components/blueprints-tc/blueprints-tc.component';
 import { DescriptorsEStepperComponent } from './descriptors-e-stepper/descriptors-e-stepper.component';
 import { DescriptorsTcComponent } from './descriptors-tc/descriptors-tc.component';
 import { DescriptorsVsDetailsComponent } from './descriptors-vs-details/descriptors-vs-details.component';
@@ -81,6 +81,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileServiceDialogComponent } from './file-service-dialog/file-service-dialog.component';
 import { FileDialogComponent } from './file-dialog/file-dialog.component';
+import { NfvVnfDialogComponent } from './nfv-components/nfv-vnf-dialog/nfv-vnf-dialog.component';
+import { NfvNsDialogComponent } from './nfv-components/nfv-ns-dialog/nfv-ns-dialog.component';
+import { NfvNsGraphDialogComponent } from './nfv-components/nfv-ns-graph-dialog/nfv-ns-graph-dialog.component';
+import { NfvVnfGraphDialogComponent } from './nfv-components/nfv-vnf-graph-dialog/nfv-vnf-graph-dialog.component';
+import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboard/experiment-metric-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -125,8 +130,12 @@ import { FileDialogComponent } from './file-dialog/file-dialog.component';
     TicketingSystemComponent,
     FilesServiceComponent,
     FileServiceDialogComponent,
-    FileDialogComponent
-    
+    FileDialogComponent,
+    NfvVnfDialogComponent,
+    NfvNsDialogComponent,
+    NfvNsGraphDialogComponent,
+    NfvVnfGraphDialogComponent,
+    ExperimentMetricDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -173,7 +182,11 @@ import { FileDialogComponent } from './file-dialog/file-dialog.component';
     ExperimentsExecuteDialogComponent,
     ExperimentsResultsDialogComponent,
     FileServiceDialogComponent,
-    FileDialogComponent
+    FileDialogComponent,
+    NfvVnfDialogComponent,
+    NfvNsDialogComponent,
+    NfvNsGraphDialogComponent,
+    NfvVnfGraphDialogComponent
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]

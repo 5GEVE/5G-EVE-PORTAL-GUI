@@ -1,0 +1,67 @@
+<app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
+<mat-toolbar style="background: transparent;">
+  <span style="margin-left: 15px;"><h1 class="mat-h1">Vnf Packages</h1></span>
+</mat-toolbar>
+<div height="100%" style="background: transparent; padding: 30px;">
+  <table mat-table class="full-width-table" matSort aria-label="Elements" height="100%">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+      <td mat-cell *matCellDef="let row"><b>{{row.vnfProductName}}</b></td>
+    </ng-container>
+
+    <!-- Version Column -->
+    <ng-container matColumnDef="version">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Version</th>
+      <td mat-cell *matCellDef="let row"><b>{{row.vnfdVersion}}</b></td>
+    </ng-container>
+
+    <!-- Provider Column -->
+    <ng-container matColumnDef="provider">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Provider</th>
+      <td mat-cell *matCellDef="let row"><b>{{row.vnfProvider}}</b></td>
+    </ng-container>
+
+    <!-- Operational State Column -->
+    <ng-container matColumnDef="opstate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Operational State</th>
+      <td mat-cell *matCellDef="let row"><b>{{row.operationalState}}</b></td>
+    </ng-container>
+
+    <!-- Onboarding State Column -->
+    <ng-container matColumnDef="onstate">
+      <th mat-header-cell *matHeaderCellDef>Onboarding State</th>
+      <td mat-cell *matCellDef="let row"><b>{{row.onboardingState}}</b></td>
+    </ng-container>
+
+    <!-- Onboarding States Column -->
+    <ng-container matColumnDef="onstates">
+      <th mat-header-cell *matHeaderCellDef>MANO Onboarding State</th>
+      <td mat-cell *matCellDef="let row">
+        <tr *ngFor="let mano of row.manosOnboardingStatus | keyvalue" style="margin-left: 2%;">{{mano.key}} -> {{mano.value}}</tr>
+      </td>
+    </ng-container>
+
+    <!-- Button Column -->
+    <ng-container matColumnDef="buttons">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row">
+        <mat-button-toggle-group name="operations" aria-label="Operations" class="margin-all">
+          <mat-button-toggle value="view_descriptor" (click)="viewVnfDescriptor(row.id)"><mat-icon>description</mat-icon></mat-button-toggle>
+          <mat-button-toggle value="view_descriptor_graph" (click)="viewVnfGraph(row.id)"><mat-icon>device_hub</mat-icon></mat-button-toggle>
+        </mat-button-toggle-group>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator
+      [length]="dataSource?.data.length"
+      [pageIndex]="0"
+      [pageSize]="50"
+      [pageSizeOptions]="[25, 50, 100, 250]"
+      style="background: transparent;">
+  </mat-paginator>
+</div>

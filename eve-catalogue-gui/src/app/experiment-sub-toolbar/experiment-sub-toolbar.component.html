@@ -4,7 +4,7 @@
         <button mat-menu-item (click)="logout();">Logout</button>
     </mat-menu>
     <span><button mat-button (click)="goTo();"><mat-icon>home</mat-icon> Home </button></span>
-    <span><button mat-button routerLink="/tickets" *ngIf="getRole().indexOf('SITE_MANAGER') >= 0;"><mat-icon>list</mat-icon> Tickets </button></span>
+    <span><button mat-button routerLink="/tickets"><mat-icon>list</mat-icon> Tickets </button></span> <!--*ngIf="getRole().indexOf('SITE_MANAGER') >= 0;"-->
     <span><button mat-button routerLink="/experiments" *ngIf="getRole().indexOf('SITE_MANAGER') >= 0;"><mat-icon>build</mat-icon> Experiments </button></span>
     <span><button mat-button (click)="backClicked();"><mat-icon>arrow_back</mat-icon> Back </button></span>
     <span class="fill-remaining-space"></span>

@@ -16,17 +16,17 @@ export class LoginComponent implements OnInit {
   registrationFormGroup: FormGroup;
   roles: Role[];
 
+
   constructor(
     private _formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService,
-    private usersService: UsersService
+    private authService: AuthService,    private usersService: UsersService
     ) { }
 
   ngOnInit() {
     this.getRoles();
     this.loginFormGroup = this._formBuilder.group({
-      username: ['', Validators.required],
+      username: ['', Validators.email],
       password: ['', Validators.required]
     });
     this.registrationFormGroup = this._formBuilder.group({
@@ -50,12 +50,12 @@ export class LoginComponent implements OnInit {
       loginInfo['email'] = email;
       loginInfo['password'] = password;
       this.authService.login(loginInfo, '/portal_home').subscribe(tokenInfo => {
-        
+
         console.log(JSON.stringify(tokenInfo, null, 4));
         console.log(localStorage.getItem('token'));
         console.log("ROLES: " + localStorage.getItem('roles'));
       });
-    }    
+    }
   }
 
   getRoles(){
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
         },
         error => {
           console.log('RegisterComponent > Error retrieving roles during registration - ' + error);
-      });    
+      });
   }
 
   register() {
