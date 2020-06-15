@@ -9,6 +9,7 @@ import { TcBlueprintInfo } from '../blueprints-tc/tc-blueprint-info';
 import { BlueprintsExpService } from '../../blueprints-exp.service';
 import { MatStepper } from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { every } from 'rxjs/operators';
 
 export interface Site {
   value: string;
@@ -25,6 +26,7 @@ export interface Blueprint {
 export interface Metric {
   value: string;
   viewValue: string;
+  unit: string[];
 }
 
 @Component({
@@ -73,17 +75,18 @@ export class BlueprintsEStepperComponent implements OnInit {
   ];
 
   metricTypes: Metric[] = [
-    {value: 'USER_DATA_RATE_DL', viewValue: 'USER_DATA_RATE_DL'},
-    {value: 'USER_DATA_RATE_UL', viewValue: 'USER_DATA_RATE_UL'},
-    {value: 'PEAK_DATA_RATE_DL', viewValue: 'PEAK_DATA_RATE_DL'},
-    {value: 'PEAK_DATA_RATE_UL', viewValue: 'PEAK_DATA_RATE_UL'},
-    {value: 'CAPACITY', viewValue: 'CAPACITY'},
-    {value: 'LATENCY_UP', viewValue: 'LATENCY_USERPLANE'},
-    {value: 'LATENCY_CP', viewValue: 'LATENCY_CONTROLPLANE'},
-    {value: 'DEVICE_DENSITY', viewValue: 'DEVICE_DENSITY'},
-    {value: 'MOBILITY', viewValue: 'MOBILITY'}
+    {value: 'USER_DATA_RATE_DL', viewValue: 'USER_DATA_RATE_DL', unit: ["Mbps", "Gbps"]},
+    {value: 'USER_DATA_RATE_UL', viewValue: 'USER_DATA_RATE_UL', unit: ["Mbps", "Gbps"]},
+    {value: 'CAPACITY', viewValue: 'CAPACITY', unit: ['Mbit/s/m2']},
+    {value: 'LATENCY_UP', viewValue: 'LATENCY_USERPLANE', unit: ['ms']},
+    {value: 'LATENCY_CP', viewValue: 'LATENCY_CONTROLPLANE', unit: ['ms']},
+    {value: 'DEVICE_DENSITY', viewValue: 'DEVICE_DENSITY', unit: ['devices/km2']},
+    {value: 'MOBILITY', viewValue: 'MOBILITY', unit: ['km/h']},
+    {value: 'RELIABILITY', viewValue: 'RELIABILITY', unit: ['%']}
   ];
 
+  filteredMetricTypes: string[] = [];
+  selectedMetric: string[] = [];
 
   graphTypes: String[] = [
     "LINE",
@@ -393,6 +396,18 @@ export class BlueprintsEStepperComponent implements OnInit {
     return this.vsbs.filter(x => x.sites.indexOf(this.selectedSite) >= 0);
   }
 
+  getFilteredMetricValues(index){
+    var finto: string[] =  [];
+    finto.push("Gbps");
+    if (this.selectedMetric === undefined || this.selectedMetric === [] || this.selectedMetric.length <= index){
+      return finto;
+    } else {
+      var metricsFiltered = this.metricTypes.filter(x => x.value.indexOf(this.selectedMetric[index]) >= 0);
+      return metricsFiltered[0].unit;
+    }
+
+    }
+
   getCtxBlueprints() {
     this.blueprintsCtxService.getCtxBlueprints().subscribe((ctxBlueprintInfos: CtxBlueprintInfo[]) =>
       {
@@ -419,6 +434,9 @@ export class BlueprintsEStepperComponent implements OnInit {
     return this.tcbs.filter(x => x.sites.indexOf(this.selectedSite) >= 0);
   }
 
+  updateUnits(event, index){
+    this.selectedMetric[index] = event.value;
+  }
 
   createOnBoardExpBlueprintRequest(nsds: File[]) {
     var onBoardExpRequest = JSON.parse('{}');
@@ -472,7 +490,6 @@ export class BlueprintsEStepperComponent implements OnInit {
           translationRule['input'] = paramsObj;
           onBoardExpRequest.translationRules.push(translationRule);
         }
-
       }
 
         var blueprintId = this.zeroFormGroup.get('bpIdCtrl').value;
@@ -498,10 +515,19 @@ export class BlueprintsEStepperComponent implements OnInit {
         var metricsObj = [];
 
         for (var j = 0; j < metric_controls.length; j++) {
+          var newMetric = JSON.parse('{}');
           if(metric_controls[j].value['iMetricType'] !== ''){
-            metricsObj.push(metric_controls[j].value);
+            newMetric['iMetricType'] = metric_controls[j].value['iMetricType'];
+            newMetric['interval'] = metric_controls[j].value['interval'];
+            newMetric['metricCollectionType'] = metric_controls[j].value['metricCollectionType'];
+            newMetric['metricGraphType'] = metric_controls[j].value['metricGraphType'];
+            newMetric['metricId'] = metric_controls[j].value['iMetricType'];
+            newMetric['name'] = metric_controls[j].value['name'];
+            newMetric['unit'] = metric_controls[j].value['unit'];
+            metricsObj.push(newMetric);
           }
         }
+        console.log(metricsObj);
           expBlueprint['metrics'] = metricsObj;
         //console.log(expBlueprint);
 

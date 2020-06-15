@@ -193,29 +193,47 @@
                         <tr>
                             <td>
                                 <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <mat-label>Metric Type</mat-label>
-                                    <mat-select formControlName="iMetricType" name="metricType">
-                                        <mat-option *ngFor="let type of metricTypes" [value]="type.value">
+                                    <mat-label>Metric Type {{i}}</mat-label>
+                                    <mat-select formControlName="iMetricType" name="metricType" (selectionChange)="updateUnits($event, i);">
+                                        <mat-option *ngFor="let type of metricTypes" [value]="type.value" #selectedMetric>
                                             {{type.viewValue}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </td>
                             <td>
+                              <mat-form-field appearance="outline" color=primary class="data-full-width">
+                                <mat-label>Unit</mat-label>
+                                <mat-select formControlName="unit" name="unitForm">
+                                    <mat-option *ngFor="let unit of getFilteredMetricValues(i)" [value]="unit">{{unit}}</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                          </td>
+                            <td>
                                 <mat-form-field appearance="outline" color=primary class="data-full-width">
                                     <input matInput placeholder="Interval"  formControlName="interval">
                                 </mat-form-field>
                             </td>
+
+
+                        </tr>
+                        <tr>
+
                             <td>
                                 <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <mat-label>Collection Type</mat-label>
-                                    <mat-select formControlName="metricCollectionType" name="collectionType">
-                                        <mat-option *ngFor="let type of collectionTypes" [value]="type">
-                                            {{type}}
-                                        </mat-option>
-                                    </mat-select>
+                                    <input matInput placeholder="Name" formControlName="name" (change)="onMetricGiven($event)">
                                 </mat-form-field>
                             </td>
+                            <td>
+                              <mat-form-field appearance="outline" color=primary class="data-full-width">
+                                  <mat-label>Collection Type</mat-label>
+                                  <mat-select formControlName="metricCollectionType" name="collectionType">
+                                      <mat-option *ngFor="let type of collectionTypes" [value]="type">
+                                          {{type}}
+                                      </mat-option>
+                                  </mat-select>
+                              </mat-form-field>
+                          </td>
                             <td>
                               <mat-form-field appearance="outline" color=primary class="data-full-width">
                                   <mat-label>Graph Type</mat-label>
@@ -227,24 +245,6 @@
 
                                 </mat-form-field>
                               </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <input matInput placeholder="Metric Id" formControlName="metricId">
-                                </mat-form-field>
-                            </td>
-                            <td>
-                                <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <input matInput placeholder="Name" formControlName="name" (change)="onMetricGiven($event)">
-                                </mat-form-field>
-                            </td>
-                            <td>
-                                <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <input matInput placeholder="Unit" formControlName="unit">
-                                </mat-form-field>
-                            </td>
-                            <td></td>
                         </tr>
                     </div>
                 </div>
@@ -273,15 +273,31 @@
                                 </mat-form-field>
                             </td>
                             <td>
+                              <mat-form-field appearance="outline" color=primary class="data-full-width">
+                                  <input matInput placeholder="Unit" formControlName="unit">
+                              </mat-form-field>
+                            </td>
+                            <td>
                                 <mat-form-field appearance="outline" color=primary class="data-full-width">
                                     <input matInput placeholder="Interval" formControlName="interval">
                                 </mat-form-field>
                             </td>
+
+
+                        </tr>
+                        <tr>
+                          <td>
+                            <mat-form-field appearance="outline" color=primary class="data-full-width">
+                                <input matInput placeholder="KPI Id" formControlName="kpiId">
+                            </mat-form-field>
+                        </td>
                             <td>
                                 <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <input matInput placeholder="KPI Id" formControlName="kpiId">
+                                    <input matInput placeholder="Name" formControlName="name" (change)="onKPIGiven($event)">
                                 </mat-form-field>
                             </td>
+
+
                             <td>
                               <mat-form-field appearance="outline" color=primary class="data-full-width">
                                 <mat-label>Graph Type</mat-label>
@@ -296,22 +312,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <input matInput placeholder="Name" formControlName="name" (change)="onKPIGiven($event)">
-                                </mat-form-field>
-                            </td>
-                            <td>
-                                <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <input matInput placeholder="Unit" formControlName="unit">
-                                </mat-form-field>
-                            </td>
-                            <td>
-                                <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <textarea matInput placeholder="Metric Ids (comma separated)" formControlName="metricIds"></textarea>
-                                </mat-form-field>
-                            </td>
-                            <td></td>
+
+                          <td>
+                            <mat-form-field appearance="outline" color=primary class="data-full-width">
+                                <textarea matInput placeholder="Metric Ids (comma separated)" formControlName="metricIds"></textarea>
+                            </mat-form-field>
+                        </td>
+
                         </tr>
                     </div>
                 </div>
