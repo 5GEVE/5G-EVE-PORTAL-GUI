@@ -2,10 +2,10 @@
   margin-top: 2%;
   width: 90%;
   height: 80%;
-  margin-left:5%; 
+  margin-left:5%;
   margin-right:5%;
 }
-  
+
 .margin-all {
   margin: 5px;
 }
@@ -14,7 +14,7 @@
   margin-top: 2%;
   width: 50%;
   height: 80%;
-  margin-left:25%; 
+  margin-left:25%;
   margin-right:25%;
   background: #424242;
   padding: 30px;
@@ -26,7 +26,7 @@
   width: 100%;
   align-self: center;
 }
-  
+
 .rules-full-width {
   width: 100%;
 }
@@ -38,7 +38,7 @@ td {
 .margin-top {
   margin-top: 30px;
 }
-  
+
 a {
   font-weight: bold;
   color: #f0a30a;
@@ -47,4 +47,8 @@ a {
 a:hover {
   color: white;
   cursor: pointer;
+}
+
+#uploadProcedure {
+  display: none;
 }

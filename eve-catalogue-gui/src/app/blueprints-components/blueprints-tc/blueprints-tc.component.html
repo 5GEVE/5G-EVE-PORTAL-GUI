@@ -4,6 +4,7 @@
 </mat-toolbar>
 <mat-tab-group [selectedIndex]="2">
     <mat-tab label="View">
+
         <div style="background: transparent; padding: 30px; padding-bottom: 10%;">
             <table mat-table class="full-width-table" matSort aria-label="Elements">
                 <!-- Id Column -->
@@ -85,8 +86,17 @@
     </mat-tab>
     <mat-tab label="Onboard">
         <div style="background: transparent; padding: 30px; padding-bottom: 10%;">
-            <div class="rules-div">
-            <form [formGroup]="tcFormGroup" class="rules-form">
+
+            <div class="rules-div" >
+              <table style="margin: 15px auto 25px;">
+                <tr>
+                  <td>
+                    <mat-checkbox (change)="hideNextShowSubmit($event);"><h3>Switch to TCB upload via JSON file</h3></mat-checkbox>
+                  </td>
+                </tr>
+              </table>
+
+            <form [formGroup]="tcFormGroup" class="rules-form" id="guidedProcedure">
                 <h3>Create Test Case</h3>
                 <table class="rules-full-width">
                     <tr>
@@ -180,7 +190,17 @@
                     <button mat-raised-button color="accent" class="margin-all" (click)="createOnBoardTcBlueprintRequest();">Submit</button>
                 </div>
             </form>
+            <form id="uploadProcedure" [formGroup]="uploadFormGroup" class="rules-form">
+                <h3>Upload Test Case from JSON file</h3>
+                <table class="rules-full-width">
+                  <tr><td><input #tcbFile type="file" id="uploadFile" formControlName="tcbFileCtrl" required/></td></tr>
+                  <tr><td><button mat-raised-button color="accent" class="margin-all" (click)="createTCBViaJSONFile(tcbFile.files);">Submit</button></td></tr>
+                </table>
+
+
+            </form>
             </div>
         </div>
+
     </mat-tab>
 </mat-tab-group>

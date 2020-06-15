@@ -6,7 +6,7 @@ import { MatTable } from '@angular/material/table';
 import { TcBlueprintInfo } from './tc-blueprint-info';
 import { BlueprintsTcDataSource } from './blueprints-tc-datasource';
 import { BlueprintsTcService } from '../../blueprints-tc.service';
-import { FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup, Validators, FormGroupName } from '@angular/forms';
 import { DescriptorsTcService } from '../../descriptors-tc.service';
 
 @Component({
@@ -25,6 +25,7 @@ export class BlueprintsTcComponent implements OnInit {
   user_items: FormArray;
   infra_items: FormArray;
   tcFormGroup: FormGroup;
+  uploadFormGroup: FormGroup;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name', 'version', 'description', /*'script',*/ 'user_params', 'infra_params',/* 'tcds',*/ 'buttons'];
@@ -35,6 +36,7 @@ export class BlueprintsTcComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+
     this.tcFormGroup = this._formBuilder.group({
       description: [''],
       name: ['', Validators.required],
@@ -46,6 +48,9 @@ export class BlueprintsTcComponent implements OnInit {
       infra_items: this._formBuilder.array([this.createInfraItem()])
     });
     this.dataSource = new BlueprintsTcDataSource(this.tcBlueprintInfos);
+    this.uploadFormGroup = this._formBuilder.group({
+      tcbFileCtrl: ['', Validators.required]
+    });
     this.getTcBlueprints();
   }
 
@@ -119,6 +124,39 @@ export class BlueprintsTcComponent implements OnInit {
   deleteTcBlueprint(tcBlueprintId: string) {
     //console.log(tcBlueprintId);
     this.blueprintsTcService.deleteTcBlueprint(tcBlueprintId).subscribe();
+  }
+
+
+  hideNextShowSubmit($event:any){
+    var uploadProcedure = document.getElementById("uploadProcedure");
+    var guidedProcedure = document.getElementById("guidedProcedure");
+    if ($event.source.checked){
+      uploadProcedure.style.display = 'inline';
+      guidedProcedure.style.display = 'none';
+    } else {
+      guidedProcedure.style.display = 'inline';
+      uploadProcedure.style.display = 'none';
+    }
+
+  }
+
+  createTCBViaJSONFile(tcbs: File[]){
+    if (tcbs.length > 0) {
+      var tcb = tcbs[0];
+      let promises = [];
+      let tcbPromise = new Promise(resolve => {
+          let reader = new FileReader();
+          reader.readAsText(tcb);
+          reader.onload = () => resolve(reader.result);
+      });
+      promises.push(tcbPromise);
+      Promise.all(promises).then(fileContents => {
+        var onBoardTcRequest = JSON.parse(fileContents[0]);
+
+        this.blueprintsTcService.postTcBlueprint(onBoardTcRequest)
+        .subscribe(tcBlueprintId => console.log("TC Blueprint with id " + tcBlueprintId));
+      });
+    }
   }
 
   createOnBoardTcBlueprintRequest() {
