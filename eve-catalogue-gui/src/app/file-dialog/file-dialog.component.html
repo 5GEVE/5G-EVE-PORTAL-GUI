@@ -1,0 +1,14 @@
+<mat-card>  
+    <mat-card-title>
+        <div class="addTicket-card-header">
+            Do you want to {{action}} "{{filename}}"?
+        </div>
+    </mat-card-title>
+    <mat-divider></mat-divider>  
+    <mat-card-actions>  
+        <button mat-raised-button color="warn" (click)="onNoClick()">Close</button>
+        <button mat-raised-button *ngIf='action == "download"' color="accent" (click)="confirmSelection()" cdkFocusInitial>Download</button>
+        <button mat-raised-button *ngIf='action == "delete"' color="accent" (click)="confirmSelection()" cdkFocusInitial>Delete</button>
+    </mat-card-actions>  
+</mat-card>
+

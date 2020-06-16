@@ -27,6 +27,7 @@ import { SitesSwitchComponent } from './sites-switch/sites-switch.component';
 import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
 import { LoginComponent } from './login/login.component';
 import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboard/experiment-metric-dashboard.component';
+import { FilesServiceComponent } from './files-service/files-service.component';
 
 
 export const AppRoutes: Routes = [
@@ -59,6 +60,7 @@ export const AppRoutes: Routes = [
     { path: 'tickets', component: TicketingSystemComponent },
     { path: 'login', component: LoginComponent},
     { path: 'metrics_dashboard', component: ExperimentMetricDashboardComponent},
+    { path: 'vnfs', component: FilesServiceComponent },
 
 
     // otherwise redirect to home
