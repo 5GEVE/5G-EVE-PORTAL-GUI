@@ -82,6 +82,11 @@ import { NfvNsDialogComponent } from './nfv-components/nfv-ns-dialog/nfv-ns-dial
 import { NfvNsGraphDialogComponent } from './nfv-components/nfv-ns-graph-dialog/nfv-ns-graph-dialog.component';
 import { NfvVnfGraphDialogComponent } from './nfv-components/nfv-vnf-graph-dialog/nfv-vnf-graph-dialog.component';
 import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboard/experiment-metric-dashboard.component';
+import { FilesServiceComponent } from './files-service/files-service.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FileServiceDialogComponent } from './file-service-dialog/file-service-dialog.component';
+import { FileDialogComponent } from './file-dialog/file-dialog.component';
 
 @NgModule({
   declarations: [
@@ -128,7 +133,11 @@ import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboar
     NfvNsDialogComponent,
     NfvNsGraphDialogComponent,
     NfvVnfGraphDialogComponent,
-    ExperimentMetricDashboardComponent
+    ExperimentMetricDashboardComponent,
+    TicketingSystemComponent,
+    FilesServiceComponent,
+    FileServiceDialogComponent,
+    FileDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -167,7 +176,9 @@ import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboar
     FormsModule,
     ReactiveFormsModule.withConfig({warnOnNgModelWithFormControl: 'never'}),
     HttpClientModule,
-    CytoscapeModule
+    CytoscapeModule,
+    MatProgressBarModule,
+    MatSlideToggleModule
   ],
   entryComponents: [
     ExperimentsMgmtDialogComponent,
@@ -176,7 +187,9 @@ import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboar
     NfvVnfDialogComponent,
     NfvNsDialogComponent,
     NfvNsGraphDialogComponent,
-    NfvVnfGraphDialogComponent
+    NfvVnfGraphDialogComponent,
+    FileServiceDialogComponent,
+    FileDialogComponent
   ],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
