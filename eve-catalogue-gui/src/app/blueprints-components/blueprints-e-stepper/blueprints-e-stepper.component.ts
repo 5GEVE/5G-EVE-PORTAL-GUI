@@ -302,7 +302,7 @@ export class BlueprintsEStepperComponent implements OnInit {
 
     for (var i = 0; i < this.ctxbs.length; i ++) {
       if (this.ctxbs[i]['obj']['blueprintId'] == event.value) {
-        if (this.ctxbs[i]['obj']['parameters'] === []){
+        if (this.ctxbs[i]['obj']['parameters'] !== undefined){
           for (var j = 0; j < this.ctxbs[i]['obj']['parameters'].length; j++) {
             this.items = this.fourthFormGroup.get('items') as FormArray;
             this.items.push(this.createItem());
