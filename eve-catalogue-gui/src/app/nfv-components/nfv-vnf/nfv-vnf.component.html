@@ -2,7 +2,9 @@
 <mat-toolbar style="background: transparent;">
   <span style="margin-left: 15px;"><h1 class="mat-h1">Vnf Packages</h1></span>
 </mat-toolbar>
-<div height="100%" style="background: transparent; padding: 30px;">
+<mat-tab-group [selectedIndex]="0">
+  <mat-tab label="View">
+    <div style="background: transparent; padding: 30px; padding-bottom: 10%;">
   <table mat-table class="full-width-table" matSort aria-label="Elements" height="100%">
     <!-- Name Column -->
     <ng-container matColumnDef="name">
@@ -65,3 +67,8 @@
       style="background: transparent;">
   </mat-paginator>
 </div>
+  </mat-tab>
+  <mat-tab label="Onboard">
+
+    <app-files-service></app-files-service>
+  </mat-tab>

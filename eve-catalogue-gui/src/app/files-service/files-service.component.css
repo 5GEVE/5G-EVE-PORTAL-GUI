@@ -1,5 +1,5 @@
 table {
-    width: 100%;
+    width: 100% !important;
   }
   .my-form{
     min-width: 150px;
@@ -8,26 +8,26 @@ table {
   }
 
   .full-width {
-    width: 100%;
+    width: 80%;
   }
-  
+
   .title a {
     font-size: 30px;
     color: white;
     text-decoration: none;
     padding-left: 40px;
   }
-  
+
   tr.element-row:not(.example-expanded-row):hover {
     background: #bdbdbd;
   }
-  
+
   tr.element-row:not(.example-expanded-row):active {
     background: #efefef;
   }
 
   .contentBlock{
-    width: 75%;
+    width: 80%;
     margin: auto;
     min-width: 900px;
     min-height: 600px;
@@ -89,4 +89,3 @@ li {
 .rm-upload-item{
   margin-left: 15px;
 }
-  
