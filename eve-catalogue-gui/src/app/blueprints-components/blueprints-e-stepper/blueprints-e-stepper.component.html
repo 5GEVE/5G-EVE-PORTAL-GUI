@@ -193,7 +193,7 @@
                         <tr>
                             <td>
                                 <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <mat-label>Metric Type {{i}}</mat-label>
+                                    <mat-label>Metric Type</mat-label>
                                     <mat-select formControlName="iMetricType" name="metricType" (selectionChange)="updateUnits($event, i);">
                                         <mat-option *ngFor="let type of metricTypes" [value]="type.value" #selectedMetric>
                                             {{type.viewValue}}

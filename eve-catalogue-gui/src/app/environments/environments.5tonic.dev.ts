@@ -12,6 +12,7 @@ export const environment = {
     ibnBaseUrl: 'http://10.5.7.13:8080/Intent/IntentPage.jsp',
     apiUrl: 'http://10.5.7.10',
     dcsBaseUrl: 'http://10.5.7.12:8080/portal/dcs/dashboard/',
+    fsBaseUrl: 'http://10.5.7.11:9191/portal/fs/',
     backServerUrl: ''
 };
 ​

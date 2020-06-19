@@ -12,6 +12,7 @@ export const environment = {
   tsbBaseUrl: 'http://10.5.7.11:9090/portal/tsb/',
   ibnBaseUrl: 'http://10.50.80.36:8080/Intent/IntentPage.jsp',
   apiUrl: 'http://10.50.80.18',
+    fsBaseUrl: 'http://10.50.80.13:9191/portal/fs/',
   backServerUrl: ''
 };
 ​

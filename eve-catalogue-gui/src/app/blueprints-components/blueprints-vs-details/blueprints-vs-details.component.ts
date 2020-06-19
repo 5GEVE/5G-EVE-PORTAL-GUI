@@ -145,7 +145,7 @@ export class BlueprintsVsDetailsComponent implements OnInit {
 
         for (var i = 0; i < connectivityServices.length; i++) {
           this.graphData.nodes.push(
-            { data: { id: "conn_service_" + i, name: "", weight: 50, colorCode: 'white', shapeType: 'ellipse' }, classes: 'bottom-center net' }
+            { data: { id: "conn_service_" + i, name: connectivityServices[i]['name'], weight: 50, colorCode: 'white', shapeType: 'ellipse' }, classes: 'bottom-center net' }
           );
 
           for (var j = 0; j < atomicComponents.length; j++) {

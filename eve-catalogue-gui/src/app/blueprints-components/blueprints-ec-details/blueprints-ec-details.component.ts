@@ -55,6 +55,7 @@ export class BlueprintsEcDetailsComponent implements OnInit {
         this.tableData.push({key: "Id", value: [ctxBlueprint['blueprintId']]});
         this.tableData.push({key: "Version", value: [ctxBlueprint['version']]});
         this.tableData.push({key: "Description", value: [ctxBlueprint['description']]});
+        this.tableData.push({key: "Composition Strategy", value: [ctxBlueprint['compositionStrategy']]});
         var values = [];
         if(ctxBlueprint['parameters'] !== undefined){
           for (var i = 0; i < ctxBlueprint['parameters'].length; i++) {
@@ -123,7 +124,7 @@ export class BlueprintsEcDetailsComponent implements OnInit {
 
         for (var i = 0; i < connectivityServices.length; i++) {
           this.graphData.nodes.push(
-            { data: { id: "conn_service_" + i, name: "", weight: 50, colorCode: 'white', shapeType: 'ellipse' }, classes: 'bottom-center net' }
+            { data: { id: "conn_service_" + i, name: connectivityServices[i]['name'], weight: 50, colorCode: 'white', shapeType: 'ellipse' }, classes: 'bottom-center net' }
           );
 
           for (var j = 0; j < atomicComponents.length; j++) {
