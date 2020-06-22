@@ -12,6 +12,7 @@
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
                 <mat-label>Email</mat-label>
                 <input matInput #username placeholder="Email" formControlName="username" required>
+                <mat-error *ngIf="loginFormGroup.get('username').hasError('email')">Not a valid email</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
                 <mat-label>Password</mat-label>
