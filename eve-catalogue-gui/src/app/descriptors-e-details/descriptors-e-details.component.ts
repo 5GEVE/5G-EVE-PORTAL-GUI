@@ -65,11 +65,14 @@ export class DescriptorsEDetailsComponent implements OnInit {
         var values = [];
         for (var i = 0; i < vsDescriptorInfo.length; i++){
           if (expDescriptorInfo['vsDescriptorId'] === vsDescriptorInfo[i]['vsDescriptorId']){
-            var paramList = new Map(Object.entries(vsDescriptorInfo[i]['qosParameters']));
-            values.push("QoS parameters")
-            paramList.forEach((value: string, key: string) => {
-              values.push("- " + key + ": " + value);
-            });
+            if (vsDescriptorInfo[i]['qosParameters'] !== undefined){
+              var paramList = new Map(Object.entries(vsDescriptorInfo[i]['qosParameters']));
+              values.push("QoS parameters")
+              paramList.forEach((value: string, key: string) => {
+                values.push("- " + key + ": " + value);
+              });
+
+            }
           }
         }
         //values.push("- aggiunta a mano: 50" );
@@ -80,37 +83,37 @@ export class DescriptorsEDetailsComponent implements OnInit {
 
 
         var values = [];
-        for(var j = 0; j < expDescriptorInfo['ctxDescriptorIds'].length; j++){
-          for (var i = 0; i < ecDescriptorsInfo.length; i++){
-            if (expDescriptorInfo['ctxDescriptorIds'][j] === ecDescriptorsInfo[i]['ctxDescriptorId'] ){
-              var paramList = new Map(Object.entries(ecDescriptorsInfo[i]['ctxParameters']));
-              values.push(ecDescriptorsInfo[i]['name'] + ": Parameters");
-              paramList.forEach((value: string, key: string) => {
-                values.push("- " + key + ": " + value);
-              });
+        if(expDescriptorInfo['ctxDescriptorIds'] !== undefined){
+          for(var j = 0; j < expDescriptorInfo['ctxDescriptorIds'].length; j++){
+            for (var i = 0; i < ecDescriptorsInfo.length; i++){
+              if (expDescriptorInfo['ctxDescriptorIds'][j] === ecDescriptorsInfo[i]['ctxDescriptorId'] ){
+                var paramList = new Map(Object.entries(ecDescriptorsInfo[i]['ctxParameters']));
+                values.push(ecDescriptorsInfo[i]['name'] + ": Parameters");
+                paramList.forEach((value: string, key: string) => {
+                  values.push("- " + key + ": " + value);
+                });
+              }
             }
           }
+          //values.push("- aggiunta a mano: 50" );
+          this.tableData.push({key: "Experiment Context Descriptor", value: values});
+
         }
-        //values.push("- aggiunta a mano: 50" );
-        this.tableData.push({key: "Experiment Context Descriptor", value: values});
-
-
-
-
-
-
 
         var values = [];
         for(var j = 0; j < expDescriptorInfo['testCaseDescriptorIds'].length; j++){
-          for (var i = 0; i < tcDescriptorsInfo.length; i++){
-            if (expDescriptorInfo['testCaseDescriptorIds'][j] === tcDescriptorsInfo[i]['testCaseDescriptorId'] ){
-              var paramList = new Map(Object.entries(tcDescriptorsInfo[i]['userParameters']));
-              values.push(tcDescriptorsInfo[i]['name'] + ": User parameters");
-              paramList.forEach((value: string, key: string) => {
-                values.push("- " + key + ": " + value);
-              });
+            for (var i = 0; i < tcDescriptorsInfo.length; i++){
+              if (expDescriptorInfo['testCaseDescriptorIds'][j] === tcDescriptorsInfo[i]['testCaseDescriptorId'] ){
+                if (tcDescriptorsInfo[i]['userParameters'] !== undefined){
+                  var paramList = new Map(Object.entries(tcDescriptorsInfo[i]['userParameters']));
+                  values.push(tcDescriptorsInfo[i]['name'] + ": User parameters");
+                  paramList.forEach((value: string, key: string) => {
+                    values.push("- " + key + ": " + value);
+                  });
+                }
+              }
             }
-          }
+
         }
         //values.push("- aggiunta a mano: 50" );
         this.tableData.push({key: "Test Case Descriptor", value: values});

@@ -12,7 +12,7 @@ import { AuthService } from '../auth.service';
 export class PortalHomeComponent implements OnInit {
 
   username: string = '';
-  roles: string = ''; 
+  roles: string = '';
 
   constructor(private router: Router,
     private usersService: UsersService,

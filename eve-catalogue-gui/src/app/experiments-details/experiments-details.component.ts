@@ -6,6 +6,7 @@ import { ExperimentsDetailsDataSource, ExperimentsDetailsItemKV } from './experi
 import { ExperimentsService } from '../experiments.service';
 import { ExperimentInfo } from '../experiments/experiment-info';
 import { Execution } from '../experiments/execution';
+import { SapInfo} from '../experiments/sapInfo';
 import { ExpDescriptorInfo } from '../descriptors-e/exp-descriptor-info';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 
@@ -28,6 +29,10 @@ export class ExperimentsDetailsComponent implements OnInit {
 
   executions: Execution[];
 
+  sapInfos: SapInfo[];
+
+  cps: ExperimentsDetailsItemKV[] = [];
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['key', 'value'];
   executionsColumns = ['id', 'state', 'reportUrl', 'tcr'];
@@ -44,7 +49,12 @@ export class ExperimentsDetailsComponent implements OnInit {
     this.experimentsService.getExperiment(expId, null).subscribe((experimentInfos: ExperimentInfo[]) => {
       this.descriptorsExpService.getExpDescriptors().subscribe((expDescriptorInfo: ExpDescriptorInfo[]) => {
 //      console.log(experimentInfos);
-      this.experiment = experimentInfos[0];
+      for (var i = 0; i < experimentInfos.length ; i++) {
+        if (experimentInfos[i]['experimentId'] === expId){
+          this.experiment = experimentInfos[i];
+
+        }
+      }
       this.tableData.push({key: "Name", value: [this.experiment.name]});
       this.tableData.push({key: "Status", value: [this.experiment.status]});
 
@@ -69,6 +79,14 @@ export class ExperimentsDetailsComponent implements OnInit {
       this.tableData.push({key: "Time Slot", value: ['Start Date: ' + startDate.toLocaleString(), 'Stop Date: ' + stopDate.toLocaleString()]});
       //this.tableData.push({key: "NFV Instance Id", value: [this.experiment.nfvNsInstanceId]});
 
+      console.log(this.experiment);
+      var values = [];
+      if(this.experiment['sapInfo'] !== undefined){
+        for (var i = 0 ; i < this.experiment['sapInfo'].length; i++){
+          values.push(this.experiment['sapInfo'][i]['sapdId'] + " - "+ this.experiment['sapInfo'][i]['address']);
+        }
+      }
+      this.tableData.push({key: "Sap Info", value: values});
       this.executions = this.experiment.executions;
 
       this.dataSource = new ExperimentsDetailsDataSource(this.tableData);

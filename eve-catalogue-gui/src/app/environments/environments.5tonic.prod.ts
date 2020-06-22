@@ -7,7 +7,7 @@ export const environment = {
     portalBaseUrl: 'https://portal.5g-eve.eu/portal/catalogue/',
     lcmBaseUrl: 'https://portal.5g-eve.eu/portal/elm/',
     rbacBaseUrl: 'https://portal.5g-eve.eu/portal/rbac/',
-    iwlBaseUrl: 'http://10.3.3.30:8083/',
+    iwlBaseUrl: 'https://portal.5g-eve.ue/iwl/cat/',
     tsbBaseUrl: 'https://portal.5g-eve.eu/portal/tsb/',
     ibnBaseUrl: 'https://portal.5g-eve.eu/ibn/Intent/IntentPage.jsp',
     apiUrl: 'https://portal.5g-eve.eu/',

@@ -2,17 +2,17 @@
     margin-top: 2%;
     width: 60%;
     height: 80%;
-    margin-left:20%; 
+    margin-left:20%;
     margin-right:20%;
 }
-  
+
 .rules-form {
     min-width: 150px;
     max-width: 500px;
     width: 100%;
     align-self: center;
 }
-  
+
 .rules-full-width {
     width: 100%;
 }
@@ -27,4 +27,19 @@ td {
 
 .margin-all {
     margin: 10px;
+}
+
+#submitButton {
+  display: none ;
+}
+
+#nextButton {
+  display: inline;
+
+}
+.invisible{
+  display: block;
+  visibility: hidden;
+  height: 0;
+  width: 0;
 }
