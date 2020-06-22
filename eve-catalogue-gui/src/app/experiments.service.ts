@@ -52,14 +52,14 @@ export class ExperimentsService {
   postExperiment(expRequest: Object, redirection: string): Observable<String> {
     return this.http.post(this.baseUrl + this.experimentInfoUrl, expRequest, this.httpOptions)
       .pipe(
-        tap((experimentId: String) => 
-        {
+        tap((experimentId: String) => console.log(`created Experiment w/ id=${experimentId} - SUCCESS`)),
+        /*{
           this.authService.log(`created Experiment w/ id=${experimentId}`, 'SUCCESS', false);
           this.router.navigate([redirection]).then(() => {
             window.location.reload();
           });
         }
-        ),
+        ),*/
         catchError(this.authService.handleError<String>('postExperiment'))
       );
   }

@@ -142,12 +142,15 @@ export class DescriptorsESchedulerComponent implements OnInit {
     console.log(JSON.stringify(scheduleExperimentRequest, null, 4));
 
     this.experimentService.postExperiment(scheduleExperimentRequest, '/experiments')
-          .subscribe(experimentId => {
-            console.log("Experiment with id " + experimentId)
-            if (experimentId != null) {
-              this.router.navigate(['/experiments']);
-            }
+      .subscribe(experimentId => {
+        console.log("Experiment with id " + experimentId)
+        if (experimentId != null) {
+          this.router.navigate(['/experiments']).then(() => {
+            console.log("Redirected to exps table");
+            window.location.reload();
           });
-   }
+        }
+      });
+    }
   }
 }
