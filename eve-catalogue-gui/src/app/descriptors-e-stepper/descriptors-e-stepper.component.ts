@@ -182,8 +182,10 @@ export class DescriptorsEStepperComponent implements OnInit {
 
     if (this.expBlueprint['kpis'] !== undefined && this.expBlueprint['kpis'] !== []) {
       for (var j = 0; j < this.expBlueprint['kpis'].length; j++) {
-        onBoardExpRequest['kpiThresholds'][this.expBlueprint['kpis'][j]['kpiId']] =
-          this.document.getElementById('metric_' + this.expBlueprint['kpis'][j]['kpiId']).value;
+        var expb_kpiId = {};
+        expb_kpiId['lowerBound'] = this.document.getElementById('metric_' + this.expBlueprint['kpis'][j]['kpiId'] + 'lowerBound').value;
+        expb_kpiId['upperBound'] = this.document.getElementById('metric_' + this.expBlueprint['kpis'][j]['kpiId'] + 'upperBound').value;
+        onBoardExpRequest['kpiThresholds'][this.expBlueprint['kpis'][j]['kpiId']] = expb_kpiId;
       }
     }
 
