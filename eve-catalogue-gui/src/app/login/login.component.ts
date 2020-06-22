@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.getRoles();
     this.loginFormGroup = this._formBuilder.group({
-      username: ['', Validators.email],
+      username: ['',  [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
     this.registrationFormGroup = this._formBuilder.group({
@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
+
   login() {
     //this.router.navigate(['/portal_home'])
     var loginInfo = {};
@@ -46,7 +47,7 @@ export class LoginComponent implements OnInit {
     var email = this.loginFormGroup.get('username').value;
     var password = this.loginFormGroup.get('password').value;
 
-    if (email && password) {
+    if (! this.loginFormGroup.get('username').hasError('email') && email && password) {
       loginInfo['email'] = email;
       loginInfo['password'] = password;
       this.authService.login(loginInfo, '/portal_home').subscribe(tokenInfo => {
