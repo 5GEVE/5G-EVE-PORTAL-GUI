@@ -121,19 +121,24 @@
         </form>
     </mat-step>
     <mat-step [stepControl]="thirdFormGroup">
-        <form [formGroup]="thirdFormGroup" class="rules-form">
-            <ng-template matStepLabel>KPIs</ng-template>
-            <div *ngFor="let metric of expBlueprint['kpis']; let i=index">
-                <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                    <mat-label>{{metric.name}}</mat-label>
-                    <input matInput [id]="'metric_' + metric.kpiId">
-                </mat-form-field>
-            </div>
-            <div class="margin-top">
-                <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-                <button mat-raised-button matStepperNext color="primary" class="margin-all">Next</button>
-            </div>
-        </form>
+      <form [formGroup]="thirdFormGroup" class="rules-form">
+        <ng-template matStepLabel>KPIs</ng-template>
+        <div *ngFor="let metric of expBlueprint['kpis']; let i=index">
+          <mat-label>{{metric.name}}</mat-label>
+            <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                <mat-label>{{metric.name}}: lowerBound</mat-label>
+                <input matInput [id]="'metric_' + metric.kpiId + 'lowerBound'">
+            </mat-form-field>
+            <mat-form-field appearance="outline" color=primary class="rules-full-width">
+              <mat-label>{{metric.name}}: upperBound</mat-label>
+              <input matInput [id]="'metric_' + metric.kpiId + 'upperBound'">
+          </mat-form-field>
+      </div>
+        <div class="margin-top">
+            <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
+            <button mat-raised-button matStepperNext color="primary" class="margin-all">Next</button>
+        </div>
+    </form>
     </mat-step>
     <mat-step [stepControl]="fourthFormGroup">
         <form [formGroup]="fourthFormGroup" class="rules-form">

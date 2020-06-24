@@ -9,6 +9,9 @@ import { TcBlueprintInfo } from '../blueprints-tc/tc-blueprint-info';
 import { BlueprintsExpService } from '../../blueprints-exp.service';
 import { MatStepper } from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { FormulaCheckService} from '../../formula-check.service';
+import { FormulaCheckInfo}  from '../../formula-check-info';
+
 import { every } from 'rxjs/operators';
 
 export interface Site {
@@ -47,7 +50,8 @@ export class BlueprintsEStepperComponent implements OnInit {
   isLinear = true;
   currentStep = 0;
 
-
+  invalidFormula: boolean[] = [];
+  isRegularExpression = true;
   selectedSite: string;
   selectedVsb: string;
   deploymentType: string;
@@ -127,7 +131,8 @@ export class BlueprintsEStepperComponent implements OnInit {
     private blueprintsVsService: BlueprintsVsService,
     private blueprintsCtxService: BlueprintsEcService,
     private blueprintsTcService: BlueprintsTcService,
-    private blueprintsExpService: BlueprintsExpService
+    private blueprintsExpService: BlueprintsExpService,
+    private formulaCheckService: FormulaCheckService
     ) {
   }
 
@@ -169,6 +174,30 @@ export class BlueprintsEStepperComponent implements OnInit {
     });
   }
 
+
+  validateFormula(event: any, index){
+    this.invalidFormula[index] = false;
+    // console.log(value.target.value );
+    if (event.target.value === undefined || event.target.value === '') {
+      this.invalidFormula[index] = false;
+    } else {
+      this.formulaCheckService.validateFormula(event.target.value).subscribe((formulaCheckInfo: FormulaCheckInfo) => {
+        if (!formulaCheckInfo.formula) {
+           this.invalidFormula[index] = true;
+        } else {
+          this.invalidFormula[index] = false;
+        }
+        this.isRegularExpression = this.invalidFormula.every(function (e) {
+          return e === false;
+        });
+      });
+    }
+
+  }
+
+  showErrorMessage(index){
+    return this.invalidFormula[index];
+  }
 
   createItem(): FormGroup {
     return this._formBuilder.group({

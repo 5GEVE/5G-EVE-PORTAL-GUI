@@ -269,8 +269,10 @@
                         <tr>
                             <td>
                                 <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                    <input matInput placeholder="Formula" formControlName="formula">
+                                    <input matInput placeholder="Formula" (change)="validateFormula($event, i)" formControlName="formula" >
+
                                 </mat-form-field>
+                                <mat-error *ngIf="showErrorMessage(i);">Please enter a valid formula</mat-error>
                             </td>
                             <td>
                               <mat-form-field appearance="outline" color=primary class="data-full-width">
@@ -315,8 +317,8 @@
 
                           <td>
                             <mat-form-field appearance="outline" color=primary class="data-full-width">
-                                <textarea matInput placeholder="Metric Ids (comma separated)" formControlName="metricIds"></textarea>
-                            </mat-form-field>
+                              <textarea matInput placeholder="Metric Ids (comma separated)"  formControlName="metricIds"></textarea>
+                              </mat-form-field>
                         </td>
 
                         </tr>
@@ -349,7 +351,7 @@
             <div class="margin-top">
                 <button mat-raised-button id="staticTypeBack" (click) = "goToStepIndex(2);" color="primary" class="margin-all">Back</button>
                 <button mat-raised-button id="onDemandTypeBack" matStepperPrevious color="primary" class="margin-all">Back</button>
-                <button mat-raised-button matStepperNext color="primary" class="margin-all" >Next</button>
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="!isRegularExpression">Next</button>
             </div>
         </form>
     </mat-step>
