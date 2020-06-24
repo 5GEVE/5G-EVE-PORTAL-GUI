@@ -1,11 +1,11 @@
 <app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
-<div class="grid-container">
+<div class="grid-container" style="background: transparent; padding: 30px; padding-bottom: 10%;">
   <mat-grid-list cols="2" rowHeight="2:1">
     <mat-grid-tile *ngFor="let card of cards; let i=index" [colspan]="card.cols" [rowspan]="card.rows">
       <mat-card class="grid-card" [matBadge]="counters[i]" matBadgeSize="large" matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="warn">
         <mat-card-header>
           <!--div mat-card-avatar class="header-image"></div-->
-          <mat-card-title >             
+          <mat-card-title >
           </mat-card-title>
           <mat-card-subtitle></mat-card-subtitle>
         </mat-card-header>
@@ -19,7 +19,7 @@
                 <button class="card-actions" mat-button *ngIf="card.readOnly" (click)="goTo(card.path);">
                   <b>{{card.title}}</b><br/>List <mat-icon>view_list</mat-icon>
               </button>
-            </div>       
+            </div>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
