@@ -25,6 +25,7 @@ export interface ViewValue {
 })
 export class DescriptorsEStepperComponent implements OnInit {
 
+  formula = false;
   isLinear = true;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
@@ -143,6 +144,8 @@ export class DescriptorsEStepperComponent implements OnInit {
     }
     this.getVsBlueprint(vsbId);
   }
+
+
 
   getVsBlueprint(vsBlueprintId: string) {
     this.blueprintsVsService.getVsBlueprint(vsBlueprintId).subscribe((vsBlueprintInfo: VsBlueprintInfo) =>

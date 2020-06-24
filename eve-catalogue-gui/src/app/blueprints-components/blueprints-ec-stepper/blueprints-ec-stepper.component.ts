@@ -20,6 +20,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
 
   translationParams: String[] = [];
 
+  formula = false;
   isLinear = false;
   isButtonVisible = false;
   items: FormArray;
@@ -27,7 +28,9 @@ export class BlueprintsEcStepperComponent implements OnInit {
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
 
-  constructor(@Inject(DOCUMENT) document, private _formBuilder: FormBuilder, private blueprintsEcService: BlueprintsEcService) { }
+  constructor(@Inject(DOCUMENT) document,
+  private _formBuilder: FormBuilder,
+  private blueprintsEcService: BlueprintsEcService) { }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
@@ -206,6 +209,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
       }
     }
   }
+
 
   createOnBoardCtxBlueprintRequestWithoutNsd(blueprints: File[]) {
       var onBoardCtxRequest = JSON.parse('{}');
