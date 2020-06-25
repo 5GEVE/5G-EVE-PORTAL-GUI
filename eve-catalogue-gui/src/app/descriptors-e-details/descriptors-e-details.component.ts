@@ -29,6 +29,7 @@ export class DescriptorsEDetailsComponent implements OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['key', 'value'];
 
+
   constructor(
     private  blueprintsExpService: BlueprintsExpService,
     private  descriptorsExpService: DescriptorsExpService,
@@ -121,8 +122,10 @@ export class DescriptorsEDetailsComponent implements OnInit {
 
         if (expDescriptorInfo['kpiThresholds']) {
           var kpis = new Map(Object.entries(expDescriptorInfo['kpiThresholds']));
-          kpis.forEach((value: string, key: string) => {
-            values.push(key + ": " + value)
+          kpis.forEach((value: Object, key: string) => {
+            values.push(key + ": ");
+            values.push(" - Lower bound limit: " + value['lowerBound']);
+            values.push(" - Upper bound limit: " + value['upperBound']);
           });
           this.tableData.push({key: "KPIs Thresholds", value: values});
         }

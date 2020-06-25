@@ -35,7 +35,7 @@ export class ExperimentsDetailsComponent implements OnInit {
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['key', 'value'];
-  executionsColumns = ['id', 'state', 'reportUrl', 'tcr'];
+  executionsColumns = ['name', 'id', 'state', 'reportUrl', 'tcr'];
 
   constructor(private experimentsService: ExperimentsService, private  descriptorsExpService: DescriptorsExpService) { }
 
@@ -56,6 +56,7 @@ export class ExperimentsDetailsComponent implements OnInit {
         }
       }
       this.tableData.push({key: "Name", value: [this.experiment.name]});
+      this.tableData.push({key: "Id", value: [this.experiment.experimentId]});
       this.tableData.push({key: "Status", value: [this.experiment.status]});
 
       for(var i = 0; i < expDescriptorInfo.length; i++){
@@ -63,23 +64,23 @@ export class ExperimentsDetailsComponent implements OnInit {
           this.tableData.push({key: "Experiment Descriptor", value: [expDescriptorInfo[i]['name']]});
         }
       }
-
+      console.log(this.experiment.timeslot.startTime);
       this.tableData.push({key: "Target Sites", value: this.experiment.targetSites});
       this.tableData.push({key: "Target Use Case", value: [this.experiment.useCase]});
-      //this.tableData.push({key: "Id", value: [this.experiment.experimentId]});
       if (this.getRole().indexOf('SITE_MANAGER') >= 0) {
         if(this.experiment.tenantId != null){this.tableData.push({key: "Tenant Id", value: [this.experiment.tenantId]});}
         if(this.experiment.lcTicketId != null){this.tableData.push({key: "Ticket Id", value: [this.experiment.lcTicketId]});}
         if(this.experiment.openTicketIds != null && this.experiment.openTicketIds.length > 0){this.tableData.push({key: "Open Ticket Ids", value: this.experiment.openTicketIds});}
       }
-      var startDate = new Date(0);
-      startDate.setUTCSeconds(parseInt(this.experiment.timeslot.startTime));
-      var stopDate = new Date(0);
-      stopDate.setUTCSeconds(parseInt(this.experiment.timeslot.stopTime));
+      var startDate = new Date(this.experiment.timeslot.startTime);
+      //console.log(startDate.getUTCDate());
+      //startDate.setUTCSeconds(parseInt(this.experiment.timeslot.startTime));
+      //console.log(startDate);
+      var stopDate = new Date(this.experiment.timeslot.stopTime);
+      //stopDate.setUTCSeconds(parseInt(this.experiment.timeslot.stopTime));
       this.tableData.push({key: "Time Slot", value: ['Start Date: ' + startDate.toLocaleString(), 'Stop Date: ' + stopDate.toLocaleString()]});
       //this.tableData.push({key: "NFV Instance Id", value: [this.experiment.nfvNsInstanceId]});
 
-      console.log(this.experiment);
       var values = [];
       if(this.experiment['sapInfo'] !== undefined){
         for (var i = 0 ; i < this.experiment['sapInfo'].length; i++){
