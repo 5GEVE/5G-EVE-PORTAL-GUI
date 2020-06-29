@@ -22,6 +22,9 @@ export class BlueprintsVsComponent implements OnInit {
   vsBlueprintInfos: VsBlueprintInfo[] = [];
   idToVsdIds: Map<string, Map<string, string>> = new Map();
 
+
+  selectedIndex = 0;
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
 //  displayedColumns = ['id', 'name', 'version', 'description', 'conf_params', 'vsds', 'buttons'];
   displayedColumns = ['id', 'name', 'version', 'description', 'conf_params', 'buttons'];
@@ -71,7 +74,9 @@ export class BlueprintsVsComponent implements OnInit {
 
   deleteVsBlueprint(vsBlueprintId: string) {
     //console.log(vsBlueprintId);
-    this.blueprintsVsService.deleteVsBlueprint(vsBlueprintId).subscribe();
+    return this.blueprintsVsService.deleteVsBlueprint(vsBlueprintId).subscribe(
+      () => { this.getVsBlueprints(); }
+    );
   }
 
   viewVsBlueprintGraph(vsBlueprintId: string) {

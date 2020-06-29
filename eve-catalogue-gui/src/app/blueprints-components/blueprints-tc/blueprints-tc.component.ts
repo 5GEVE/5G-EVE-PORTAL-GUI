@@ -27,6 +27,8 @@ export class BlueprintsTcComponent implements OnInit {
   tcFormGroup: FormGroup;
   uploadFormGroup: FormGroup;
 
+  selectedIndex = 0;
+
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name', 'version', 'description', /*'script',*/ 'user_params', 'infra_params',/* 'tcds',*/ 'buttons'];
 
@@ -122,8 +124,10 @@ export class BlueprintsTcComponent implements OnInit {
   }
 
   deleteTcBlueprint(tcBlueprintId: string) {
-    //console.log(tcBlueprintId);
-    this.blueprintsTcService.deleteTcBlueprint(tcBlueprintId).subscribe();
+    return this.blueprintsTcService.deleteTcBlueprint(tcBlueprintId).subscribe(
+      () => { this.getTcBlueprints(); }
+    );
+
   }
 
 
@@ -154,7 +158,8 @@ export class BlueprintsTcComponent implements OnInit {
         var onBoardTcRequest = JSON.parse(fileContents[0]);
 
         this.blueprintsTcService.postTcBlueprint(onBoardTcRequest)
-        .subscribe(tcBlueprintId => console.log("TC Blueprint with id " + tcBlueprintId));
+        .subscribe(tcBlueprintId => { console.log("TC Blueprint with id " + tcBlueprintId); this.getTcBlueprints(); }
+        );
       });
     }
   }
@@ -209,7 +214,7 @@ export class BlueprintsTcComponent implements OnInit {
       console.log("OnboardTcRequest:" + JSON.stringify(onBoardTcRequest, null, 4));
 
       this.blueprintsTcService.postTcBlueprint(onBoardTcRequest)
-      .subscribe(tcBlueprintId => console.log("TC Blueprint with id " + tcBlueprintId));
+      .subscribe(() => { this.tcFormGroup.reset(); this.selectedIndex = 0; this.getTcBlueprints(); });
     }
 
   }

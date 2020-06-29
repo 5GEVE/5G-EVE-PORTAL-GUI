@@ -11,6 +11,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { FormulaCheckService} from '../../formula-check.service';
 import { FormulaCheckInfo}  from '../../formula-check-info';
+import { BlueprintsEComponent} from '../blueprints-e/blueprints-e.component';
 
 import { every } from 'rxjs/operators';
 
@@ -132,7 +133,8 @@ export class BlueprintsEStepperComponent implements OnInit {
     private blueprintsCtxService: BlueprintsEcService,
     private blueprintsTcService: BlueprintsTcService,
     private blueprintsExpService: BlueprintsExpService,
-    private formulaCheckService: FormulaCheckService
+    private formulaCheckService: FormulaCheckService,
+    private blueprintsEComponent: BlueprintsEComponent
     ) {
   }
 
@@ -590,8 +592,19 @@ export class BlueprintsEStepperComponent implements OnInit {
 
         //console.log('onBoardVsRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
 
-        this.blueprintsExpService.postExpBlueprint(onBoardExpRequest)
-        .subscribe(expBlueprintId => console.log("EXP Blueprint with id " + expBlueprintId));
+      this.blueprintsExpService.postExpBlueprint(onBoardExpRequest)
+        .subscribe(expBlueprintId => {
+          console.log("EXP Blueprint with id " + expBlueprintId);
+          this.blueprintsEComponent.selectedIndex = 0;
+          this.zeroFormGroup.reset();
+          this.firstFormGroup.reset();
+          this.secondFormGroup.reset();
+          this.thirdFormGroup.reset();
+          this.fourthFormGroup.reset();
+          this.fifthFormGroup.reset();
+          this.sixthFormGroup.reset();
+          this.blueprintsEComponent.getEBlueprints();
+      });
     });
   }
 }

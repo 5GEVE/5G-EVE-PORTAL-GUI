@@ -43,7 +43,7 @@ export class BlueprintsExpService {
   postExpBlueprint(onBoardExpRequest: Object): Observable<String> {
     return this.http.post(this.baseUrl + this.expBlueprintInfoUrl, onBoardExpRequest, this.httpOptions)
       .pipe(
-        tap((blueprintId: String) => this.authService.log(`added Exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
+        tap((blueprintId: String) => this.authService.log(`added Exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', false)),
         catchError(this.authService.handleError<String>('postExpBlueprint'))
       );
   }
@@ -51,7 +51,7 @@ export class BlueprintsExpService {
   deleteExpBlueprint(blueprintId: string): Observable<String> {
     return this.http.delete(this.baseUrl + this.expBlueprintInfoUrl + '/' + blueprintId, this.httpOptions)
     .pipe(
-      tap((result: String) => this.authService.log(`deleted Exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
+      tap((result: String) => this.authService.log(`deleted Exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', false)),
       catchError(this.authService.handleError<String>('deleteExpBlueprint'))
     );
   }

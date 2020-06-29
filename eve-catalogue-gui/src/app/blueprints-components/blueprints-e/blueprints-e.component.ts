@@ -20,12 +20,13 @@ export class BlueprintsEComponent implements /*AfterViewInit,*/ OnInit {
   dataSource: BlueprintsEDataSource;
   expBlueprintInfos: ExpBlueprintInfo[] = [];
   idToVsbId: Map<string, Map<string, string>> = new Map();
-  
+  selectedIndex = 0;
+
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['expBlueprintId', 'name', 'expBlueprintVersion', 'vsBlueprintId', 'sites', 'buttons'];
 
-  constructor(private blueprintsExpService: BlueprintsExpService, 
+  constructor(private blueprintsExpService: BlueprintsExpService,
     private blueprintsVsService: BlueprintsVsService,
     private router: Router) { }
 
@@ -35,7 +36,7 @@ export class BlueprintsEComponent implements /*AfterViewInit,*/ OnInit {
   }
 
   getEBlueprints(): void {
-    this.blueprintsExpService.getExpBlueprints().subscribe((expBlueprintInfos: ExpBlueprintInfo[]) => 
+    this.blueprintsExpService.getExpBlueprints().subscribe((expBlueprintInfos: ExpBlueprintInfo[]) =>
       {
         //console.log(expBlueprintInfos);
         this.expBlueprintInfos = expBlueprintInfos;
@@ -67,7 +68,9 @@ export class BlueprintsEComponent implements /*AfterViewInit,*/ OnInit {
 
   deleteEBlueprint(expBlueprintId: string) {
     //console.log(expBlueprintId);
-    this.blueprintsExpService.deleteExpBlueprint(expBlueprintId).subscribe();
+    this.blueprintsExpService.deleteExpBlueprint(expBlueprintId).subscribe(
+      () => { this.getEBlueprints(); }
+    );
   }
 
   viewEBlueprintGraph(expBlueprintId: string) {

@@ -9,6 +9,7 @@ import { CtxBlueprintInfo } from './ctx-blueprint-info';
 import { EcbDetailsService } from '../../ecb-details.service';
 import { DescriptorsEcService } from '../../descriptors-ec.service';
 
+
 @Component({
   selector: 'app-blueprints-ec',
   templateUrl: './blueprints-ec.component.html',
@@ -25,6 +26,8 @@ export class BlueprintsEcComponent implements OnInit {
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
 //  displayedColumns = ['id', 'name', 'version', 'description', 'conf_params', 'ctxds', 'buttons'];
   displayedColumns = ['id', 'name', 'version', 'description', 'conf_params', 'buttons'];
+
+  selectedIndex = 0;
 
   constructor(private blueprintsEcService: BlueprintsEcService,
     private ecbDetailsService: EcbDetailsService,
@@ -71,8 +74,13 @@ export class BlueprintsEcComponent implements OnInit {
 
   deleteEcBlueprint(ctxBlueprintId: string) {
     //console.log(ctxBlueprintId);
-    this.blueprintsEcService.deleteCtxBlueprint(ctxBlueprintId).subscribe();
+    this.blueprintsEcService.deleteCtxBlueprint(ctxBlueprintId).subscribe(
+      () => {this.getEcBlueprints();}
+    );
   }
+
+
+
 
   viewEcBlueprintGraph(ctxBlueprintId: string) {
     //console.log(ctxBlueprintId);

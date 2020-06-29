@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { BlueprintsVsService } from '../../blueprints-vs.service';
+import { BlueprintsVsComponent} from '../blueprints-vs/blueprints-vs.component';
 
 @Component({
   selector: 'app-blueprints-vs-stepper',
@@ -26,7 +27,10 @@ export class BlueprintsVsStepperComponent implements OnInit {
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
 
-  constructor(@Inject(DOCUMENT) document, private _formBuilder: FormBuilder, private blueprintsVsService: BlueprintsVsService) {
+  constructor(@Inject(DOCUMENT) document,
+    private _formBuilder: FormBuilder,
+    private blueprintsVsService: BlueprintsVsService,
+    private blueprintsVsComponent: BlueprintsVsComponent) {
   }
 
   ngOnInit() {
@@ -168,7 +172,11 @@ export class BlueprintsVsStepperComponent implements OnInit {
 
 
           this.blueprintsVsService.postVsBlueprint(onBoardVsRequest)
-          .subscribe(vsBlueprintId => console.log("VS Blueprint with id " + vsBlueprintId));
+          .subscribe(vsBlueprintId => {
+            console.log("VS Blueprint with id " + vsBlueprintId);
+            this.blueprintsVsComponent.selectedIndex = 0;
+            this.blueprintsVsComponent.getVsBlueprints();
+          });
       });
     }
   }
@@ -242,7 +250,11 @@ export class BlueprintsVsStepperComponent implements OnInit {
           //console.log('onBoardVsRequest: ' + JSON.stringify(onBoardVsRequest, null, 4));
 
           this.blueprintsVsService.postVsBlueprint(onBoardVsRequest)
-          .subscribe(vsBlueprintId => console.log("VS Blueprint with id " + vsBlueprintId));
+          .subscribe(vsBlueprintId => {
+            console.log("VS Blueprint with id " + vsBlueprintId);
+            this.blueprintsVsComponent.selectedIndex = 0;
+            this.blueprintsVsComponent.getVsBlueprints();
+          });
       });
     }
   }

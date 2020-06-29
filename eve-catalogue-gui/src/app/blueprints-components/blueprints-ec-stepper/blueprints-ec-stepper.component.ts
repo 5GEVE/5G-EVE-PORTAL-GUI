@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { BlueprintsEcService } from '../../blueprints-ec.service';
+import { BlueprintsEcComponent} from '../blueprints-ec/blueprints-ec.component';
 
 @Component({
   selector: 'app-blueprints-ec-stepper',
@@ -17,7 +18,6 @@ export class BlueprintsEcStepperComponent implements OnInit {
   dfs: String[] = [];
 
   instLevels: String[] = [];
-
   translationParams: String[] = [];
 
   formula = false;
@@ -30,7 +30,8 @@ export class BlueprintsEcStepperComponent implements OnInit {
 
   constructor(@Inject(DOCUMENT) document,
   private _formBuilder: FormBuilder,
-  private blueprintsEcService: BlueprintsEcService) { }
+  private blueprintsEcService: BlueprintsEcService,
+  private blueprintEcComponent: BlueprintsEcComponent) { }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
@@ -120,7 +121,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
     Promise.all(promises).then(fileContents => {
         this.nsdObj = JSON.parse(fileContents[0]);
 
-        console.log(JSON.stringify(this.nsdObj, null, 4));
+        //console.log(JSON.stringify(this.nsdObj, null, 4));
 
         this.thirdFormGroup.get('nsdId').setValue(this.nsdObj['nsdIdentifier']);
         this.thirdFormGroup.get('nsdVersion').setValue(this.nsdObj['version']);
@@ -173,7 +174,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
               onBoardCtxRequest['nsds'].push(JSON.parse(fileContents[i]));
             }
 
-            if (this.translationParams === []){
+            if (this.translationParams !== undefined && this.translationParams !== []){
               var translationRule = JSON.parse('{}');
 
               var blueprintId = onBoardCtxRequest.ctxBlueprint.blueprintId;
@@ -203,8 +204,15 @@ export class BlueprintsEcStepperComponent implements OnInit {
             }
 
 
-            this.blueprintsEcService.postCtxBlueprint(onBoardCtxRequest)
-            .subscribe(ctxBlueprintId => console.log("Ctx Blueprint with id " + ctxBlueprintId));
+          this.blueprintsEcService.postCtxBlueprint(onBoardCtxRequest)
+            .subscribe(ctxBlueprintId => {
+              console.log('Ctx Blueprint with id ' + ctxBlueprintId);
+              this.blueprintEcComponent.selectedIndex = 0;
+              this.firstFormGroup.reset();
+              this.secondFormGroup.reset();
+              this.thirdFormGroup.reset();
+              this.blueprintEcComponent.getEcBlueprints();
+            });
         });
       }
     }
@@ -231,9 +239,18 @@ export class BlueprintsEcStepperComponent implements OnInit {
             var blueprintId = onBoardCtxRequest.ctxBlueprint.blueprintId;
             console.log('onBoardCtxRequest: ' + JSON.stringify(onBoardCtxRequest, null, 4));
 
-            this.blueprintsEcService.postCtxBlueprint(onBoardCtxRequest)
-            .subscribe(ctxBlueprintId => console.log("Ctx Blueprint with id " + ctxBlueprintId));
-        });
+
+          this.blueprintsEcService.postCtxBlueprint(onBoardCtxRequest)
+            .subscribe(ctxBlueprintId => {
+              console.log('Ctx Blueprint with id ' + ctxBlueprintId);
+              this.blueprintEcComponent.selectedIndex = 0;
+              this.firstFormGroup.reset();
+              this.secondFormGroup.reset();
+              this.thirdFormGroup.reset();
+              this.blueprintEcComponent.getEcBlueprints();
+            });
+
+      });
       }
   }
 

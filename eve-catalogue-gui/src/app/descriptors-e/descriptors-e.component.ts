@@ -22,11 +22,12 @@ export class DescriptorsEComponent implements OnInit {
   tableData: ExpDescriptorInfo[] = [];
   idToExpbId: Map<string, Map<string, string>> = new Map();
   idToVsdId: Map<string, Map<string, string>> = new Map();
+  selectedIndex = 0;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name', 'expElueprintId', 'vsDescriptorId', 'kpi', 'buttons'];
 
-  constructor(private descriptorsExpService: DescriptorsExpService, 
+  constructor(private descriptorsExpService: DescriptorsExpService,
     private blueprintsExpService: BlueprintsExpService,
     private descriptorsVsService: DescriptorsVsService,
     private router: Router) { }
@@ -37,7 +38,7 @@ export class DescriptorsEComponent implements OnInit {
   }
 
   getExpDescriptors() {
-    this.descriptorsExpService.getExpDescriptors().subscribe((expDescriptorsInfos: ExpDescriptorInfo[]) => 
+    this.descriptorsExpService.getExpDescriptors().subscribe((expDescriptorsInfos: ExpDescriptorInfo[]) =>
       {
         //console.log(expDescriptorsInfos);
         this.tableData = expDescriptorsInfos;
@@ -47,7 +48,7 @@ export class DescriptorsEComponent implements OnInit {
           this.idToVsdId.set(expDescriptorsInfos[i]['expDescriptorId'], new Map());
           this.getExpBlueprint(expDescriptorsInfos[i]['expDescriptorId'], expDescriptorsInfos[i]['expBlueprintId']);
           this.getVsDescriptor(expDescriptorsInfos[i]['expDescriptorId'], expDescriptorsInfos[i]['vsDescriptorId']);
-        } 
+        }
 
         this.dataSource = new DescriptorsEDataSource(this.tableData);
         this.dataSource.sort = this.sort;
