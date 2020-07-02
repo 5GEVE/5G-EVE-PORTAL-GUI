@@ -85,7 +85,7 @@ export class ExperimentsService {
   changeExperimentStatus(changeStatusRequest: Object): Observable<String> {
     return this.http.put(this.baseUrl + this.experimentInfoUrl + '/' + changeStatusRequest['experimentId'] + '/status', changeStatusRequest, this.httpOptions)
     .pipe(
-      tap((result: String) => this.authService.log(`changed status for Experiment w/ id=${changeStatusRequest['experimentId']}`, 'SUCCESS', true)),
+      tap((result: String) => this.authService.log(`changed status for Experiment w/ id=${changeStatusRequest['experimentId']}`, 'SUCCESS', false)),
       catchError(this.authService.handleError<String>('changeExperimentStatus'))
     )
   }
@@ -93,7 +93,7 @@ export class ExperimentsService {
   executeExperimentAction(actionRequest: Object, action: string): Observable<String> {
     return this.http.post(this.baseUrl + this.experimentInfoUrl + '/' + actionRequest['experimentId'] + '/action/' + action, actionRequest, this.httpOptions)
     .pipe(
-      tap((result: String) => this.authService.log(`executed action ${action} on Experiment w/ id=${actionRequest['experimentId']}`, 'SUCCESS', true)),
+      tap((result: String) => this.authService.log(`executed action ${action} on Experiment w/ id=${actionRequest['experimentId']}`, 'SUCCESS', false)),
       catchError(this.authService.handleError<String>('executeExperimentAction'))
     )
   }
