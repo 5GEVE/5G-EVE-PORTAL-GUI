@@ -157,7 +157,9 @@ export class ExperimentsComponent implements OnInit {
   }
 
   deleteExperiment(expId: string) {
-    this.experimentsService.deleteExperiment(expId).subscribe();
+    this.experimentsService.deleteExperiment(expId).subscribe(
+      () => {this.getExperiments();}
+    );
   }
 
   onSiteSelected(event: any) {
@@ -188,7 +190,9 @@ export class ExperimentsComponent implements OnInit {
 
         console.log('changeStatusRequest: ' + JSON.stringify(changeStatusRequest, null, 4));
 
-        this.experimentsService.changeExperimentStatus(changeStatusRequest).subscribe();
+        this.experimentsService.changeExperimentStatus(changeStatusRequest).subscribe(
+          () => {this.getExperiments();}
+        );
       }
     });
   }
@@ -207,7 +211,9 @@ export class ExperimentsComponent implements OnInit {
         actionRequest['executionName'] = formContent.get('executionName').value;
         console.log('changeStatusRequest: ' + JSON.stringify(actionRequest, null, 4));
 
-        this.experimentsService.executeExperimentAction(actionRequest, formContent.get('selectedAction').value).subscribe();
+        this.experimentsService.executeExperimentAction(actionRequest, formContent.get('selectedAction').value).subscribe(
+          () => {this.getExperiments();}
+        );
       }
     });
   }

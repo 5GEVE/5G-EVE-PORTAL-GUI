@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 ​
 export const environment = {
-    production: false,
+  production: false,
     portalBaseUrl: 'https://portal.5g-eve.eu/portal/catalogue/',
     lcmBaseUrl: 'https://portal.5g-eve.eu/portal/elm/',
     rbacBaseUrl: 'https://portal.5g-eve.eu/portal/rbac/',
@@ -13,6 +13,7 @@ export const environment = {
     apiUrl: 'https://portal.5g-eve.eu/',
     dcsBaseUrl: 'https://portal.5g-eve.eu/portal/dcs/dashboard/',
     fsBaseUrl: 'https://portal.5g-eve.eu/portal/fs/',
+    formulaCheckUrl: 'https://portal.5g-eve.eu/portal/formula/check',
     backServerUrl: ''
 };
 ​

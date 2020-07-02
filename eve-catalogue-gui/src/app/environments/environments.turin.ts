@@ -13,6 +13,7 @@ export const environment = {
   ibnBaseUrl: 'http://10.50.80.36:8080/Intent/IntentPage.jsp',
   apiUrl: 'http://10.50.80.18',
     fsBaseUrl: 'http://10.50.80.13:9191/portal/fs/',
+    formulaCheckUrl: 'http://10.50.80.18:8989/check',
   backServerUrl: ''
 };
 ​

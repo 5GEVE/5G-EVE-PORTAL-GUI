@@ -139,14 +139,12 @@ export class DescriptorsESchedulerComponent implements OnInit {
     scheduleExperimentRequest['targetSites'] = [targetSite];
     scheduleExperimentRequest['useCase'] = useCase;
 
-    console.log(JSON.stringify(scheduleExperimentRequest, null, 4));
+    //console.log(JSON.stringify(scheduleExperimentRequest, null, 4));
 
     this.experimentService.postExperiment(scheduleExperimentRequest, '/experiments')
           .subscribe(experimentId => {
-            console.log("Experiment with id " + experimentId)
-            if (experimentId != null) {
-              this.router.navigate(['/experiments']);
-            }
+            console.log('Experiment created w/ id = ' + experimentId)
+            this.router.navigate(['/experiments']);
           });
    }
   }

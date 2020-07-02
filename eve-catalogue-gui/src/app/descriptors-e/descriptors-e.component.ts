@@ -87,7 +87,9 @@ export class DescriptorsEComponent implements OnInit {
 
   deleteExpDescriptor(expDescriptorId: string) {
     //console.log(expDescriptorId);
-    this.descriptorsExpService.deleteExpDescriptor(expDescriptorId).subscribe();
+    this.descriptorsExpService.deleteExpDescriptor(expDescriptorId).subscribe(
+      () => { this.getExpDescriptors(); }
+    );
   }
 
   viewExpDescriptor(expDescriptorId) {

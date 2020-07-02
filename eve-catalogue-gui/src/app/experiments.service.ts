@@ -22,6 +22,16 @@ export class ExperimentsService {
       })
   };
 
+
+  httpOptionsWithAccept:Object = {
+    headers: new HttpHeaders(
+      { 'Content-Type': 'application/json',
+        Accept: 'text/plain;charset=ISO-8859-1',
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }),
+      responseType: 'text'
+  };
+
   constructor(private http: HttpClient,
     private authService: AuthService,
     private router: Router) { }
@@ -49,25 +59,25 @@ export class ExperimentsService {
       );
   }
 
-  postExperiment(expRequest: Object, redirection: string): Observable<String> {
-    return this.http.post(this.baseUrl + this.experimentInfoUrl, expRequest, this.httpOptions)
+  postExperiment(expRequest: object, redirection: string): Observable<any> {
+    return this.http.post(this.baseUrl + this.experimentInfoUrl, expRequest,  this.httpOptionsWithAccept)
       .pipe(
-        tap((experimentId: String) => 
-        {
-          this.authService.log(`created Experiment w/ id=${experimentId}`, 'SUCCESS', false);
-          this.router.navigate([redirection]).then(() => {
-            window.location.reload();
-          });
+        tap(
+          experimentId => {
+            this.authService.log(`created Experiment w/ id=${experimentId}`, 'SUCCESS', false);
+            this.router.navigate([redirection]).then(() => {
+              window.location.reload();
+            });
         }
         ),
-        catchError(this.authService.handleError<String>('postExperiment'))
+        catchError(this.authService.handleError<string>('postExperiment'))
       );
   }
 
   deleteExperiment(experimentId: string): Observable<String> {
     return this.http.delete(this.baseUrl + this.experimentInfoUrl + '/' + experimentId, this.httpOptions)
     .pipe(
-      tap((result: String) => this.authService.log(`deleted Experiment w/ id=${experimentId}`, 'SUCCESS', true)),
+      tap((result: String) => this.authService.log(`deleted Experiment w/ id=${experimentId}`, 'SUCCESS', false)),
       catchError(this.authService.handleError<String>('deleteExperiment'))
     );
   }

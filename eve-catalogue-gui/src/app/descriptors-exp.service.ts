@@ -21,7 +21,7 @@ export class DescriptorsExpService {
       })
   };
 
-  constructor(private http: HttpClient, 
+  constructor(private http: HttpClient,
     private authService: AuthService) { }
 
   getExpDescriptors(): Observable<ExpDescriptorInfo[]> {
@@ -51,7 +51,7 @@ export class DescriptorsExpService {
   deleteExpDescriptor(descriptorId: string): Observable<String> {
     return this.http.delete(this.baseUrl + this.expDescriptorInfoUrl + '/' + descriptorId, this.httpOptions)
     .pipe(
-      tap((result: String) => this.authService.log(`deleted Exp Descriptor w/ id=${descriptorId}`, 'SUCCESS', true)),
+      tap((result: String) => this.authService.log(`deleted Exp Descriptor w/ id=${descriptorId}`, 'SUCCESS', false)),
       catchError(this.authService.handleError<String>('deleteExpDescriptor'))
     );
   }
