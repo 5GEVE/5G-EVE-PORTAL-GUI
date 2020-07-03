@@ -207,12 +207,15 @@ export class ExperimentsComponent implements OnInit {
       if (formContent) {
         //console.log('Selected Status: ' + selectedAction);
         var actionRequest = {};
+        var actionRequested = formContent.get('selectedAction').value;
         actionRequest['experimentId'] = expId;
         actionRequest['executionName'] = formContent.get('executionName').value;
         console.log('changeStatusRequest: ' + JSON.stringify(actionRequest, null, 4));
 
         this.experimentsService.executeExperimentAction(actionRequest, formContent.get('selectedAction').value).subscribe(
-          () => {this.getExperiments();}
+          () => {
+            this.getExperiments();
+          }
         );
       }
     });

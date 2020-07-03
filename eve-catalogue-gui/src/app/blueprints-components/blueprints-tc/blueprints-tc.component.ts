@@ -158,7 +158,11 @@ export class BlueprintsTcComponent implements OnInit {
         var onBoardTcRequest = JSON.parse(fileContents[0]);
 
         this.blueprintsTcService.postTcBlueprint(onBoardTcRequest)
-        .subscribe(tcBlueprintId => { console.log("TC Blueprint with id " + tcBlueprintId); this.getTcBlueprints(); }
+        .subscribe(() => {
+          this.tcFormGroup.reset();
+          this.selectedIndex = 0;
+          this.getTcBlueprints();
+        }
         );
       });
     }
@@ -214,7 +218,10 @@ export class BlueprintsTcComponent implements OnInit {
       console.log("OnboardTcRequest:" + JSON.stringify(onBoardTcRequest, null, 4));
 
       this.blueprintsTcService.postTcBlueprint(onBoardTcRequest)
-      .subscribe(() => { this.tcFormGroup.reset(); this.selectedIndex = 0; this.getTcBlueprints(); });
+      .subscribe(() => {
+        this.tcFormGroup.reset();
+        this.selectedIndex = 0;
+        this.getTcBlueprints(); });
     }
 
   }
