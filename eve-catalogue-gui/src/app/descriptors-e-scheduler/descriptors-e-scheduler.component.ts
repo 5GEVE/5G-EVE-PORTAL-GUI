@@ -28,8 +28,15 @@ export class DescriptorsESchedulerComponent implements OnInit {
   expDescriptors: ViewValue[] = [];
   availableSites: string[] = [];
   start_date: string = '';
+  start_time;
+  end_time;
   end_date: string = '';
   use_cases: string[] = [];
+
+  endLowerThenStart = false;
+  endInThePast = false;
+
+  disabled = true;
 
   constructor(private _formBuilder: FormBuilder,
     private router: Router,
@@ -74,30 +81,45 @@ export class DescriptorsESchedulerComponent implements OnInit {
     const data = event;
     const formattedDate = data.getDate() + '-' + (data.getMonth() + 1) + '-' + data.getFullYear();
     this.start_date = formattedDate;
+    this.start_time = data.getTime();
     this.validateDates();
   }
 
   getEndDate(event: any) {
     const data = event;
-    const formattedDate = data.getDate() + '-' + (data.getMonth() + 1) + '-' + data.getFullYear();
-    this.end_date = formattedDate;
+    if (data !== undefined) {
+      const formattedDate = data.getDate() + '-' + (data.getMonth() + 1) + '-' + data.getFullYear();
+      this.end_date = formattedDate;
+      this.end_time = data.getTime();
+    }
     this.validateDates();
   }
 
 
   validateDates(){
-    var date = new Date();
-    var todayDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
-    if ( (this.start_date !== undefined && this.start_date !== '') && (this.end_date !== undefined && this.end_date !== '')){
-      if (this.start_date > this.end_date){
-        alert("An event should start before it ends");
-        this.scheduleFormGroup.get('timeSlotStart').reset();
-        console.log(this.start_date);
-      } else if (todayDate > this.end_date){
-        alert("Ending date cannot be in the past");
-        this.scheduleFormGroup.get('timeSlotEnd').reset();
+    const date = new Date();
+    const todayDate = date.getTime();
+
+
+    if ( this.start_time !== undefined && this.start_time !== ''  && this.end_time !== undefined && this.end_time !== '' ) {
+      if (this.start_time > this.end_time) {
+        this.endLowerThenStart = true;
+      } else if (todayDate > this.end_time) {
+        this.endInThePast = true;
+      } else {
+        this.endInThePast = false;
+        this.endLowerThenStart = false;
       }
+    } else {
+      this.endInThePast = true;
+      this.endLowerThenStart = true;
     }
+    if (this.endInThePast || this.endLowerThenStart){
+      this.disabled = true;
+    } else {
+      this.disabled = false;
+    }
+
   }
 
   onExpDSelected(event: any) {

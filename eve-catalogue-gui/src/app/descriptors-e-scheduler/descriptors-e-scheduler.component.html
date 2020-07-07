@@ -40,24 +40,26 @@
                             <mat-datepicker-toggle matSuffix [for]="start_picker"></mat-datepicker-toggle>
                             <mat-datepicker #start_picker></mat-datepicker>
                         </mat-form-field>
-                    </td>
+                      </td>
                     <td>
                         <mat-form-field appearance="outline" color=primary class="rules-full-width">
                             <input matInput [matDatepicker]="end_picker" (dateChange)="getEndDate($event.value)" placeholder="End date" formControlName="timeSlotEnd" requested>
                             <mat-datepicker-toggle matSuffix [for]="end_picker"></mat-datepicker-toggle>
                             <mat-datepicker #end_picker></mat-datepicker>
                         </mat-form-field>
-                    </td>
+                      </td>
                 </tr>
                 <tr>
                   <td><p class="startingDate"></p></td>
                   <td><p class="endingDate"></p></td>
                 </tr>
             </table>
+            <mat-error *ngIf="endLowerThenStart">End date cannot be before starting date</mat-error>
+            <mat-error *ngIf="endInThePast">End date cannot be in the past</mat-error>
 
 
             <div class="margin-top">
-                <button mat-raised-button color="accent" class="margin-all" (click)="scheduleExperiment();">Submit</button>
+                <button mat-raised-button color="accent" class="margin-all" [(disabled)]="disabled" (click)="scheduleExperiment();">Submit</button>
             </div>
         </form>
     </div>
