@@ -65,9 +65,9 @@ export class ExperimentsService {
         tap(
           experimentId => {
             this.authService.log(`created Experiment w/ id=${experimentId}`, 'SUCCESS', false);
-            this.router.navigate([redirection]).then(() => {
-              window.location.reload();
-            });
+            // this.router.navigate([redirection]).then(() => {
+            //   window.location.reload();
+            // });
         }
         ),
         catchError(this.authService.handleError<string>('postExperiment'))

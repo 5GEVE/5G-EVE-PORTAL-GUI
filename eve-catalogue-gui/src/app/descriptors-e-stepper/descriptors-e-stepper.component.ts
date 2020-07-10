@@ -8,6 +8,7 @@ import { ExpBlueprintInfo } from '../blueprints-components/blueprints-e/exp-blue
 import { VsBlueprint } from '../blueprints-components/blueprints-vs/vs-blueprint';
 import { BlueprintsEcService } from '../blueprints-ec.service';
 import { BlueprintsTcService } from '../blueprints-tc.service';
+import { DescriptorsEComponent } from '../descriptors-e/descriptors-e.component';
 import { CtxBlueprintInfo } from '../blueprints-components/blueprints-ec/ctx-blueprint-info';
 import { TcBlueprintInfo } from '../blueprints-components/blueprints-tc/tc-blueprint-info';
 import { DOCUMENT } from '@angular/common';
@@ -76,7 +77,8 @@ export class DescriptorsEStepperComponent implements OnInit {
     private blueprintsVsService: BlueprintsVsService,
     private blueprintsExpService: BlueprintsExpService,
     private blueprintsCtxService: BlueprintsEcService,
-    private blueprintsTcService: BlueprintsTcService) { }
+    private blueprintsTcService: BlueprintsTcService,
+    private descriptorExperiments: DescriptorsEComponent) { }
 
   ngOnInit() {
     this.getExpBlueprints();
@@ -275,6 +277,11 @@ export class DescriptorsEStepperComponent implements OnInit {
 
     console.log('onBoardExpRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
     this.descriptorsExpService.postExpDescriptor(onBoardExpRequest)
-      .subscribe(expDescriptortId => console.log("Successfully uploaded new Exp Descriptor with id " + expDescriptortId));
+      .subscribe(expDescriptortId => {
+        console.log("Successfully uploaded new Exp Descriptor with id " + expDescriptortId);
+        this.descriptorExperiments.selectedIndex = 0;
+        this.descriptorExperiments.getExpDescriptors();
+
+      });
   }
 }

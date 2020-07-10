@@ -4,6 +4,7 @@ import { ExpBlueprintInfo } from '../blueprints-components/blueprints-e/exp-blue
 import { DescriptorsExpService } from '../descriptors-exp.service';
 import { BlueprintsExpService } from '../blueprints-exp.service';
 import { ExperimentsService } from '../experiments.service';
+//import { ExperimentsComponent } from '../experiments/experiments.component';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthService, UseCases} from '../auth.service';
@@ -165,7 +166,8 @@ export class DescriptorsESchedulerComponent implements OnInit {
 
     this.experimentService.postExperiment(scheduleExperimentRequest, '/experiments')
           .subscribe(experimentId => {
-            console.log('Experiment created w/ id = ' + experimentId)
+            console.log('Experiment created w/ id = ' + experimentId);
+            //this.experiments.getExperiments();
             this.router.navigate(['/experiments']);
           });
    }

@@ -43,7 +43,7 @@ export class DescriptorsExpService {
   postExpDescriptor(onBoardExpRequest: Object): Observable<String> {
     return this.http.post(this.baseUrl + this.expDescriptorInfoUrl, onBoardExpRequest, this.httpOptions)
       .pipe(
-        tap((descriptorId: String) => this.authService.log(`added Exp Descriptor w/ id=${descriptorId}`, 'SUCCESS', true)),
+        tap((descriptorId: String) => this.authService.log(`added Exp Descriptor w/ id=${descriptorId}`, 'SUCCESS', false)),
         catchError(this.authService.handleError<String>('postExpDescriptor'))
       );
   }
