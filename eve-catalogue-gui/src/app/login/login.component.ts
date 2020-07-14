@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,    private usersService: UsersService
     ) { }
 
+  //TODO: The password must be at least 6 characters long.
   ngOnInit() {
     this.getRoles();
     this.loginFormGroup = this._formBuilder.group({
@@ -30,12 +31,12 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required]
     });
     this.registrationFormGroup = this._formBuilder.group({
-      email: ['', Validators.required],
+      email: ['',  [Validators.required, Validators.email]],
       regUsername: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       role: ['', Validators.required],
-      regPassword: ['', Validators.required]
+      regPassword: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -52,9 +53,9 @@ export class LoginComponent implements OnInit {
       loginInfo['password'] = password;
       this.authService.login(loginInfo, '/portal_home').subscribe(tokenInfo => {
 
-        console.log(JSON.stringify(tokenInfo, null, 4));
-        console.log(localStorage.getItem('token'));
-        console.log("ROLES: " + localStorage.getItem('roles'));
+        //console.log(JSON.stringify(tokenInfo, null, 4));
+        //console.log(localStorage.getItem('token'));
+        //console.log("ROLES: " + localStorage.getItem('roles'));
       });
     }
   }
@@ -84,7 +85,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.registerUser(email, username, firstName, lastName, password, role).subscribe(registrationDetails => {
       if (RegistrationDetails) {
-        console.log("Registration successfully done for user " + email);
+        this.router.navigate(['/login']);
       }
     });
   }

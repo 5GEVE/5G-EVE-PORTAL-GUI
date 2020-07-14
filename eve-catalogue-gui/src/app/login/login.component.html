@@ -41,6 +41,7 @@
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
                 <mat-label>Email address</mat-label>
                 <input  matInput  formControlName="email" placeholder="Email address"  name="fname"  required>
+                <mat-error *ngIf="registrationFormGroup.get('email').hasError('email')">Not a valid email</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
@@ -71,6 +72,7 @@
                 <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
+                <mat-error *ngIf="registrationFormGroup.get('regPassword').hasError('minlength')">Password must be at least 6 characters long</mat-error>
             </mat-form-field>
             <div class="margin-top">
                 <button mat-raised-button color="accent" class="margin-all" (click)="register();">Submit</button>
