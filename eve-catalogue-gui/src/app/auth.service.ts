@@ -69,13 +69,13 @@ export class AuthService {
         "firstName": firstName,
         "lastName": lastName,
         "password": password,
-        "roles": [{id: role.id, name: role.name, clientRole: role.clientRole}]
+        "roles": [role.name]
     };
 
     return this.http.post<RegistrationDetails>(this.baseUrl + this.registerUrl, data, this.httpOptions)
         .pipe(
             tap((data: RegistrationDetails) => {
-                this.log(`login w/ id=${email}`, 'SUCCESS', false);
+                this.log(`login w/ id=${email}`, 'SUCCESS', true);
                 return data;
             }),
             catchError(this.handleError<RegistrationDetails>('registerUser'))
@@ -175,10 +175,9 @@ export class AuthService {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
+      //console.log(error); // log to console instead
 
       if (error.status == 401 /*|| error.status == 400*/) {
-        console.log("401 after " + operation);
         if (operation.indexOf('refresh') >= 0 || operation.indexOf('login') >= 0) {
           // TODO: better job of transforming error for user consumption
           this.log(`${operation} failed: ${error.message}`, 'FAILED', false);
@@ -196,9 +195,9 @@ export class AuthService {
             access_token: localStorage.getItem('token'),
             refresh_token: localStorage.getItem('refreshtoken')
           }).subscribe(token => {
-            if (token) {
+            /*if (token) {
               console.log('Token successfully refreshed after 401');
-            }
+            }*/
           });
         }
 
@@ -218,7 +217,7 @@ export class AuthService {
           }
         } else {
           console.log(error.status + " after " + operation);
-          this.log(`${operation} failed: ${error.error}`, 'FAILED', false);
+          this.log("Account not yet activated", 'FAILED', true);
         }
       }
 
@@ -237,7 +236,7 @@ export class AuthService {
     this._snackBar.open(message, action, {
       duration: 0,
     }).afterDismissed().subscribe(() => {
-      console.log('The snack-bar was dismissed');
+      //console.log('The snack-bar was dismissed');
       if (reload)
         window.location.reload();
     });
