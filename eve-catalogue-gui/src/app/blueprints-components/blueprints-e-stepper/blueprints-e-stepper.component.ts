@@ -13,7 +13,9 @@ import { FormulaCheckService} from '../../formula-check.service';
 import { FormulaCheckInfo}  from '../../formula-check-info';
 import { BlueprintsEComponent} from '../blueprints-e/blueprints-e.component';
 
+
 import { every } from 'rxjs/operators';
+import { MatSelectionList } from '@angular/material';
 
 export interface Site {
   value: string;
@@ -31,6 +33,12 @@ export interface Metric {
   value: string;
   viewValue: string;
   unit: string[];
+}
+
+
+export interface ActiveTcb {
+  value: string;
+  enabled: boolean;
 }
 
 @Component({
@@ -128,6 +136,8 @@ export class BlueprintsEStepperComponent implements OnInit {
   fifthFormGroup: FormGroup;
   sixthFormGroup: FormGroup;
 
+  activeTestsCases: ActiveTcb[] = [];
+
   constructor(private _formBuilder: FormBuilder,
     private blueprintsVsService: BlueprintsVsService,
     private blueprintsCtxService: BlueprintsEcService,
@@ -174,6 +184,7 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.sixthFormGroup = this._formBuilder.group({
       selectTcbsCtrl: ['', Validators.required]
     });
+
   }
 
 
@@ -408,9 +419,23 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.kpiNames.push(event.target.value);
   }
 
-  onSelectedTcbs(event: any) {
-    //console.log(event);
-    this.selectedTcbs.push(event.value);
+  onSelectedTcbs(event: any, tcb: any) {
+    console.log(tcb);
+    this.selectedTcbs = [];
+    for (let i = 0; i < this.activeTestsCases.length; i++){
+      if(this.activeTestsCases[i].value === tcb){
+        if (event.checked){
+          this.activeTestsCases[i].enabled = true;
+        } else {
+          this.activeTestsCases[i].enabled = false;
+        }
+      }
+      if (this.activeTestsCases[i].enabled === true){
+        this.selectedTcbs.push(this.activeTestsCases[i].value);
+      }
+      console.log(this.selectedTcbs);
+    }
+
   }
 
   getVsBlueprints() {
@@ -455,6 +480,7 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.blueprintsTcService.getTcBlueprints().subscribe((tcBlueprintInfos: TcBlueprintInfo[]) =>
       {
         for (var i = 0; i < tcBlueprintInfos.length; i++) {
+          this.activeTestsCases.push({value: tcBlueprintInfos[i]['testCaseBlueprintId'], enabled: false});
           this.tcbs.push({value: tcBlueprintInfos[i]['testCaseBlueprintId'], viewValue: tcBlueprintInfos[i]['testCaseBlueprint']['description'], sites: tcBlueprintInfos[i]['testCaseBlueprint']['compatibleSites'], obj: tcBlueprintInfos[i]['testCaseBlueprint']});
         }
       });

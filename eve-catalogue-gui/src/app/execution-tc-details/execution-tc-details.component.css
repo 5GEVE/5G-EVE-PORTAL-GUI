@@ -1,0 +1,78 @@
+.full-width-table {
+  margin-top: 2%;
+  width: 60%;
+  height: 80%;
+  margin-left:20%;
+  margin-right:20%;
+}
+
+.mat-cell {
+padding: 10px 0 10px ;
+}
+
+.data-form {
+  min-width: 150px;
+  max-width: 700px;
+  width: 100%;
+}
+
+.data-full-width {
+  width: 100%;
+}
+
+ .rules-form {
+  min-width: 150px;
+  max-width: 600px;
+  width: 100%;
+  align-self: center;
+}
+
+.rules-full-width {
+  width: 100%;
+}
+
+.flex-column {
+  flex-direction: column;
+  display: block;
+}
+
+td {
+  padding-right: 8px;
+}
+
+.margin-top {
+  margin-top: 30px;
+}
+
+.margin-all {
+  margin: 10px;
+}
+.mat-checkbox-inner-container {
+  position: absolute !important;
+  margin: 10px 10px !important;
+}
+.input-label {
+  font-style: oblique;
+  font-weight: bold;
+  display: block;
+  width: 100px;
+  float: left;
+}
+
+p {
+  font-size: 12px;
+}
+
+#onDemandType, #onDemandTypeBack {
+display: inline ;
+}
+
+#staticType, #staticTypeBack {
+display: none;
+}
+.invisible{
+display: block;
+visibility: hidden;
+height: 0;
+width: 0;
+}

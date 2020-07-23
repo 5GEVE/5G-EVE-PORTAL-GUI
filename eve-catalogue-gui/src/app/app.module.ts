@@ -87,6 +87,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileServiceDialogComponent } from './file-service-dialog/file-service-dialog.component';
 import { FileDialogComponent } from './file-dialog/file-dialog.component';
+import { ExecutionTcDetailsComponent} from './execution-tc-details/execution-tc-details.component';
 
 @NgModule({
   declarations: [
@@ -137,7 +138,8 @@ import { FileDialogComponent } from './file-dialog/file-dialog.component';
     TicketingSystemComponent,
     FilesServiceComponent,
     FileServiceDialogComponent,
-    FileDialogComponent
+    FileDialogComponent,
+    ExecutionTcDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -189,9 +191,10 @@ import { FileDialogComponent } from './file-dialog/file-dialog.component';
     NfvNsGraphDialogComponent,
     NfvVnfGraphDialogComponent,
     FileServiceDialogComponent,
-    FileDialogComponent
+    FileDialogComponent,
+    ExecutionTcDetailsComponent
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}, ExperimentsComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
