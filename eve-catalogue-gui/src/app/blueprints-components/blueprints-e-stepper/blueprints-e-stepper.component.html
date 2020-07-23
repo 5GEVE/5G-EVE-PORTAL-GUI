@@ -358,9 +358,15 @@
     <mat-step [stepControl]="sixthFormGroup">
         <form [formGroup]="sixthFormGroup" class="rules-form">
             <ng-template matStepLabel>Test Cases</ng-template>
-            <mat-radio-group formControlName="selectTcbsCtrl" *ngFor="let tcb of tcbs; let i=index" class="flex-column" (change)="onSelectedTcbs($event)">
+              <mat-selection-list class="flex-column">
+                <mat-checkbox *ngFor="let tcb of tcbs; let i=index;" formControlName="selectTcbsCtrl" (change)="onSelectedTcbs($event, tcb.value)" >
+                  {{tcb.viewValue}}
+                </mat-checkbox>
+
+              </mat-selection-list>
+            <!-- <mat-radio-group formControlName="selectTcbsCtrl" *ngFor="let tcb of tcbs; let i=index" class="flex-column" (change)="onSelectedTcbs($event)">
                 <mat-radio-button [value]="tcb.value" class="margin-top">{{tcb.viewValue}}</mat-radio-button>
-            </mat-radio-group>
+            </mat-radio-group> -->
             <div class="margin-top"></div>
             <p> Blueprint Name: {{expBlueprintName}}</p>
             <p> Selected Site: {{selectedSite}}</p>

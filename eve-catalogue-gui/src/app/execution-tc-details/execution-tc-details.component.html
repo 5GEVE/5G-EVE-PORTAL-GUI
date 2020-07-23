@@ -1,0 +1,39 @@
+<app-experiment-sub-toolbar></app-experiment-sub-toolbar>
+<div style="background: transparent; padding: 30px; padding-bottom: 10%;">
+
+<mat-toolbar style="background: transparent;">
+    <span style="margin-left: 15px;"><h1 class="mat-h1">{{expName}}</h1></span>
+</mat-toolbar>
+<form class="rules-form" [formGroup]="userParametersFormGroup">
+  <ng-template matStepLabel>Test Cases Configuration</ng-template>
+  <mat-selection-list class="flex-column">
+    <mat-checkbox *ngFor="let tc of activeTestsCasesList; let i=index" class="flex-column" (change)="changeAvailability($event, i)">
+            <mat-panel-title>{{tc.name}}</mat-panel-title>
+    </mat-checkbox>
+  </mat-selection-list>
+
+  <div *ngFor="let tc of activeTestsCasesList; let i=index;" class="flex-column" >
+    <mat-expansion-panel width="100%" expanded="isSelected[i]" *ngIf="isSelected[i]">
+        <mat-expansion-panel-header>
+            <mat-panel-title>{{tc.name}}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngFor="let param of tc.userParameters | keyvalue">
+            <div *ngIf="isSelected[i]">
+              <mat-form-field appearance="outline" color=primary  *ngIf="isSelected[i]" >
+                <mat-label >{{param.key}}</mat-label>
+                <input matInput [id]="param.key" [(value)]="param.value" required >
+            </mat-form-field>
+
+            </div>
+        </div>
+
+    </mat-expansion-panel>
+    </div>
+
+  <div class="margin-top">
+      <button mat-raised-button color="accent" class="margin-all" [(disabled)]="disabled" (click)="executeExperiment();">Execute</button>
+  </div>
+</form>
+
+
+</div>

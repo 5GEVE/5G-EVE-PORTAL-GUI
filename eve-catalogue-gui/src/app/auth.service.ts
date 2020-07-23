@@ -109,9 +109,7 @@ export class AuthService {
           localStorage.setItem('refreshtoken', token.refresh_token);
           localStorage.setItem('logged', 'true')
           this.parseToken(token.access_token);
-          this.router.navigate([redirection]).then(() => {
-            window.location.reload();
-          });
+          this.router.navigate([redirection]);
         }),
         catchError(this.handleError<Token>('login'))
       );
