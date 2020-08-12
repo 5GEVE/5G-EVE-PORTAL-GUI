@@ -86,6 +86,7 @@ import { FilesServiceComponent } from './files-service/files-service.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FileServiceDialogComponent } from './file-service-dialog/file-service-dialog.component';
+import { FileUploadDialogComponent } from './file-upload-dialog/file-upload-dialog.component';
 import { FileDialogComponent } from './file-dialog/file-dialog.component';
 import { ExecutionTcDetailsComponent} from './execution-tc-details/execution-tc-details.component';
 
@@ -138,6 +139,7 @@ import { ExecutionTcDetailsComponent} from './execution-tc-details/execution-tc-
     TicketingSystemComponent,
     FilesServiceComponent,
     FileServiceDialogComponent,
+    FileUploadDialogComponent,
     FileDialogComponent,
     ExecutionTcDetailsComponent
   ],
@@ -191,6 +193,7 @@ import { ExecutionTcDetailsComponent} from './execution-tc-details/execution-tc-
     NfvNsGraphDialogComponent,
     NfvVnfGraphDialogComponent,
     FileServiceDialogComponent,
+    FileUploadDialogComponent,
     FileDialogComponent,
     ExecutionTcDetailsComponent
   ],

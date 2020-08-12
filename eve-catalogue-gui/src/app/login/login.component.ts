@@ -36,7 +36,8 @@ export class LoginComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       role: ['', Validators.required],
-      regPassword: ['', [Validators.required, Validators.minLength(6)]]
+      regPassword: ['', [Validators.required, Validators.minLength(6)]],
+      project: ['', Validators.required]
     });
   }
 
@@ -82,8 +83,9 @@ export class LoginComponent implements OnInit {
     var lastName = this.registrationFormGroup.get('lastName').value;
     var role = this.registrationFormGroup.get('role').value;
     var password = this.registrationFormGroup.get('regPassword').value;
+    var project = this.registrationFormGroup.get('project').value;
 
-    this.authService.registerUser(email, username, firstName, lastName, password, role).subscribe(registrationDetails => {
+    this.authService.registerUser(email, username, firstName, lastName, password, role, project).subscribe(registrationDetails => {
       if (RegistrationDetails) {
         this.router.navigate(['/login']);
       }
