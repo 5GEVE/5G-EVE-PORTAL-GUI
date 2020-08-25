@@ -109,14 +109,13 @@ export class ExecutionTcDetailsComponent implements OnInit {
         this.isSelected[j] = false;
         for (let k = 0; k < this.testCaseBlueprints.length; k++){
           if (this.experimentDescriptor.testCaseDescriptorIds[i] === this.testCaseDescriptors[j].testCaseDescriptorId &&
-              this.testCaseBlueprints[k].testCaseBlueprintId === this.testCaseDescriptors[j].testCaseBlueprintId){
+              this.testCaseBlueprints[k].testCaseBlueprintId === this.testCaseDescriptors[j].testCaseBlueprintId) {
                 this.testCaseDescriptors[j].name = this.testCaseBlueprints[k].name;
                 this.activeTestsCasesList.push(this.testCaseDescriptors[j]);
           }
         }
       }
     }
-    console.log("ListaCreata: ", this.activeTestsCasesList);
   }
 
 
@@ -141,7 +140,7 @@ export class ExecutionTcDetailsComponent implements OnInit {
     tempTc['experimentId'] = localStorage.getItem('expId');
     tempTc['executionName'] = localStorage.getItem('expName');
     tempTc['testCaseDescriptorConfiguration'] = testCaseDescriptorConfiguration;
-    console.log(JSON.stringify(tempTc));
+    //console.log(JSON.stringify(tempTc));
     this.experimentsService.executeExperimentAction(tempTc, 'execute').subscribe(
           () => {
             this.experimentsComponent.getExperiments();

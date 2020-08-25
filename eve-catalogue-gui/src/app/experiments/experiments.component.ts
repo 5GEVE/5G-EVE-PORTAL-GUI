@@ -241,7 +241,7 @@ export class ExperimentsComponent implements OnInit {
     });
   }
 
-  openExecDialog(expId: string, expStatus: string) {
+  openExecDialog(expId: string, expStatus: string, expDId: string) {
 
     // for (let i = 0; i < this.experimentDescriptor.testCaseDescriptorIds.length; i++){
     //   for (let j = 0; j < this.testCaseDescriptors.length; j ++){
@@ -262,15 +262,16 @@ export class ExperimentsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(formContent => {
       if (formContent) {
+        console.log('ExpDescriptor: ' + JSON.stringify(this.experimentDescriptor));
         //console.log('Selected Status: ' + selectedAction);
         var actionRequest = {};
         var actionRequested = formContent.get('selectedAction').value;
         actionRequest['experimentId'] = expId;
         actionRequest['executionName'] = formContent.get('executionName').value;
-        console.log('changeStatusRequest: ' + JSON.stringify(actionRequest, null, 4));
+        //console.log('changeStatusRequest: ' + JSON.stringify(actionRequest, null, 4));
         localStorage.setItem('expId', expId);
         localStorage.setItem('expName', formContent.get('executionName').value);
-        localStorage.setItem('expDid', this.experimentDescriptor.expDescriptorId);
+        localStorage.setItem('expDid', expDId);
         if (formContent.get('selectedAction').value === 'execute') {
           this.router.navigate(['/execute_tc_details']);
         } else {

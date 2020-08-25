@@ -64,7 +64,7 @@ export class ExperimentsDetailsComponent implements OnInit {
           this.tableData.push({key: "Experiment Descriptor", value: [expDescriptorInfo[i]['name']]});
         }
       }
-      console.log(this.experiment.timeslot.startTime);
+      //console.log(this.experiment.timeslot.startTime);
       this.tableData.push({key: "Target Sites", value: this.experiment.targetSites});
       this.tableData.push({key: "Target Use Case", value: [this.experiment.useCase]});
       if (this.getRole().indexOf('SITE_MANAGER') >= 0) {

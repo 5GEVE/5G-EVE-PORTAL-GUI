@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import {MetricDashboardService} from '../metric-dashboard.service';
+import { MetricDashboardService } from '../metric-dashboard.service';
 import { ExperimentUrls } from './experiment-urls';
 
 
@@ -45,5 +45,4 @@ export class ExperimentMetricDashboardComponent implements OnInit {
     });
 
   }
-
 }
