@@ -12,6 +12,7 @@ import * as fileSaver from 'file-saver';
 import { FileModel, FileUploadModel } from "./models/FileUpload"
 import { FilesService } from './services/files.service';
 import { FileServiceDialogComponent } from '../file-service-dialog/file-service-dialog.component';
+import { FileUploadDialogComponent } from "../file-upload-dialog/file-upload-dialog.component"
 import { MatDialog } from '@angular/material';
 import { FileDialogComponent } from '../file-dialog/file-dialog.component';
 
@@ -29,6 +30,8 @@ export class FilesServiceComponent implements OnInit {
 
   fetchedFiles = [];
   siteFacilities = [];
+
+  MAX_FILE_SIZE_GB = 50;
 
   displayedColumns: string[] = ['filename', 'assotiatedSite', 'owner', 'status', 'actions'];
 
@@ -174,11 +177,31 @@ export class FilesServiceComponent implements OnInit {
     fileUpload.onchange = () => {  
       for (let index = 0; index < fileUpload.files.length; index++){  
         const file = fileUpload.files[index];  
-        this.files.push({ data: file, filename: file.name, inProgress: false, progress: 0});  
+        var extension =file.name.split(".").pop();
+        var fileSizeGb = file.size / 1000000;
+
+        if (extension != "zip"){
+          this.fileNotSupportedDialog("Format not supported (Only ZIP allowed)");
+        }
+        else if (fileSizeGb > this.MAX_FILE_SIZE_GB){
+          this.fileNotSupportedDialog("File size exceeded (limited to 50GB)");
+        }
+        else{
+          this.files.push({ data: file, filename: file.name, inProgress: false, progress: 0});  
+        }
       }  
-      //this.uploadFiles();
     };  
     fileUpload.click();  
+}
+
+fileNotSupportedDialog(error: string) {
+
+  const dialogRef = this.dialog.open(FileUploadDialogComponent, {
+    width: '30%',
+    data: {problem: error}
+  });
+
+  dialogRef.afterClosed().subscribe();
 }
 
 deleteFromUploadList(filename){

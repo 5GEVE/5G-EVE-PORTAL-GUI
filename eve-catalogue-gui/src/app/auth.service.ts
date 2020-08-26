@@ -62,14 +62,15 @@ export class AuthService {
 
 
   registerUser(email: string, username: string, firstName: string,
-    lastName: string, password: string, role: Role): Observable<RegistrationDetails> {
+    lastName: string, password: string, role: Role, project: string): Observable<RegistrationDetails> {
     let data = {
         "email": email,
         "username": username,
         "firstName": firstName,
         "lastName": lastName,
         "password": password,
-        "roles": [role.name]
+        "roles": [role.name],
+        "project": project
     };
 
     return this.http.post<RegistrationDetails>(this.baseUrl + this.registerUrl, data, this.httpOptions)
