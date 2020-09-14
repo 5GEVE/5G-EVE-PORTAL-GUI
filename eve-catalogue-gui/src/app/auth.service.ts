@@ -51,7 +51,7 @@ export class AuthService {
   httpOptions = {
     headers: new HttpHeaders(
       { 'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        Authorization: 'Bearer ' + localStorage.getItem('token')
       })
   };
 
@@ -92,9 +92,9 @@ export class AuthService {
   }
 
   getUseCases(): Observable<UseCases> {
-    return this.http.get<UseCases>(this.baseUrl + "extra/use-cases", this.httpOptions)
+    return this.http.get<UseCases>(this.baseUrl + 'extra/use-cases', this.httpOptions)
       .pipe(
-        tap(_ => console.log('fetched rolesDetails - SUCCESS')),
+        tap(_ => console.log('fetched use cases - SUCCESS')),
         catchError(this.handleError<UseCases>('getExpDescriptor'))
       );
   }
@@ -106,11 +106,13 @@ export class AuthService {
         tap((token: Token) =>
         {
           this.log(`login w/ id=${loginInfo['email']}`, 'SUCCESS', false);
+          this.parseToken(token.access_token);
           localStorage.setItem('token', token.access_token);
           localStorage.setItem('refreshtoken', token.refresh_token);
-          localStorage.setItem('logged', 'true')
-          this.parseToken(token.access_token);
-          this.router.navigate([redirection]);
+          localStorage.setItem('logged', 'true');
+          this.router.navigate([redirection]).then(() => {
+            window.location.reload();
+          });
         }),
         catchError(this.handleError<Token>('login'))
       );
