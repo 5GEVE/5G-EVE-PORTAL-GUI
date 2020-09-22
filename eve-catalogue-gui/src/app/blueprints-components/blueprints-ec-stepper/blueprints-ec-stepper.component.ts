@@ -177,13 +177,13 @@ export class BlueprintsEcStepperComponent implements OnInit {
             if (this.translationParams !== undefined && this.translationParams !== []){
               var translationRule = JSON.parse('{}');
 
-              var blueprintId = onBoardCtxRequest.ctxBlueprint.blueprintId;
+              //var blueprintId = onBoardCtxRequest.ctxBlueprint.blueprintId;
               var nsdId = this.thirdFormGroup.get('nsdId').value;
               var nsdVersion = this.thirdFormGroup.get('nsdVersion').value;
               var nsFlavourId = this.thirdFormGroup.get('nsFlavourId').value;
               var nsInstLevel = this.thirdFormGroup.get('nsInstLevel').value;
 
-              translationRule['blueprintId'] = blueprintId;
+              //translationRule['blueprintId'] = blueprintId;
               translationRule['nsdId'] = nsdId;
               translationRule['nsdVersion'] = nsdVersion;
               translationRule['nsFlavourId'] = nsFlavourId;
@@ -195,7 +195,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
 
               for (var j = 0; j < controls.length; j++) {
                 paramsObj.push(controls[j].value);
-                console.log(paramsObj);
+                //console.log(paramsObj);
               }
               translationRule['input'] = paramsObj;
               onBoardCtxRequest.translationRules.push(translationRule);

@@ -206,30 +206,27 @@ export class BlueprintsVsStepperComponent implements OnInit {
           promises.push(nsdPromise);
       }
 
-
       Promise.all(promises).then(fileContents => {
           onBoardVsRequest['vsBlueprint'] = JSON.parse(fileContents[0]);
           for (var i = 1; i < fileContents.length; i++) {
             onBoardVsRequest['nsds'].push(JSON.parse(fileContents[i]));
           }
           if (this.translationParams !== undefined && this.translationParams !== []){
+
             //console.log(this.translationParams);
-
+            var blueprintId = onBoardVsRequest.vsBlueprint.blueprintId;
             var translationRule = JSON.parse('{}');
-            //var blueprintId = onBoardVsRequest.vsBlueprint.blueprintId;
-            var nsdId = this.thirdFormGroup.get('nsdId').value;
-            var nsdVersion = this.thirdFormGroup.get('nsdVersion').value;
-            var nsFlavourId = this.thirdFormGroup.get('nsFlavourId').value;
-            var nsInstLevel = this.thirdFormGroup.get('nsInstLevel').value;
 
-
-            translationRule['nsdId'] = nsdId;
+          var nsdId = this.thirdFormGroup.get('nsdId').value;
+          var nsdVersion = this.thirdFormGroup.get('nsdVersion').value;
+          var nsFlavourId = this.thirdFormGroup.get('nsFlavourId').value;
+          var nsInstLevel = this.thirdFormGroup.get('nsInstLevel').value;
+          var paramsRows = this.thirdFormGroup.controls.items as FormArray;
+          translationRule['nsdId'] = nsdId;
             translationRule['nsdVersion'] = nsdVersion;
             translationRule['nsFlavourId'] = nsFlavourId;
             translationRule['nsInstantiationLevelId'] = nsInstLevel;
-
-                      //translationRule['blueprintId'] = blueprintId;
-          var paramsRows = this.thirdFormGroup.controls.items as FormArray;
+            translationRule['blueprintId'] = blueprintId;
           console.log(paramsRows.controls);
           var controls = paramsRows.controls;
           var paramsObj = [];
@@ -239,13 +236,15 @@ export class BlueprintsVsStepperComponent implements OnInit {
             //console.log(paramsObj);
           }
 
-          var blueprintId = onBoardVsRequest.vsBlueprint.blueprintId;
+          //var blueprintId = onBoardVsRequest.vsBlueprint.blueprintId;
 
           translationRule['input'] = paramsObj;
           onBoardVsRequest.translationRules.push(translationRule);
-
-
           }
+
+
+
+
           //console.log('onBoardVsRequest: ' + JSON.stringify(onBoardVsRequest, null, 4));
 
           this.blueprintsVsService.postVsBlueprint(onBoardVsRequest)
