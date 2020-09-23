@@ -1,0 +1,6 @@
+@import '~@angular/material/theming';
+@mixin header-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+
+}

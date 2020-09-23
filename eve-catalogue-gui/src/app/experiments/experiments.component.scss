@@ -1,0 +1,42 @@
+@import '~@angular/material/theming';
+@mixin experiments-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .ex-container{
+        background-color: mat-color($themestyle-primary,100);
+        width: 100%;
+       
+    }
+
+    .ex-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .ex-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+    .mat-dialog-container{
+        background-color: mat-color($themestyle-primary,100);
+    }
+
+    @media (max-width: 400px) {
+        .mat-dialog-container{
+          width: 100%;
+          margin-left:0; 
+          margin-right:0;
+          padding: 0;
+        }
+      }
+      @media (max-width: 800px) {
+        .mat-dialog-container {
+          width: 100%;
+          margin-left:0; 
+          margin-right:0;
+          padding: 0;
+        }
+      }
+}

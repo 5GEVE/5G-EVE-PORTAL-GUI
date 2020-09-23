@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ExpBlueprintInfo } from './blueprints-components/blueprints-e/exp-blueprint-info';
+import { ExpBlueprintInfo } from './blueprints-compnents/blueprints-e/exp-blueprint-info';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
 
@@ -43,7 +43,7 @@ export class BlueprintsExpService {
   postExpBlueprint(onBoardExpRequest: Object): Observable<String> {
     return this.http.post(this.baseUrl + this.expBlueprintInfoUrl, onBoardExpRequest, this.httpOptions)
       .pipe(
-        tap((blueprintId: String) => this.authService.log(`added Exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', false)),
+        tap((blueprintId: String) => this.authService.log(`added Exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
         catchError(this.authService.handleError<String>('postExpBlueprint'))
       );
   }
@@ -51,7 +51,7 @@ export class BlueprintsExpService {
   deleteExpBlueprint(blueprintId: string): Observable<String> {
     return this.http.delete(this.baseUrl + this.expBlueprintInfoUrl + '/' + blueprintId, this.httpOptions)
     .pipe(
-      tap((result: String) => this.authService.log(`deleted Exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', false)),
+      tap((result: String) => this.authService.log(`deleted Exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
       catchError(this.authService.handleError<String>('deleteExpBlueprint'))
     );
   }

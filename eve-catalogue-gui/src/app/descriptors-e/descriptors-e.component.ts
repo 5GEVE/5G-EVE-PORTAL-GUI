@@ -23,11 +23,10 @@ export class DescriptorsEComponent implements OnInit {
   idToExpbId: Map<string, Map<string, string>> = new Map();
   idToVsdId: Map<string, Map<string, string>> = new Map();
   selectedIndex = 0;
-
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'name', 'expElueprintId', 'vsDescriptorId', 'kpi', 'buttons'];
 
-  constructor(private descriptorsExpService: DescriptorsExpService,
+  constructor(private descriptorsExpService: DescriptorsExpService, 
     private blueprintsExpService: BlueprintsExpService,
     private descriptorsVsService: DescriptorsVsService,
     private router: Router) { }
@@ -35,10 +34,12 @@ export class DescriptorsEComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new DescriptorsEDataSource(this.tableData);
     this.getExpDescriptors();
+    let elem1: HTMLElement = document.getElementById('show_blue');
+    elem1.setAttribute("style", "display:none;");
   }
 
   getExpDescriptors() {
-    this.descriptorsExpService.getExpDescriptors().subscribe((expDescriptorsInfos: ExpDescriptorInfo[]) =>
+    this.descriptorsExpService.getExpDescriptors().subscribe((expDescriptorsInfos: ExpDescriptorInfo[]) => 
       {
         //console.log(expDescriptorsInfos);
         this.tableData = expDescriptorsInfos;
@@ -48,7 +49,7 @@ export class DescriptorsEComponent implements OnInit {
           this.idToVsdId.set(expDescriptorsInfos[i]['expDescriptorId'], new Map());
           this.getExpBlueprint(expDescriptorsInfos[i]['expDescriptorId'], expDescriptorsInfos[i]['expBlueprintId']);
           this.getVsDescriptor(expDescriptorsInfos[i]['expDescriptorId'], expDescriptorsInfos[i]['vsDescriptorId']);
-        }
+        } 
 
         this.dataSource = new DescriptorsEDataSource(this.tableData);
         this.dataSource.sort = this.sort;
@@ -87,9 +88,7 @@ export class DescriptorsEComponent implements OnInit {
 
   deleteExpDescriptor(expDescriptorId: string) {
     //console.log(expDescriptorId);
-    this.descriptorsExpService.deleteExpDescriptor(expDescriptorId).subscribe(
-      () => { this.getExpDescriptors(); }
-    );
+    this.descriptorsExpService.deleteExpDescriptor(expDescriptorId).subscribe();
   }
 
   viewExpDescriptor(expDescriptorId) {

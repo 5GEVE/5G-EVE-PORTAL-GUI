@@ -1,0 +1,23 @@
+@import '~@angular/material/theming';
+@mixin descriptors-vs-details-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .dvsd-container{
+        background-color: mat-color($themestyle-primary,100);
+        color: white;
+       
+    }
+
+    .dvsd-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .dvsd-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+
+}

@@ -31,6 +31,8 @@ export class DescriptorsEcComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new DescriptorsEcDataSource(this.tableData);
     this.getEcDescriptors();
+    let elem1: HTMLElement = document.getElementById('show_blue');
+    elem1.setAttribute("style", "display:none;");
   }
 
   getEcDescriptors() {

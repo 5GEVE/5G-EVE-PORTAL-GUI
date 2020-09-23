@@ -10,7 +10,7 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('eve-catalogue-gui app is running!');
+    expect(page.getTitleText()).toEqual('responsive-mat app is running!');
   });
 
   afterEach(async () => {

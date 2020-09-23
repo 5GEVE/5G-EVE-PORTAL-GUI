@@ -13,7 +13,7 @@
   </mat-selection-list>
 
   <div *ngFor="let tc of activeTestsCasesList; let i=index;" class="flex-column" >
-    <mat-expansion-panel width="100%" expanded="isSelected[i]" *ngIf="isSelected[i]">
+    <mat-expansion-panel width="100%" expanded="isSelected[i]" *ngIf="isSelected[i]" class="devs-table">
         <mat-expansion-panel-header>
             <mat-panel-title>{{tc.name}}</mat-panel-title>
         </mat-expansion-panel-header>

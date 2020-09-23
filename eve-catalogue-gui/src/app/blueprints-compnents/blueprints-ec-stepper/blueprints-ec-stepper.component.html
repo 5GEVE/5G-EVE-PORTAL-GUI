@@ -1,0 +1,103 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper class="full-width-table bles-container full-width-table-md full-width-table-xs">
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Upload Blueprint</ng-template>
+            <input  #blueprintFile type="file" formControlName="firstCtrl" (change)="onUploadedCtxb($event,blueprintFile.files)" required/>
+            <div class="margin-top">
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Upload NSDs</ng-template>
+            <mat-checkbox (change)="hideNextShowSubmit($event);" style="color: black;">STATIC DEPLOYMENT</mat-checkbox>
+            <br />&nbsp;<br />
+              <input #nsdFiles type="file" id="uploadFile"  formControlName="secondCtrl" (change)="onUploadedNsd($event,nsdFiles.files)" required/>
+            <div class="margin-top">
+                <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
+                <button mat-raised-button matStepperNext id="nextButton" color="primary" class="margin-all" [disabled]="secondFormGroup.invalid">Next</button>
+                <button mat-raised-button color="accent" id="submitButton" class="margin-all" [disabled]="secondFormGroup.invalid" (click)="createOnBoardCtxBlueprintRequestWithoutNsd(blueprintFile.files);">Submit</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup" >
+        <form [formGroup]="thirdFormGroup" class="rules-form" fxFlex="100%" fxLayout="column"  style="width: 100%;">
+            <ng-template matStepLabel>Create Translation Rules</ng-template>
+            <table class="rules-full-width full-width-table-xs" cellspacing="0"  fxFlex="100%"  fxLayout="column" fxLayoutAlign="center center">
+                <tr fxLayout="column" fxLayoutAlign="center center" style="width: 100%;text-align: center;">
+                    <td>
+                        <h4>NSD</h4>
+                        <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                            <input matInput id="nsdId" placeholder="NSD Id" required formControlName="nsdId">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                            <input matInput id="nsdVersion" placeholder="NSD Version" required formControlName="nsdVersion">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="rules-full-width">
+                            <mat-label>NS Flavour Id</mat-label>
+                            <mat-select formControlName="nsFlavourId" name="nsFlavourId" (selectionChange)="onNsDfSelected($event);">
+                                <mat-option *ngFor="let df of dfs" [value]="df.nsDfId">
+                                    {{df.nsDfId}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <!--mat-form-field appearance="outline" color=primary class="data-full-width">
+                            <input matInput id="nsFlavourId" placeholder="NS Flavour Id" required formControlName="nsFlavourIdCtrl">
+                        </mat-form-field-->
+                        <mat-form-field appearance="outline" class="rules-full-width">
+                            <mat-label>NS Instantiation Level Id</mat-label>
+                            <mat-select formControlName="nsInstLevel" name="nsInstLevel">
+                                <mat-option *ngFor="let instLevel of instLevels" [value]="instLevel.nsLevelId">
+                                    {{instLevel.nsLevelId}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <!--mat-form-field appearance="outline" color=primary class="data-full-width">
+                            <input matInput id="nsInstLevel" placeholder="NS Instantiation Level Id" required formControlName="nsInstLevelIdCtrl">
+                        </mat-form-field-->
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+
+                <tr fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="width: 100%;">
+                    <h4>Parameters</h4>
+                    <div formArrayName="items" *ngFor="let item of thirdFormGroup.get('items')?.controls; let i=index;" fxFlex="100%"  fxLayout.xs="row" fxLayout="row" fxLayoutAlign="center center">
+                        <div [formGroupName]="i" fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
+                            
+                            <td fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
+                                <label style="color: black;">{{this.translationParams[i]}}</label>
+                              <!-- <mat-select formControlName="parameterId" style="display:none;">
+                                <mat-option value="{{this.translationParams[i]}}" selected >
+                                  {{this.translationParams[i]}}
+                                </mat-option>
+                            </mat-select> 
+                              <mat-form-field appearance="outline" color=primary class="invisible rules-full-width" >
+                                  <input matInput placeholder="{{this.translationParams[i]}}" [ngModel]="this.translationParams[i]" formControlName="parameterId" >
+                                </mat-form-field>
+                                -->
+                            </td>
+                            <td fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
+                                <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                                    <input matInput placeholder="Min Value" required formControlName="minValue">
+                                </mat-form-field>
+                            </td>
+                            <td fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
+                                <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                                    <input matInput placeholder="Max Value" required formControlName="maxValue">
+                                </mat-form-field>
+                            </td>
+                        </div>
+                    </div>
+                </tr>
+            </table>
+            <div class="margin-top" fxFlex="100%"  fxLayout.xs="row" fxLayout="row" fxLayoutAlign="center center">
+                <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
+                <button mat-raised-button (click)="stepper.reset()" color="warn" class="margin-all">Reset</button>
+                <button mat-raised-button color="accent" class="margin-all" (click)="createOnBoardCtxBlueprintRequest(blueprintFile.files,nsdFiles.files);" [disabled]="thirdFormGroup.invalid">Submit</button>
+            </div>
+        </form>
+    </mat-step>
+</mat-horizontal-stepper>

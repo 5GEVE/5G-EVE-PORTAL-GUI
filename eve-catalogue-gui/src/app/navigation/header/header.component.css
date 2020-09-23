@@ -1,0 +1,35 @@
+.logo-container{
+    width: 100%;
+}
+.logo{
+    width: 100px;
+}
+
+.mat-drawer-container{
+    visibility: hidden !important;
+}
+
+#show_reg{
+    display: none;
+}
+#show_login{
+    display: none;
+}
+/*
+.t-header{
+    float: right;
+    margin-top: 14px;
+    margin-left: 16px;
+}
+*/
+.t-header{
+    float: left;
+    margin-top: 12px;
+    margin-right: 16px;
+    margin-left: 10px;
+}
+@media (max-width: 400px) {
+    .t-header {
+     display: none;
+    }
+  }

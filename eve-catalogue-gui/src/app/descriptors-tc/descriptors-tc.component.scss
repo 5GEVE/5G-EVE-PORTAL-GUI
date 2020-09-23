@@ -1,0 +1,23 @@
+@import '~@angular/material/theming';
+@mixin descriptors-tc-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .dtc-container{
+        background-color: mat-color($themestyle-primary,100);
+        color: white;
+       
+    }
+
+    .dtc-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .dtc-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+
+}

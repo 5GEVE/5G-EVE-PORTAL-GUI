@@ -1,6 +1,6 @@
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Component, OnInit, Inject } from '@angular/core';
 import { DialogData } from '../nfv-ns/nfv-ns.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { VsbDetailsService } from '../../vsb-details.service';
 import { dump } from 'js-yaml';
 
@@ -26,7 +26,7 @@ export class NfvNsGraphDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<NfvNsGraphDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private vsbDetailsService: VsbDetailsService) { }
+    public vsbDetailsService: VsbDetailsService) { }
 
   ngOnInit() {
     console.log(this.data);

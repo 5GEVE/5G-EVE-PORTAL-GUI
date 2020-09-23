@@ -1,0 +1,61 @@
+@import '~@angular/material/theming';
+@mixin footer-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .footer-container{
+        background-color: mat-color($themestyle-primary,800);
+        color: white;
+        padding: 10px;
+        z-index: 90;
+        position: fixed;
+        bottom: 0px;
+        
+    }
+
+    
+    @media (max-width: 800px) {
+        .font-size-sm{
+            font-size: 12px;
+        }
+        .icons-sm{
+            margin-right: 12px;
+        }
+        
+    }
+
+    @media (max-width: 400px) {
+        .pic-xs{
+            width: 20px;
+            height: 7px;
+            margin-right: 10px;
+            margin-bottom: 7px;
+        }
+        .font-size-xs{
+            font-size: 10px;
+        }
+    }
+
+    @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+        /*
+        .conf-footer{
+            background-color: lawngreen;
+        }
+        */
+      }
+      
+      @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape) {
+        .font-size-xs{
+            font-size: 9px;
+        }
+        .pic-lg{
+           display: none;
+        }
+       /*
+        .conf-footer{
+            display: none;
+        }
+        */
+      }
+
+}

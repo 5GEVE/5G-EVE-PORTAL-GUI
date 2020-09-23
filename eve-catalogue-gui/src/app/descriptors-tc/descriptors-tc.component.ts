@@ -31,6 +31,8 @@ export class DescriptorsTcComponent implements OnInit {
   ngOnInit() {
     this.dataSource = new DescriptorsTcDataSource(this.tableData);
     this.getTestCaseDescriptors();
+    let elem1: HTMLElement = document.getElementById('show_blue');
+    elem1.setAttribute("style", "display:none;");
   }
 
   getTestCaseDescriptors() {

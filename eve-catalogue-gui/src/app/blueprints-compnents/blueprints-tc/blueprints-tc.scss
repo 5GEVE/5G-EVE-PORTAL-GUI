@@ -1,0 +1,26 @@
+@import '~@angular/material/theming';
+@mixin blueprints-tc-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .bltc-container{
+        background-color: mat-color($themestyle-primary,100);
+    
+        color: white;
+       
+    }
+
+    .bltc-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .bltc-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+    #uploadProcedure {
+        display: none;
+      }
+}

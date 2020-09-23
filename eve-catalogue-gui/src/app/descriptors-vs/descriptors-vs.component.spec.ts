@@ -3,10 +3,13 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-
+import { HttpClientModule } from '@angular/common/http';
 import { DescriptorsVsComponent } from './descriptors-vs.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterTestingModule } from '@angular/router/testing';
 
-describe('DescriptorsVsComponent', () => {
+
+xdescribe('DescriptorsVsComponent', () => {
   let component: DescriptorsVsComponent;
   let fixture: ComponentFixture<DescriptorsVsComponent>;
 
@@ -18,6 +21,9 @@ describe('DescriptorsVsComponent', () => {
         MatPaginatorModule,
         MatSortModule,
         MatTableModule,
+        HttpClientModule,
+        MatSnackBarModule,
+        RouterTestingModule
       ]
     }).compileComponents();
   }));

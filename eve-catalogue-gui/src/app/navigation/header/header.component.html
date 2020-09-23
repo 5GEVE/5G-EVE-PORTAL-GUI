@@ -1,0 +1,23 @@
+<mat-toolbar color="primary" id="cheader" style="position: sticky;top: 0;right: 0;left: 0;z-index: 10;" >
+    <div >
+        <mat-icon id="menu_show" (click)="onToggleOpenSidenav()" style="cursor: pointer;" >menu</mat-icon>
+    </div>
+    <div id="show_reg"  >    
+        <span routerLink="/register" ><button (click)="changeStyleReg()"  mat-button ><mat-icon>create</mat-icon> Register </button></span>
+    </div>
+    <div id="show_login">    
+        <span routerLink="/login" ><button (click)="changeStyleLog()" mat-button ><mat-icon>arrow_right_alt</mat-icon> Login </button></span>
+    </div>
+    <div class="logo-container">
+        <!--<div style="text-align: right;">-->
+        <div>
+            <div style="float: left;margin-left: 5px;"><img class="logo" src="assets/images/logo_5geve_white_120.png"/></div>
+
+            <div class="t-header" style="text-align: right;" >
+                <a routerLink="/dashboard" style="color: white;text-decoration-line: none;font-size: 30px;">5G EVE portal</a>
+            </div>
+        </div> 
+    
+    </div>    
+    
+</mat-toolbar>

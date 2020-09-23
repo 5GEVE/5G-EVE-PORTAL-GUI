@@ -1,0 +1,26 @@
+@import '~@angular/material/theming';
+@mixin design-switch-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .ds-container{
+        background-color: mat-color($themestyle-primary,50);
+        height: 100%;
+        color: white;
+        width: 100%;
+         
+    }
+
+    .ds-title{
+        background-color: mat-color($themestyle-primary,50);
+       
+    }
+
+    .ds-table{
+        background-color: mat-color($themestyle-primary,50);
+       
+    }
+
+    
+
+}

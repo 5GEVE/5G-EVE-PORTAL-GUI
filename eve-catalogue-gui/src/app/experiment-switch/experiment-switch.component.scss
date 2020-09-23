@@ -1,0 +1,22 @@
+@import '~@angular/material/theming';
+@mixin experiment-switch-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .experiment-switch-container{
+        background-color: mat-color($themestyle-primary,400);
+        color: white;
+        padding:1%;
+        width: 60%;
+        min-height: 100%;
+       
+    }
+
+    @media (max-width: 400px) {
+        .box{
+            width: 80%;
+            padding: 20px;
+        }
+    }
+    
+} 

@@ -1,7 +1,6 @@
-<div style="background: transparent; padding: 30px; padding-bottom: 10%;">
-<mat-horizontal-stepper [linear]="isLinear" #stepper class=full-width-table>
+<mat-horizontal-stepper [linear]="isLinear" #stepper class="full-width-table full-width-table-xs full-width-table-md dee-container">
     <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup" class="rules-form">
+        <form [formGroup]="firstFormGroup" class="rules-form" fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center left">
             <ng-template matStepLabel>Descriptor Metadata</ng-template>
             <mat-form-field appearance="outline" class="rules-full-width">
                 <mat-label>Experiment Blueprint</mat-label>
@@ -16,9 +15,9 @@
             </mat-form-field>
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
                 <input matInput #descVersion placeholder="Version" formControlName="expDescVersion" required>
-            </mat-form-field>
+            </mat-form-field>            
             <div class="margin-top">
-                <button mat-raised-button matStepperNext color="primary" class="margin-all">Next</button>
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid">Next</button>
             </div>
         </form>
     </mat-step>
@@ -32,26 +31,26 @@
                 <input matInput placeholder="Version" formControlName="vsDescVersion" required>
             </mat-form-field>
             <div class="margin-top"></div>
-            <mat-expansion-panel>
+            <mat-expansion-panel class="dee-table">
                 <mat-expansion-panel-header>
                     <mat-panel-title>QoS Parameters</mat-panel-title>
                 </mat-expansion-panel-header>
-                <div *ngFor="let param of vsBlueprint['parameters']; let i=index">
-                    <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                <div *ngFor="let param of vsBlueprint['parameters']; let i=index">                        
+                    <mat-form-field appearance="outline" class="rules-full-width">
                         <mat-label>{{param.parameterId}}</mat-label>
-                        <input matInput [id]="'qos_' + param.parameterId" required formControlName="qosParam">
-                    </mat-form-field>
+                        <input matInput [id]="'qos_' + param.parameterId">
+                    </mat-form-field>                      
                 </div>
             </mat-expansion-panel>
             <div class="margin-top"></div>
-            <mat-expansion-panel>
+            <mat-expansion-panel class="dee-table">
                 <mat-expansion-panel-header>
                     <mat-panel-title>Slice Parameters</mat-panel-title>
                 </mat-expansion-panel-header>
                 <mat-form-field appearance="outline" color=primary class="rules-full-width">
                     <mat-label>Management Type</mat-label>
-                    <mat-select formControlName="managementType" name="managementType">
-                        <mat-option *ngFor="let type of managementTypes" [value]="type">
+                    <mat-select formControlName="managementType" name="managementType" >
+                        <mat-option *ngFor="let type of managementTypes" [value]="type" class="dee-table">
                             {{type}}
                         </mat-option>
                     </mat-select>
@@ -66,99 +65,51 @@
                 </mat-form-field>
                 <mat-checkbox #publicVSD formControlName="isPublic">Public</mat-checkbox>
             </mat-expansion-panel>
-            <!--div class="margin-top"></div>
-            <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>Service Constraints</mat-panel-title>
-                </mat-expansion-panel-header>
-                <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                    <mat-label>Priority</mat-label>
-                    <mat-select formControlName="priorityType" name="managementType">
-                        <mat-option *ngFor="let type of priorityTypes" [value]="type">
-                            {{type}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <p><mat-checkbox #sharable formControlName="isSharable">Sharable</mat-checkbox></p>
-                <p><mat-checkbox #inclSharable formControlName="includeSharable">Can Include Shared Elements</mat-checkbox></p>
-                <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                    <input matInput placeholder="Preferred Providers" required formControlName="prefProviders">
-                </mat-form-field>
-                <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                    <input matInput placeholder="Not Preferred Providers" required formControlName="notPrefProviders">
-                </mat-form-field>
-                <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                    <input matInput placeholder="Prohibited Providers" required formControlName="prohibitedProviders">
-                </mat-form-field>
-            </mat-expansion-panel>
-            <div class="margin-top"></div-->
-            <!--mat-expansion-panel>
-                <mat-expansion-panel-header>
-                    <mat-panel-title>SLA Requirements</mat-panel-title>
-                </mat-expansion-panel-header>
-                <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                    <mat-label>Service Creation Time</mat-label>
-                    <mat-select formControlName="timeType" name="timeType" placeholder="No Requirements">
-                        <mat-option *ngFor="let type of timeTypes" [value]="type">
-                            {{type}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                    <mat-label>Coverage Area</mat-label>
-                    <mat-select formControlName="coverageType" name="coverageType" placeholder="No Requirements">
-                        <mat-option *ngFor="let type of coverageTypes" [value]="type">
-                            {{type}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-checkbox #lowCost formControlName="isLowCost">Low Cost</mat-checkbox>
-            </mat-expansion-panel-->
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-                <button mat-raised-button matStepperNext color="primary" class="margin-all">Next</button>
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="secondFormGroup.invalid">Next</button>
             </div>
         </form>
     </mat-step>
     <mat-step [stepControl]="thirdFormGroup">
-      <form [formGroup]="thirdFormGroup" class="rules-form">
-        <ng-template matStepLabel>KPIs</ng-template>
-        <div *ngFor="let metric of expBlueprint['kpis']; let i=index">
-          <mat-label>{{metric.name}}</mat-label>
-            <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                <mat-label>{{metric.name}}: lowerBound</mat-label>
-                <input matInput [id]="'metric_' + metric.kpiId + 'lowerBound'">
+        <form [formGroup]="thirdFormGroup" class="rules-form">
+          <ng-template matStepLabel>KPIs</ng-template>
+          <div *ngFor="let metric of expBlueprint['kpis']; let i=index">
+            <mat-label style="color: black;" >{{metric.name}}</mat-label>
+              <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                  <mat-label>{{metric.name}}: lowerBound</mat-label>
+                  <input matInput [id]="'metric_' + metric.kpiId + 'lowerBound'">
+              </mat-form-field>
+              <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                <mat-label>{{metric.name}}: upperBound</mat-label>
+                <input matInput [id]="'metric_' + metric.kpiId + 'upperBound'">
             </mat-form-field>
-            <mat-form-field appearance="outline" color=primary class="rules-full-width">
-              <mat-label>{{metric.name}}: upperBound</mat-label>
-              <input matInput [id]="'metric_' + metric.kpiId + 'upperBound'">
-          </mat-form-field>
-      </div>
-        <div class="margin-top">
-            <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-            <button mat-raised-button matStepperNext color="primary" class="margin-all">Next</button>
         </div>
-    </form>
-    </mat-step>
+          <div class="margin-top">
+              <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
+              <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="thirdFormGroup.invalid">Next</button>
+          </div>
+      </form>
+      </mat-step>
     <mat-step [stepControl]="fourthFormGroup">
         <form [formGroup]="fourthFormGroup" class="rules-form">
             <ng-template matStepLabel>Context Details</ng-template>
             <div *ngFor="let ctx of ctxBlueprints">
-                <mat-expansion-panel>
+                <mat-expansion-panel class="dee-table">
                     <mat-expansion-panel-header>
                         <mat-panel-title>{{ctx.viewValue}}</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div *ngFor="let param of ctx.item['parameters']; let i=index">
+                    <div *ngFor="let param of ctx.item['parameters']; let i=index">                        
                         <mat-form-field appearance="outline" color=primary class="rules-full-width">
                             <mat-label>{{param.parameterId}}</mat-label>
                             <input matInput id={{param.parameterId}}>
-                        </mat-form-field>
+                        </mat-form-field>                      
                     </div>
                 </mat-expansion-panel>
             </div>
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-                <button mat-raised-button matStepperNext color="primary" class="margin-all">Next</button>
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="fourthFormGroup.invalid">Next</button>
             </div>
         </form>
     </mat-step>
@@ -166,7 +117,7 @@
         <form [formGroup]="fifthFormGroup" class="rules-form">
             <ng-template matStepLabel>Test Cases Configuration</ng-template>
             <div *ngFor="let tc of tcBlueprints; let i=index">
-                <mat-expansion-panel width="100%">
+                <mat-expansion-panel class="dee-table">
                     <mat-expansion-panel-header>
                         <mat-panel-title>{{tc.viewValue}}</mat-panel-title>
                     </mat-expansion-panel-header>
@@ -183,9 +134,8 @@
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
                 <button mat-raised-button (click)="stepper.reset()" color="warn" class="margin-all">Reset</button>
-                <button mat-raised-button color="accent" class="margin-all" (click)="createOnBoardExpDescriptorRequest();">Submit</button>
+                <button mat-raised-button color="accent" class="margin-all" (click)="createOnBoardExpDescriptorRequest();" [disabled]="fifthFormGroup.invalid">Submit</button>
             </div>
         </form>
     </mat-step>
-  </mat-horizontal-stepper>
-</div>
+</mat-horizontal-stepper>

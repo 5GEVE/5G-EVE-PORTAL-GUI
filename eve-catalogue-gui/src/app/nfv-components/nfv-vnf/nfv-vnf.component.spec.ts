@@ -3,8 +3,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-
+import { HttpClientModule } from '@angular/common/http';
 import { NfvVnfComponent } from './nfv-vnf.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 describe('NfvVnfComponent', () => {
   let component: NfvVnfComponent;
@@ -18,6 +22,10 @@ describe('NfvVnfComponent', () => {
         MatPaginatorModule,
         MatSortModule,
         MatTableModule,
+        HttpClientModule,
+        MatSnackBarModule,
+        RouterTestingModule,
+        MatDialogModule
       ]
     }).compileComponents();
   }));

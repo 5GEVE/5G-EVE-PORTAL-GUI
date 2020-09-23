@@ -1,12 +1,12 @@
 <app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
-<mat-toolbar style="background: transparent;">
+<mat-toolbar class="desch-title">
     <span style="margin-left: 15px;"><h1 class="mat-h1">Schedule a New Experiment</h1></span>
 </mat-toolbar>
-<div style="background: transparent; padding: 30px; padding-bottom: 10%;">
-    <div class="rules-div">
+<div style="padding: 30px;" class="desch-container">
+    <div class="rules-div rules-div-xs rules-div-md" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center">
         <form [formGroup]="scheduleFormGroup" class="rules-form">
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                <input matInput #nsdVersion placeholder="Name" formControlName="name" required>
+                <input matInput #nsdVersion placeholder="Name" formControlName="name" required style="color: black;">
             </mat-form-field>
             <mat-form-field appearance="outline" class="rules-full-width">
                 <mat-label>Experiment Descriptor</mat-label>
@@ -25,41 +25,36 @@
                 </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline" class="rules-full-width">
-              <mat-label>Use Case</mat-label>
-              <mat-select formControlName="useCase" name="useCase">
-                  <mat-option *ngFor="let useCase of use_cases" [value]="useCase">
-                      {{useCase}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-            <table>
-                <tr>
+                <mat-label>Use Case</mat-label>
+                <mat-select formControlName="useCase" name="useCase">
+                    <mat-option *ngFor="let useCase of use_cases" [value]="useCase">
+                        {{useCase}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <table >
+                <tr fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
                     <td>
                         <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                            <input matInput [matDatepicker]="start_picker" (dateChange)="getStartDate($event.value)" placeholder="Start date" formControlName="timeSlotStart" requested>
+                            <input matInput [matDatepicker]="start_picker" (dateChange)="getStartDate($event.value)" placeholder="Start date" formControlName="timeSlotStart"  required style="color: black;">
                             <mat-datepicker-toggle matSuffix [for]="start_picker"></mat-datepicker-toggle>
                             <mat-datepicker #start_picker></mat-datepicker>
                         </mat-form-field>
-                      </td>
+                    </td>
                     <td>
                         <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                            <input matInput [matDatepicker]="end_picker" (dateChange)="getEndDate($event.value)" placeholder="End date" formControlName="timeSlotEnd" requested>
+                            <input matInput [matDatepicker]="end_picker" (dateChange)="getEndDate($event.value)" placeholder="End date" formControlName="timeSlotEnd"  style="color: black;">
                             <mat-datepicker-toggle matSuffix [for]="end_picker"></mat-datepicker-toggle>
                             <mat-datepicker #end_picker></mat-datepicker>
                         </mat-form-field>
-                      </td>
-                </tr>
-                <tr>
-                  <td><p class="startingDate"></p></td>
-                  <td><p class="endingDate"></p></td>
+                    </td>
                 </tr>
             </table>
             <mat-error *ngIf="endLowerThenStart">End date cannot be before starting date</mat-error>
             <mat-error *ngIf="endInThePast">End date cannot be in the past</mat-error>
 
-
-            <div class="margin-top">
-                <button mat-raised-button color="accent" class="margin-all" [(disabled)]="disabled" (click)="scheduleExperiment();">Submit</button>
+            <div class="margin-top" >
+                <button mat-raised-button color="accent" class="margin-all" (click)="scheduleExperiment();" [(disabled)]="disabled" >Submit</button>
             </div>
         </form>
     </div>

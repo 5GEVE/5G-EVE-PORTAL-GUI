@@ -9,5 +9,4 @@ export class ExpDescriptorInfo {
     kpiThresholds: Map<string, string>;
     isPublic: boolean;
     tenantId: string;
-    useCase: string;
 }

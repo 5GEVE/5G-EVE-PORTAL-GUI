@@ -1,9 +1,12 @@
 <app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
-<mat-toolbar style="background: transparent;">
+<mat-toolbar class="dvsd-title">
     <span style="margin-left: 15px;"><h1 class="mat-h1">Vertical Service Descriptor Details</h1></span>
 </mat-toolbar>
-<div style="background: transparent; padding: 30px;">
-    <table mat-table class="full-width-table" matSort aria-label="Elements">
+<div class="dvsd-container" >
+    <div fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="   margin-left: 10%;
+    margin-right: 10%;
+    width: 90%">
+    <table mat-table class="full-width-table dvsd-table" matSort aria-label="Elements">
         <!-- KEY Column -->
         <ng-container matColumnDef="key">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Field</th>
@@ -20,6 +23,13 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-
+    <mat-paginator #paginator style="width: 100%" fxFlex="100%" fxLayout.xs="row" fxLayout="column" fxLayoutAlign="center center"
+        [length]="dataSource?.data.length"
+        [pageIndex]="0"
+        [pageSize]="50"
+        [pageSizeOptions]="[25, 50, 100, 250]"
+        class="dvsd-table">
+    </mat-paginator>
 </div>
-
+</div>         
+    

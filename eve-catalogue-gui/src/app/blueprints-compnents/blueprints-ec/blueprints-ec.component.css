@@ -1,0 +1,90 @@
+.full-width-table {
+    margin-top: 2%;
+    width: 80%;
+    margin-left:10%; 
+    margin-right:10%;
+  }
+  
+  .margin-all {
+    margin: 5px;
+  }
+  
+  a {
+    font-weight: bold;
+    color: #f0a30a;
+  }
+  
+  a:hover {
+    color: white;
+    cursor: pointer;
+  }
+  @media (max-width: 800px) {
+
+    .full-width-table-xs {
+        margin-top: 2%;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+  }
+
+  .full-width-table {
+    margin-top: 2%;
+    width: 90%;
+    height: 80%;
+    margin-left:5%;
+    margin-right:5%;
+}
+
+.data-form {
+    min-width: 150px;
+    max-width: 700px;
+    width: 100%;
+}
+
+.data-full-width {
+    width: 100%;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+td {
+    padding-right: 8px;
+}
+
+.margin-top {
+    margin-top: 30px;
+}
+
+.margin-all {
+    margin: 10px;
+}
+
+.input-label {
+    font-style: oblique;
+    font-weight: bold;
+    display: block;
+    width: 100px;
+    float: left;
+}
+
+p {
+    font-size: 12px;
+}
+
+#onDemandType, #onDemandTypeBack {
+  display: inline ;
+}
+
+#staticType, #staticTypeBack {
+  display: none;
+}
+.invisible{
+  display: block;
+  visibility: hidden;
+  height: 0;
+  width: 0;
+}

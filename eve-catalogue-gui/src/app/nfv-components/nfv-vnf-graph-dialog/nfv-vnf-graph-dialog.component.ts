@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { DialogData } from '../nfv-ns/nfv-ns.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { VsbDetailsService } from '../../vsb-details.service';
 import { dump } from 'js-yaml';
 
@@ -25,10 +25,10 @@ export class NfvVnfGraphDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<NfvVnfGraphDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
-    private vsbDetailsService: VsbDetailsService) { }
+    public vsbDetailsService: VsbDetailsService) { }
 
   ngOnInit() {
-    console.log(this.data);
+    //console.log(this.data);
     let nodeTempl = this.data.descriptorContent['topologyTemplate']['nodeTemplates'];
 
     var col=0;

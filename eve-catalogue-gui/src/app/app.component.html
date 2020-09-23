@@ -1,2 +1,13 @@
-<!-- Side Top Bar -->
-<app-side-top-bar></app-side-top-bar>
+<mat-sidenav-container id="main-mat" >
+<mat-sidenav #sidenav>
+  <app-sidenav-list (closeSideNavigation)="sidenav.close()"></app-sidenav-list>
+</mat-sidenav>
+<mat-sidenav-content>
+  <app-header (sideNavigationToggle)="sidenav.toggle()"></app-header>
+  <!--<app-navtabs></app-navtabs>-->
+  <main id="cmain" >
+    <router-outlet></router-outlet>
+  </main>
+</mat-sidenav-content>
+</mat-sidenav-container>
+<app-footer></app-footer>

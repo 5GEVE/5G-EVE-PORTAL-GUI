@@ -1,0 +1,56 @@
+
+    <div class="footer-container conf-footer" id="footer">
+        <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="center center" >
+        <div fxFlex="45%" style="width: 97%;">
+            <div class="font-size-sm font-size-xs"  fxLayout="column" fxLayoutAlign="left left" *ngFor="let info of footerInfo">
+                <span style="text-align: left;"><b>{{info.title}}</b> {{info.context}}</span>
+            </div>
+         </div>
+         <div fxFlex="10%" fxFlex.sm="100%" >
+            <div fxFlex="50%"  fxLayout.xs="row" fxLayout.sm="row" fxLayout="column" fxLayoutAlign="center center">
+                <div fxFlex="50%" fxLayout="column"fxLayout.sm="row" fxLayout.xs="row">
+                <!--
+                <a href="https://5g-eve-support.slack.com" target="_blank" class="icon_social_link icons-sm"  >
+                    <img class="social_icons" src="../../../assets/images/slack.png">
+                </a>
+                -->
+                <a href="https://5g-eve-support.slack.com" target="_blank" class="icon_social_link" style="color: white;" >
+                  <span class="iconify icon_social" data-icon="mdi-slack" data-inline="false" style="width: 27px;" ></span>
+                  
+                </a>
+                </div>
+                <div fxFlex="50%" fxLayout="column" fxLayout.sm="row" fxLayout.xs="row" >
+                  <a  href="https://twitter.com/5G_EVE"  target="_blank" class="icon_social_link icons-sm"  >
+                    <span class="iconify icon_social" data-icon="mdi-twitter-circle" data-inline="false" style="width: 27px;"></span>
+                  </a>
+                  </div>
+            </div>
+            <div fxFlex="50%"  fxLayout="column" fxLayout.xs="row" fxLayout.sm="row" fxLayoutAlign="center center">
+
+                <div fxFlex="50%" fxLayout="column" fxLayout.sm="row" fxLayout.xs="row" style="font-size: 10px;" >
+                  <a href="https://github.com/5GEVE" target="_blank" class="icon_social_link" style="font-size: 10px;" >
+                    <span class="iconify icon_social" data-icon="mdi-github-circle" data-inline="false" style="width: 27px;"></span>
+                    <!-- <p class="text_in_footer" style="margin-top: 5%;">github</p> -->
+                    </a>
+                  </div>
+                <div fxFlex="50%" fxLayout="column" fxLayout.sm="row" fxLayout.xs="row">
+                <a href="https://www.youtube.com/channel/UCALtt9NDmjt3_GTVNEC-ErQ" target="_blank" class="icon_social_link"  >
+                  <span class="iconify icon_social" data-icon="mdi-youtube" data-inline="false" style="width: 27px;"></span>
+                </a>
+                </div>
+            </div>
+         </div>
+         <div fxFlex="45%" fxFlex.sm="100%">
+            <div fxLayout="row" fxLayout.xs="row" fxLayoutAlign="center center">
+                <div style="text-align: left;" fxFlex="20%" fxFlex.xs="35%" fxLayout="column" fxLayout.xs="row" fxLayoutAlign="center center">
+                <img  src="assets/images/eu.png" class="pic-lg pic-xs pic-land" >
+                </div>
+                <div style="text-align: left" fxFlex="80%" fxFlex.xs="65%" fxLayout="column" fxLayout.xs="row" fxLayoutAlign="center center">
+                <p class="text_in_footer font-size-sm font-size-xs">
+                5G EVE <a href="www.5g-eve.eu" target="_blank" style="color: rgba(255, 255, 255, 0.7);">(www.5g-eve.eu)</a>
+                project has received funding from the European Horizon 2020 Programme for research, technological development and demonstration under grant agreement n° 815074
+              </p>
+            </div>
+            </div>
+         </div>
+      </div>

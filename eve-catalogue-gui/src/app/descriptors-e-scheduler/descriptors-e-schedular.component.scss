@@ -1,0 +1,32 @@
+@import '~@angular/material/theming';
+@mixin descriptors-e-schedular-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .desch-container{
+        background-color: mat-color($themestyle-primary,100);
+       
+        color: white;
+        width: 100%;
+         
+    }
+
+    .desch-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .desch-table{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+    @media (max-width: 400px) {
+        .mat-horizontal-stepper-header-container{
+            display:none !important
+        }
+
+
+        
+    }
+
+}

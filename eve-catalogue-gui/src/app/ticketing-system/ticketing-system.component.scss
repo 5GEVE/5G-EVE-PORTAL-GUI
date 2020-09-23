@@ -1,0 +1,37 @@
+@import '~@angular/material/theming';
+@mixin ticketing-system-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .ts-container{
+        background-color: mat-color($themestyle-primary,100);
+        width: 100%;
+       
+    }
+
+    .ts-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .ts-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+
+    @media (max-width: 400px) {
+        .add-ticket-xs{
+         width: 90%;
+         
+      }
+}
+@media (min-width: 800px) {
+    .add-ticket-xs{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
+}
+}

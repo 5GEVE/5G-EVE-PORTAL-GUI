@@ -67,7 +67,7 @@ export class NfvVnfComponent implements OnInit {
   viewVnfGraph(vnfPkgInfoId: string) {
     this.vnfdsService.getVnfDescriptor(vnfPkgInfoId).subscribe((vnfDescriptor: any) =>
       {
-        console.log(vnfDescriptor);
+        //console.log(vnfDescriptor);
         //console.log(dump(vnfDescriptor, 4, null));
         const dialogRef = this.dialog.open(NfvVnfGraphDialogComponent, {
           width: '60%',

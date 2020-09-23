@@ -1,9 +1,9 @@
 .full-width-table {
     margin-top: 2%;
-    width: 70%;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
     height: 80%;
-    margin-left:15%; 
-    margin-right:15%;
 }
 
 .rules-form {
@@ -36,3 +36,22 @@ td {
     width: 100px; 
     float: left;
 }
+input{
+    color: black;
+}
+@media (max-width: 400px) {
+    .full-width-table-xs {
+        margin-top: 2%;
+        width: 100%;
+        height: 80%;
+        margin:0
+    }
+  }
+  @media (max-width: 800px) {
+    .full-width-table-md {
+        margin-top: 2%;
+        width: 100%;
+        height: 80%;
+        margin:0
+    }
+  }

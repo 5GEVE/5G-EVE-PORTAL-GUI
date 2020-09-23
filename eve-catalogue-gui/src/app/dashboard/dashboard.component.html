@@ -1,27 +1,78 @@
 <app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
-<div class="grid-container" style="background: transparent; padding: 30px; padding-bottom: 10%;">
-  <mat-grid-list cols="2" rowHeight="2:1">
-    <mat-grid-tile *ngFor="let card of cards; let i=index" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="grid-card" [matBadge]="counters[i]" matBadgeSize="large" matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="warn">
-        <mat-card-header>
-          <!--div mat-card-avatar class="header-image"></div-->
-          <mat-card-title >
-          </mat-card-title>
-          <mat-card-subtitle></mat-card-subtitle>
-        </mat-card-header>
-        <!--img mat-card-image src="../../assets/images/kd-ic-catalogue-white.png"-->
-        <mat-card-content >
-            <div style="float: left;"><img src="../../assets/images/library_books_white.png" class="card-image"></div>
-            <div class="card-title">
-                <button class="card-actions" mat-button *ngIf="!card.readOnly" (click)="goTo(card.path);">
-                    <b>{{card.title}}</b><br/>Onboard <mat-icon>add_circle</mat-icon>
-                </button>
-                <button class="card-actions" mat-button *ngIf="card.readOnly" (click)="goTo(card.path);">
-                  <b>{{card.title}}</b><br/>List <mat-icon>view_list</mat-icon>
-              </button>
+<div class="container" id="cdashboard" >
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center" style="margin-top: 2%;" >
+        <div fxFlex="20%" fxFlex.sm="50%" fxFlex.xs="100%" class="dash-container" [matBadge]="counters[0]" matBadgeSize="large" matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="warn">
+            <button class="card-actions" mat-button  style="height: 100%;"   (click)="goTo('./blueprints_vs');" >
+                <div fxFlex="30%" fxHide.xs style="text-align: left;">
+                    <img src="../../assets/images/library_books_white.png" class="card-image">
+                </div>
+                <div fxFlex="70%">
+                    <b class="dash-elem">Vertical Service Blueprints</b>
+                    <br/>
+                    <div style="float: left;width: 85%;">Onboard</div> 
+                    <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>add_circle</mat-icon></div>
+                </div>
+            </button> 
+        </div>
+        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%" class="dash-container" [matBadge]="counters[1]" matBadgeSize="large" matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="warn" >
+            <button class="card-actions" mat-button (click)="goTo('./blueprints_ec');"  >
+                <div fxFlex="20%" fxFlex.xs="100%" fxHide.xs style="text-align: left;"   >
+                    <img  src="../../assets/images/library_books_white.png" class="card-image">
+                </div>
+                <div fxFlex="80%" >
+                    <b class="dash-elem">Execution Context Blueprints</b>
+                    <br/>
+                    <div style="float: left;width: 85%;">Onboard</div> 
+                    <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>add_circle</mat-icon></div>
+                </div>
+            </button> 
+        </div>
+   </div>
+   <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center" style="margin-top: 1%;">
+    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%" class="dash-container" [matBadge]="counters[2]" matBadgeSize="large" matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="warn">
+        <button class="card-actions" mat-button (click)="goTo('./blueprints_tc');">
+            <div fxFlex="30%" fxHide.xs style="text-align: left;"><img src="../../assets/images/library_books_white.png" class="card-image"></div>
+            <div fxFlex="70%" >
+                <b>Test Case Blueprints</b>
+                <br/>
+                <div style="float: left;width: 85%;">Onboard</div> 
+                <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>add_circle</mat-icon></div>
             </div>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+        </button> 
+    </div>
+    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%" class="dash-container" [matBadge]="counters[3]" matBadgeSize="large" matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="warn" >
+        <button class="card-actions" mat-button (click)="goTo('./blueprints_exp');">
+            <div fxFlex="30%" fxHide.xs style="text-align: left;"><img src="../../assets/images/library_books_white.png" class="card-image"></div>
+            <div fxFlex="70%">
+                <b class="dash-elem">Experiments Blueprints</b>
+                <br/>
+                <div style="float: left;width: 85%;">Onboard</div>
+                <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>add_circle</mat-icon></div>
+            </div>
+        </button> 
+    </div>
+</div>
+<div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center" style="margin-top: 1%;">
+    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%" class="dash-container" [matBadge]="counters[4]" matBadgeSize="large" matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="warn">
+        <button class="card-actions" mat-button (click)="goTo('./nfv_vnf');">
+            <div fxFlex="30%" fxHide.xs style="text-align: left;"><img src="../../assets/images/library_books_white.png" class="card-image"></div>
+            <div fxFlex="70%" >
+                <b class="dash-elem">Virtual Network Functions</b>
+                <br/>
+                <div style="float: left;width: 85%;">list</div> 
+                <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>list</mat-icon></div>
+            </div>
+        </button> 
+    </div>
+    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%" class="dash-container" [matBadge]="counters[5]" matBadgeSize="large" matBadgeOverlap="true" matBadgePosition="above after" matBadgeColor="warn" >
+        <button class="card-actions" mat-button (click)="goTo('./nfv_ns');">
+            <div fxFlex="30%" fxHide.xs style="text-align: left;"><img src="../../assets/images/library_books_white.png" class="card-image"></div>
+            <div fxFlex="70%">
+                <b class="dash-elem">Network Services</b>
+                <br/>
+                <div style="float: left;width: 85%;">list</div> 
+                <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>list</mat-icon></div>
+            </div>
+        </button> 
+    </div>
 </div>

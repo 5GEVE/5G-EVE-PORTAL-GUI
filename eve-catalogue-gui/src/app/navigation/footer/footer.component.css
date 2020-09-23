@@ -1,0 +1,22 @@
+.social_icons{
+    width: 30px;
+    height: 30px;
+    background-color: white;
+}
+.pic-lg{
+    width: 120px;
+    height: 80px;
+}
+
+.icon_social{
+    width: 50px;
+    height: 50px;
+    margin-top:-6px;
+  
+  }
+  
+  .icon_social_link{
+    color:white;
+    text-decoration: none;
+    display: inline-flex;
+  }

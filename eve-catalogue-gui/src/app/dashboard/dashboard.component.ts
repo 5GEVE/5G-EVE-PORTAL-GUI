@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { NsdsService } from './../nsds.service';
+import { VnfdsService } from './../vnfds.service';
+import { Component, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -11,8 +13,6 @@ import { DescriptorsEcService } from '../descriptors-ec.service';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 import { DescriptorsTcService } from '../descriptors-tc.service';
 import { DescriptorsVsService } from '../descriptors-vs.service';
-import { VnfdsService } from '../vnfds.service';
-import { NsdsService } from '../nsds.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,22 +22,21 @@ import { NsdsService } from '../nsds.service';
 export class DashboardComponent implements OnInit {
 
   cards = [
-    { title: 'Vertical Service Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_vs', readOnly: false },
-    { title: 'Execution Context Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_ec', readOnly: false },
-    { title: 'Test Case Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_tc', readOnly: false },
-    { title: 'Experiments Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_exp', readOnly: false },
-    { title: 'Virtual Network Functions', subtitle: '', cols: 1, rows: 1, path: '/nfv_vnf', readOnly: true },
-    { title: 'Network Services', subtitle: '', cols: 1, rows: 1, path: '/nfv_ns', readOnly: true }
+    { title: 'Vertical Service Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_vs' },
+    { title: 'Execution Context Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_ec' },
+    { title: 'Test Case Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_tc' },
+    { title: 'Experiments Blueprints', subtitle: '', cols: 1, rows: 1, path: '/blueprints_exp' },
+    { title: 'Virtual Network Functions', subtitle: '', cols: 1, rows: 1, path: '' }
   ];
 
   vsBCounter: number = 0;
   ecBCounter: number = 0;
   tcBCounter: number = 0;
   expBCounter: number = 0;
-  vnfdCounter: number = 0;
-  nsdCounter: number = 0;
-
-  counters: number[] = [this.vsBCounter, this.ecBCounter, this.tcBCounter, this.expBCounter, this.vnfdCounter, this.nsdCounter];
+  vnfCounter: number = 0;
+  nsdCounter : number = 0;
+  breakpoint
+  counters: number[] = [this.vsBCounter, this.ecBCounter, this.tcBCounter, this.expBCounter];
 
   constructor(private breakpointObserver: BreakpointObserver,
     iconRegistry: MatIconRegistry, sanitizer: DomSanitizer,
@@ -51,7 +50,8 @@ export class DashboardComponent implements OnInit {
     private descriptorsTcService: DescriptorsTcService,
     private descriptorsVsService: DescriptorsVsService,
     private vnfdsService: VnfdsService,
-    private nsdsService: NsdsService
+    private nsdsService: NsdsService,
+
     ) {
       iconRegistry.addSvgIcon(
         'library_add',
@@ -67,8 +67,13 @@ export class DashboardComponent implements OnInit {
       //this.getTcDescriptors();
       this.getExpBlueprints();
       //this.getExpDescriptors();
-      this.getVnfDescriptors();
-      this.getNsDescriptors();
+      this.getVnfDescriptor();
+      this.getNsDescriptor();
+
+
+      //this.breakpoint = (window.outerWidth <= 400) ? 1 : 6;
+      //this.breakpoint = (window.outerWidth <= 1300) ? 1 : 6;
+      //this.breakpoint = (window.outerWidth <= 2000) ? 2 : 3;
     }
 
     getVsBlueprints() {
@@ -76,6 +81,7 @@ export class DashboardComponent implements OnInit {
         //this.cards.push({ title: 'Vertical Service Blueprints', subtitle: '', counter: vsBlueprints.length, cols: 1, rows: 1, path: '/blueprints_vs' });
         this.vsBCounter = vsBlueprints.length;
         this.counters[0] = vsBlueprints.length;
+       
       });
     }
 
@@ -104,20 +110,20 @@ export class DashboardComponent implements OnInit {
       });
     }
 
-    getVnfDescriptors() {
-      this.vnfdsService.getVnfPackageInfos().subscribe(vnfds => {
-        this.vnfdCounter = vnfds.length;
-        this.counters[4] = vnfds.length;
+    getVnfDescriptor() {
+      this.vnfdsService.getVnfPackageInfos().subscribe(vnfDescriptor => {
+        this.vnfCounter = vnfDescriptor.length;
+        this.counters[4] = vnfDescriptor.length;
       });
     }
-
-    getNsDescriptors() {
-      this.nsdsService.getNsdInfos().subscribe(nsds => {
-        this.nsdCounter = nsds.length;
-        this.counters[5] = nsds.length;
+    getNsDescriptor() {
+      this.nsdsService.getNsdInfos().subscribe(nsdDescriptor => {
+        this.nsdCounter = nsdDescriptor.length;
+        this.counters[5] = nsdDescriptor.length;
+        //console.log(this.counters[5])
       });
     }
-
+    
     getVsDescriptors() {
       this.descriptorsVsService.getVsDescriptors().subscribe(vsDescriptors => {
         //this.cards.push({ title: 'Vertical Service Descriptors', subtitle: '', counter: vsDescriptors.length, cols: 1, rows: 1, path: '/descriptors_vs' })
@@ -142,11 +148,20 @@ export class DashboardComponent implements OnInit {
       });
     }
 
+
     goTo(path: string) {
       if (path.indexOf('http') >= 0) {
         window.open(path, '_blank');
       } else {
         this.router.navigate([path]);
       }
+    }
+    
+    onResize(event) {
+      this.breakpoint = (event.target.innerWidth <= 400) ? 3 :3;
+      //this.breakpoint = (event.target.Output <= 800) ? 3 : 3;
+      //this.breakpoint = (event.target.innerWidth >= 700) ? 3 : 3;
+     //this.breakpoint = (event.target.innerWidth <= 800) ? 2 : 3;
+      
     }
 }

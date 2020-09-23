@@ -1,0 +1,12 @@
+@import '~@angular/material/theming';
+@mixin login-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    .l-main{
+        background-color: mat-color($themestyle-primary,100); 
+        line-height: 65px;
+        width: 30%;
+    }
+
+      
+}

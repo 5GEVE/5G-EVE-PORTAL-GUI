@@ -1,8 +1,11 @@
+<div fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="width: 100%">
 <h1 mat-dialog-title>VNFD w/ Id: {{data.descriptorId}}</h1>
 <mat-dialog-content>
-  <textarea matInput value={{vnfd}} disabled rows="25"></textarea>  
+  <div style="width: 100%;height: 100%;">
+    <textarea matInput value={{vnfd}} disabled rows="25" style="width: 100%;"></textarea>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-raised-button color="warn" (click)="onNoClick()">Close</button>
 </mat-dialog-actions>
-
+</div>

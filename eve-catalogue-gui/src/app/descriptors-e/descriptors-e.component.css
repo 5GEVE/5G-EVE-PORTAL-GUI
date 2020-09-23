@@ -19,3 +19,17 @@ a:hover {
   color: white;
   cursor: pointer;
 }
+@media (max-width: 400px) {
+  .full-width-table {
+    width: 100%;
+    margin-left:0; 
+    margin-right:0;
+  }
+}
+@media (max-width: 800px) {
+  .full-width-table {
+    width: 100%;
+    margin-left:0; 
+    margin-right:0;
+  }
+}

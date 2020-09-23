@@ -1,0 +1,63 @@
+<mat-nav-list class="sidenav-list main-nav-lis" >
+    <a mat-list-item routerLink="/home" (click)="onToggleClose()">
+        <mat-icon>account_circle</mat-icon>
+        <span> {{username}} </span>
+    </a>
+    <!--
+    <a mat-list-item routerLink="/home" (click)="onToggleClose()">
+        <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+        <span>Home</span>
+    </a>
+    -->
+    <div fxShow="true" fxHide.gt-sm="True" fxShow.sm="false" >
+    <div id="show_blue" >
+    <a class="blue" mat-list-item >
+        <span><img src="../../assets/images/kd-ic-sdk-green.png" class="logo"></span>
+        <span>
+            <button mat-button [matMenuTriggerFor]="blueprints_menu" >
+                Blueprints <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+        </span>
+    </a>
+    <mat-menu #blueprints_menu="matMenu">
+        <button  (click)="onToggleClose()" mat-menu-item routerLink="/blueprints_vs">Vertical Service</button>
+        <button  (click)="onToggleClose()" mat-menu-item routerLink="/blueprints_ec">Execution Context</button>
+        <button  (click)="onToggleClose()" mat-menu-item routerLink="/blueprints_tc">Test Case</button>
+        <button  (click)="onToggleClose()" mat-menu-item routerLink="/blueprints_exp">Experiment</button>
+    </mat-menu>
+    </div>    
+    <div id="show_desc">
+    <a mat-list-item  >
+        <span><img src="../../assets/images/kd-ic-slicer-amber.png" class="logo"></span>
+        <span>
+            <button mat-button [matMenuTriggerFor]="descriptors_menu" >
+                Descriptors <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+        </span>
+    </a>
+    <mat-menu #descriptors_menu="matMenu">
+        <button (click)="onToggleClose()" mat-menu-item routerLink="/descriptors_vs">Vertical Service</button>
+        <button (click)="onToggleClose()" mat-menu-item routerLink="/descriptors_ec">Execution Context</button>
+        <button (click)="onToggleClose()" mat-menu-item routerLink="/descriptors_exp">Experiment</button>
+        <button (click)="onToggleClose()" mat-menu-item routerLink="/descriptors_tc">Test Case</button>
+    </mat-menu>
+</div>
+<div id="show_manage_site">
+<a mat-list-item routerLink="/experiments" (click)="onToggleClose()">
+    <mat-icon>build</mat-icon>
+    <span >Experiments</span>
+    
+</a>
+</div>
+</div>
+<a fxHide.gt-sm="True" fxShow.sm="false" mat-list-item routerLink="/tickets" (click)="onToggleClose()">
+    <mat-icon>list</mat-icon>
+    <span >Tickets</span>
+</a>
+    <a mat-list-item (click)="onToggleClose()">
+        <mat-icon>input</mat-icon>
+        <span (click)="logout();">logout</span>
+        
+    </a>
+</mat-nav-list>
+

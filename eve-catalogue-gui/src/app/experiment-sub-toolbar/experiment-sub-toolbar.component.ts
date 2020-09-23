@@ -23,7 +23,6 @@ export class ExperimentSubToolbarComponent implements OnInit {
   }
 
   goTo() {
-    /*
     if (localStorage.getItem('role').indexOf('SITE_MANAGER') >= 0) {
       this.router.navigate(['/manage_site']);
     }
@@ -31,8 +30,6 @@ export class ExperimentSubToolbarComponent implements OnInit {
     if (localStorage.getItem('role').indexOf('EXPERIMENTER') >= 0) {
       this.router.navigate(['/experiments']);
     }
-    */
-   this.router.navigate(['/portal_home']);
   }
 
   backClicked() {

@@ -1,21 +1,37 @@
-.full-width-table {
-  margin-top: 2%;
-  width: 80%;
-  height: 80%;
-  margin-left:10%; 
-  margin-right:10%;
-}
-
 .margin-all {
   margin: 5px;
 }
 
-a {
-  font-weight: bold;
-  color: #f0a30a;
-}
 
 a:hover {
-  color: white;
+
   cursor: pointer;
+}
+full-width-table {
+  margin-top: 2%;
+  width: 60%;
+  height: 80%;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+@media (max-width: 400px) {
+  .full-width-table {
+    width: 100%;
+    margin-left:0; 
+    margin-right:0;
+    padding: 0;
+  }
+  .paginator-xs{
+    margin-right: 22%;
+  }
+}
+@media (max-width: 800px) {
+  .full-width-table {
+    width: 100%;
+    margin-left:0; 
+    margin-right:0;
+    padding: 0;
+  }
+  
 }

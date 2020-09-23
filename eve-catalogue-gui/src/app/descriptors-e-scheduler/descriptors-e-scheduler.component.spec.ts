@@ -1,13 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { DescriptorsESchedulerComponent } from './descriptors-e-scheduler.component';
 
-describe('DescriptorsESchedulerComponent', () => {
+xdescribe('DescriptorsESchedulerComponent', () => {
   let component: DescriptorsESchedulerComponent;
   let fixture: ComponentFixture<DescriptorsESchedulerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports : [
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        HttpClientModule,
+        MatSnackBarModule
+      ],
       declarations: [ DescriptorsESchedulerComponent ]
     })
     .compileComponents();

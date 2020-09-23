@@ -1,0 +1,148 @@
+//video 7
+//http://mcg.mbitson.com/#!?mcgpalette0=%233f51b5
+
+$my-primary:(
+    50 : #e0e0e0,
+    100 : #b3b3b3,
+    200 : #808080,
+    300 : #262626,
+    400 : #262626,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #000000,
+    A100 : #a6a6a6,
+    A200 : #8c8c8c,
+    A400 : #737373,
+    A700 : #666666,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+    );
+    $my-accent:(
+        50 : #e0e0e0,
+        100 : #b3b3b3,
+        200 : #808080,
+        300 : #262626,
+        400 : #262626,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #a6a6a6,
+        A200 : #8c8c8c,
+        A400 : #737373,
+        A700 : #666666,
+        contrast: (
+            50 : #000000,
+            100 : #000000,
+            200 : #000000,
+            300 : #ffffff,
+            400 : #ffffff,
+            500 : #ffffff,
+            600 : #ffffff,
+            700 : #ffffff,
+            800 : #ffffff,
+            900 : #ffffff,
+            A100 : #000000,
+            A200 : #000000,
+            A400 : #ffffff,
+            A700 : #ffffff,
+        )
+);
+@import '~@angular/material/theming';
+@include mat-core();
+//the first number is defult(700) the second(300) lighter the third(900) darker
+$themestyle-primary: mat-palette($my-primary,700,300,900);
+$themestyle-accent:  mat-palette($my-accent,500,400,700);
+$themestyle-warn:    mat-palette($mat-red);
+$themestyle-theme: mat-light-theme($themestyle-primary, $themestyle-accent, $themestyle-warn);
+
+@import './app/navigation/navtabs/navtabs.component-theme.scss';
+@import './app/navigation/footer/footer.component-theme.scss';
+@import './app/navigation/sidenav-list/sidenav-list.component-theme.scss';
+@import './app/dashboard/dashboard.component-theme.scss';
+@import './app/blueprints-compnents/blueprints-vs/blueprints-vs.scss';
+@import './app/blueprints-compnents/blueprints-vs-stepper/blueprints-vs-stepper.scss';
+@import './app/blueprints-compnents/blueprints-e/blueprints-e.scss';
+@import './app/blueprints-compnents/blueprints-e-stepper/blueprints-e-stepper.component.scss';
+@import './app/blueprints-compnents/blueprints-ec-stepper/blueprints-ec-stepper.scss';
+@import './app/blueprints-compnents/blueprints-ec/blueprints-ec.scss';
+@import './app/blueprints-compnents/blueprints-tc/blueprints-tc.scss';
+@import './app/experiment-switch/experiment-switch.component.scss';
+@import './app/descriptors-e-scheduler/descriptors-e-schedular.component.scss';
+@import './app/experiments/experiments.component.scss';
+@import './app/sites-switch/sites-switch.component.scss';
+@import './app/design-switch/design-switch.component.scss';
+@import './app/descriptors-e/descriptors-e.component.scss';
+@import './app/descriptors-e-stepper/descriptors-e-stepper.component.scss';
+@import './app/login-sub-toolbar/login-sub-toolbar.component-theme.scss';
+@import './app/login/login.component-theme.scss';
+@import './app/navigation/header/header.component-theme.scss';
+@import './app/descriptors-e-details/descriptors-e-details.component.scss';
+@import './app/blueprints-compnents/blueprints-ec-details/blueprints-ec-details.component.scss';
+@import './app/blueprints-compnents/blueprints-e-details/blueprints-e-details.component.scss';
+@import './app/blueprints-compnents/blueprints-vs-details/blueprints-vs-details.component.scss';
+@import './app/experiments-details/experiments-details.component.scss';
+@import './app/register/register.component.scss';
+@import './app/descriptors-ec/descriptors-ec.component.scss';
+@import './app/descriptors-tc/descriptors-tc.component.scss';
+@import './app/descriptors-vs-details/descriptors-vs-details.component.scss';
+@import './app/descriptors-vs/descriptors-vs.component.scss';
+@import './app/nfv-components/nfv-vnf/nfv-vnf.component.scss';
+@import './app/nfv-components/nfv-ns/nfv-ns.component.scss';
+@import './app/ticketing-system/ticketing-system.component.scss';
+
+
+@include angular-material-theme($themestyle-theme);
+
+// component scss files
+@include navtabs-component-theme($themestyle-theme);
+@include footer-component-theme($themestyle-theme);
+@include sidenav-list-component-theme($themestyle-theme);
+@include dashboard-component-theme($themestyle-theme);
+@include blueprints-vs-component-theme($themestyle-theme);
+@include blueprints-vs-stepper-component-theme($themestyle-theme);
+@include blueprints-e-component-theme($themestyle-theme);
+@include blueprints-e-stepper-component-theme($themestyle-theme);
+@include blueprints-ec-component-theme($themestyle-theme);
+@include blueprints-ec-stepper-component-theme($themestyle-theme);
+@include blueprints-tc-component-theme($themestyle-theme);
+@include experiment-switch-component-theme($themestyle-theme);
+@include descriptors-e-schedular-component-theme($themestyle-theme);
+@include experiments-component-theme($themestyle-theme);
+@include sites-switch-component-theme($themestyle-theme);
+@include design-switch-component-theme($themestyle-theme);
+@include descriptors-e-component-theme($themestyle-theme);
+@include descriptors-e-stepper-component-theme($themestyle-theme);
+@include login-sub-toolbar-component-theme($themestyle-theme);
+@include login-component-theme($themestyle-theme);
+@include header-component-theme($themestyle-theme);
+@include descriptors-e-details-component-theme($themestyle-theme);
+@include blueprints-ec-details-component-theme($themestyle-theme);
+@include blueprints-e-details-component-theme($themestyle-theme);
+@include blueprints-vs-details-component-theme($themestyle-theme);
+@include experiments-details-component-theme($themestyle-theme);
+@include register-component-theme($themestyle-theme);
+@include descriptors-ec-component-theme($themestyle-theme);
+@include descriptors-tc-component-theme($themestyle-theme);
+@include descriptors-vs-details-component-theme($themestyle-theme);
+@include descriptors-vs-component-theme($themestyle-theme);
+@include nfv-vnf-component-theme($themestyle-theme);
+@include nfv-ns-component-theme($themestyle-theme);
+@include ticketing-system-component-theme($themestyle-theme);

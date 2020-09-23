@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "eve-catalogue-gui": {
+    "responsive-mat": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,23 +13,25 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/eve-catalogue-gui",
+            "outputPath": "dist/responsive-mat",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/eve-portal-theme.scss",
-              "src/styles.css"              
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css",
+              "src/themestyle.scss"
             ],
             "scripts": [
               "node_modules/cytoscape/dist/cytoscape.min.js",
               "node_modules/jquery/dist/jquery.min.js"
+             
             ]
           },
           "configurations": {
@@ -45,10 +47,10 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "enableIvy": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -67,18 +69,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "eve-catalogue-gui:build"
+            "browserTarget": "responsive-mat:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "eve-catalogue-gui:build:production"
+              "browserTarget": "responsive-mat:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "eve-catalogue-gui:build"
+            "browserTarget": "responsive-mat:build"
           }
         },
         "test": {
@@ -93,7 +95,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/eve-portal-theme.scss",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -119,16 +121,19 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "eve-catalogue-gui:serve"
+            "devServerTarget": "responsive-mat:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "eve-catalogue-gui:serve:production"
+              "devServerTarget": "responsive-mat:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "eve-catalogue-gui"
+  "defaultProject": "responsive-mat",
+  "cli": {
+    "analytics": "ce19f698-f565-4b2d-8e28-32dfba438232"
+  }
 }

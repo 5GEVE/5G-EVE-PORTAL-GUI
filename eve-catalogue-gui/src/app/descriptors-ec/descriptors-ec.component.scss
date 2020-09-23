@@ -1,0 +1,24 @@
+@import '~@angular/material/theming';
+@mixin descriptors-ec-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .dec-container{
+        background-color: mat-color($themestyle-primary,100);
+     
+        color: white;
+       
+    }
+
+    .dec-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .dec-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+
+}

@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <div style="width: 100%; margin: 1%">
         <div style="background: transparent; padding:5%; padding-bottom: 10%;" >
-            <app-blueprints-graph [elements]="vsbDetailsService.graphData" [layout]="layout" (select)="nodeChange($event)"></app-blueprints-graph>
+            <app-blueprints-graph [elements]="vsbDetailsService.graphData" layout="[layout]" (select)="nodeChange($event)"></app-blueprints-graph>
             <div style="padding-top: 30px;"><p><b>Selected Node: </b>{{node_name}}</p></div>
         </div>
     </div>

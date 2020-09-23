@@ -1,11 +1,11 @@
 <app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
-<mat-toolbar style="background: transparent;">
+<mat-toolbar class="de-title">
   <span style="margin-left: 15px;"><h1 class="mat-h1">Experiment Descriptors</h1></span>
 </mat-toolbar>
-<mat-tab-group [(selectedIndex)]="selectedIndex">
+<mat-tab-group [(selectedIndex)]="selectedIndex" class="de-container">
   <mat-tab label="View">
-    <div style="background: transparent; padding: 30px; padding-bottom: 10%;">
-      <table mat-table class="full-width-table" matSort aria-label="Elements">
+    <div style="padding: 30px;" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center">
+      <table mat-table class="full-width-table de-table" matSort aria-label="Elements">
         <!-- Id Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
@@ -20,25 +20,25 @@
 
         <!-- Exp Blueprint Column -->
         <ng-container matColumnDef="expElueprintId">
-          <th mat-header-cell *matHeaderCellDef>Experiment</th>
+          <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>Experiment</th>
           <!--td mat-cell *matCellDef="let row">{{row.expBlueprintId}}</td-->
-          <td mat-cell *matCellDef="let row">
-            <tr *ngFor="let name of idToExpbId.get(row.expDescriptorId) | keyvalue"><td><a (click)="viewExpBlueprint(name.key)">{{name.value}}</a></td></tr>
+          <td fxShow.xs="false" mat-cell *matCellDef="let row">
+            <tr *ngFor="let name of idToExpbId.get(row.expDescriptorId) | keyvalue"><td><a (click)="viewExpBlueprint(name.key)" style="color: black">{{name.value}}</a></td></tr>
           </td>
         </ng-container>
 
         <!-- VS Descriptor Column -->
         <ng-container matColumnDef="vsDescriptorId">
-          <th mat-header-cell *matHeaderCellDef>VS Descriptor</th>
+          <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>VS Descriptor</th>
           <!--td mat-cell *matCellDef="let row">{{row.vsDescriptorId}}</td-->
-          <td mat-cell *matCellDef="let row">
-            <tr *ngFor="let name of idToVsdId.get(row.expDescriptorId) | keyvalue"><td><a (click)="viewVsDescriptor(name.key)">{{name.value}}</a></td></tr>
+          <td fxShow.xs="false" mat-cell *matCellDef="let row">
+            <tr *ngFor="let name of idToVsdId.get(row.expDescriptorId) | keyvalue"><td><a (click)="viewVsDescriptor(name.key)" style="color: black" >{{name.value}}</a></td></tr>
           </td>
         </ng-container>
 
         <!-- Configurable Parameters Column -->
         <ng-container matColumnDef="kpi">
-          <th mat-header-cell *matHeaderCellDef>KPI Thresholds</th>
+          <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>KPI Thresholds</th>
           <td mat-cell *matCellDef="let row"><tr *ngFor="let param of row.kpiThresholds | keyvalue"><td>{{param.key}}:<br /> - Lower bound limit: {{param.value.lowerBound}}<br /> - UpperBoundLimit: {{param.value.upperBound}}</td></tr></td>
         </ng-container>
 
@@ -47,8 +47,8 @@
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let row">
             <mat-button-toggle-group name="operations" aria-label="Operations" class="margin-all">
-              <mat-button-toggle value="view_descriptor" (click)="viewExpDescriptor(row.expDescriptorId)"><mat-icon>remove_red_eye</mat-icon></mat-button-toggle>
-              <mat-button-toggle value="delete" (click)="deleteExpDescriptor(row.expDescriptorId)"><mat-icon>delete_forever</mat-icon></mat-button-toggle>
+              <mat-button-toggle style="background-color: #b3b3b3;"  value="view_descriptor" (click)="viewExpDescriptor(row.expDescriptorId)"><mat-icon>remove_red_eye</mat-icon></mat-button-toggle>
+              <mat-button-toggle style="background-color: #b3b3b3;"  value="delete" (click)="deleteExpDescriptor(row.expDescriptorId)"><mat-icon>delete_forever</mat-icon></mat-button-toggle>
             </mat-button-toggle-group>
           </td>
         </ng-container>
@@ -62,12 +62,12 @@
           [pageIndex]="0"
           [pageSize]="50"
           [pageSizeOptions]="[25, 50, 100, 250]"
-          style="background: transparent;">
+          class="de-table">
       </mat-paginator>
     </div>
   </mat-tab>
   <mat-tab label="Onboard">
-    <div style="background: transparent; padding: 30px;">
+    <div style="padding: 30px;">
       <app-descriptors-e-stepper></app-descriptors-e-stepper>
     </div>
   </mat-tab>

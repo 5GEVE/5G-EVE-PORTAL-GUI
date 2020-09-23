@@ -1,37 +1,10 @@
-# EveCatalogueGui
+# ResponsiveMat
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.2.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.2.
 
-## Environment setup
+## Development server
 
-### Install nodejs
-
-```
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-sudo apt-get install -y nodejs
-node -v
-
-```
-
-### Install Angular CLI
-
-```
-sudo npm install -g @angular/cli
-```
-
-### Install Angular Material & hammerjs
-
-```
-npm install --save @angular/material @angular/cdk @angular/animations
-npm install --save hammerjs
-```
-
-## Development server (starting the application)
-
-Run `cd eve-catalogue-gui`.
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
-Run `ng serve --open` for a dev server and opening the default browser.
-The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 

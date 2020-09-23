@@ -51,7 +51,7 @@ export class AuthService {
   httpOptions = {
     headers: new HttpHeaders(
       { 'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       })
   };
 
@@ -62,15 +62,14 @@ export class AuthService {
 
 
   registerUser(email: string, username: string, firstName: string,
-    lastName: string, password: string, role: Role, project: string): Observable<RegistrationDetails> {
+    lastName: string, password: string, role: Role): Observable<RegistrationDetails> {
     let data = {
         "email": email,
         "username": username,
         "firstName": firstName,
         "lastName": lastName,
         "password": password,
-        "roles": [role.name],
-        "project": project
+        "roles": [role.name]
     };
 
     return this.http.post<RegistrationDetails>(this.baseUrl + this.registerUrl, data, this.httpOptions)
@@ -92,9 +91,9 @@ export class AuthService {
   }
 
   getUseCases(): Observable<UseCases> {
-    return this.http.get<UseCases>(this.baseUrl + 'extra/use-cases', this.httpOptions)
+    return this.http.get<UseCases>(this.baseUrl + "extra/use-cases", this.httpOptions)
       .pipe(
-        tap(_ => console.log('fetched use cases - SUCCESS')),
+        tap(_ => console.log('fetched rolesDetails - SUCCESS')),
         catchError(this.handleError<UseCases>('getExpDescriptor'))
       );
   }
@@ -109,15 +108,15 @@ export class AuthService {
             'User account not activated. Please, wait until the administrator validates your account') {
             this.log(token['details'], 'FAILED', true);
           } else {
+
             this.log(`login w/ id=${loginInfo['email']}`, 'SUCCESS', false);
-            this.parseToken(token.access_token);
             localStorage.setItem('token', token.access_token);
             localStorage.setItem('refreshtoken', token.refresh_token);
-            localStorage.setItem('logged', 'true');
+            localStorage.setItem('logged', 'true')
+            this.parseToken(token.access_token);
             this.router.navigate([redirection]).then(() => {
               window.location.reload();
             });
-
           }
         }),
         catchError(this.handleError<Token>('login'))
@@ -159,7 +158,7 @@ export class AuthService {
 
   parseToken(token: string) {
     var decodedToken = jwt_decode(token);
-    console.log(JSON.stringify(decodedToken, null, 4));
+    //console.log(JSON.stringify(decodedToken, null, 4));
 
     var username = decodedToken['preferred_username'];
     var name = decodedToken['name'];
@@ -180,11 +179,7 @@ export class AuthService {
    */
   handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      //console.log(error); // log to console instead
-
-      if (error.status == 401 /*|| error.status == 400*/) {
+      if (error.status === 401 /*|| error.status == 400*/) {
         if (operation.indexOf('refresh') >= 0 || operation.indexOf('login') >= 0) {
           // TODO: better job of transforming error for user consumption
           this.log(`${operation} failed: ${error.message}`, 'FAILED', false);
@@ -209,7 +204,7 @@ export class AuthService {
         }
 
       } else {
-        if (error.status == 400) {
+        if (error.status === 400) {
           if (operation.indexOf('refresh') >= 0 || operation.indexOf('login') >= 0) {
             // TODO: better job of transforming error for user consumption
             this.log(`${operation} failed: ${error.message}`, 'FAILED', false);
@@ -223,8 +218,8 @@ export class AuthService {
             });
           }
         } else {
-          console.log(error.status + " after " + operation);
-          this.log("Account not yet activated", 'FAILED', true);
+            console.log(error.status + ' after ' + operation);
+            this.log(`${operation} failed: ${error.error}`, 'FAILED', false);
         }
       }
 
@@ -244,8 +239,9 @@ export class AuthService {
       duration: 0,
     }).afterDismissed().subscribe(() => {
       //console.log('The snack-bar was dismissed');
-      if (reload)
+      /*if (reload)
         window.location.reload();
+        */
     });
   }
 }

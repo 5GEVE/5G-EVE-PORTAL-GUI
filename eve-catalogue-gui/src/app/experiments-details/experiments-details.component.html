@@ -1,33 +1,12 @@
 <app-experiment-sub-toolbar></app-experiment-sub-toolbar>
-<div style="background: transparent; padding: 30px; padding-bottom: 10%;">
-
-<mat-toolbar style="background: transparent;">
+<mat-toolbar class="exd-title">
     <span style="margin-left: 15px;"><h1 class="mat-h1">Experiment Details</h1></span>
-    <!--span style="margin-left: 20px;"> {{experiment.experimentId}}</span-->
-    <!--span *ngIf="getRole().indexOf('EXPERIMENTER') >= 0;">
-        <button mat-raised-button color="primary" [matMenuTriggerFor]="actions_menu" style="margin-left: 20px;">
-            Actions <mat-icon>keyboard_arrow_down</mat-icon>
-        </button>
-    </span>
-    <mat-menu #actions_menu="matMenu">
-        <button mat-menu-item>Instantiate</button>
-        <button mat-menu-item>Activate Execution</button>
-        <button mat-menu-item>Monitor</button>
-        <button mat-menu-item>Visualize Results</button>
-    </mat-menu>
-    <span *ngIf="getRole().indexOf('SITE_MANAGER') >= 0;">
-        <button mat-raised-button color="primary" [matMenuTriggerFor]="site_actions_menu" style="margin-left: 20px;">
-            Actions <mat-icon>keyboard_arrow_down</mat-icon>
-        </button>
-    </span>
-    <mat-menu #site_actions_menu="matMenu">
-        <button mat-menu-item *ngIf="experiment.status != 'SCHEDULING' && experiment.status != 'ACCEPTED'">NONE</button>
-        <button mat-menu-item *ngIf="experiment.status == 'SCHEDULING'">Accept / Refuse</button>
-        <button mat-menu-item *ngIf="experiment.status == 'SCHEDULING'">Modify Time Slot</button>
-        <button mat-menu-item *ngIf="experiment.status == 'ACCEPTED'">Set Ready</button>
-    </mat-menu-->
 </mat-toolbar>
-    <table mat-table class="full-width-table" matSort aria-label="Elements">
+<div class="exd-container">
+    <div fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="   margin-left: 10%;
+    margin-right: 10%;
+    width: 90%">
+    <table mat-table class="full-width-table exd-table" matSort aria-label="Elements">
         <!-- KEY Column -->
         <ng-container matColumnDef="key">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Field</th>
@@ -43,9 +22,9 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <br>
 
-    <table mat-table [dataSource]="executions" class="full-width-table">
+    <div fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="width: 100%;margin-top: 2%;">
+    <table mat-table [dataSource]="executions" class="full-width-table exd-table">
         <h3>Executions</h3>
 
         <!-- Id Column -->
@@ -62,25 +41,25 @@
 
         <!-- State Column -->
         <ng-container matColumnDef="state">
-            <th mat-header-cell *matHeaderCellDef> State </th>
-            <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+            <th fxHide.xs mat-header-cell *matHeaderCellDef> State </th>
+            <td fxHide.xs mat-cell *matCellDef="let element"> {{element.state}} </td>
         </ng-container>
         <!-- Button Column -->
         <ng-container matColumnDef="reportUrl" style="background: transparent; padding-left: 30px;">
-          <th mat-header-cell *matHeaderCellDef> Report </th>
-          <td mat-cell *matCellDef="let element">
+          <th fxHide.xs mat-header-cell *matHeaderCellDef> Report </th>
+          <td fxHide.xs mat-cell *matCellDef="let element">
             <mat-button-toggle-group name="operations" aria-label="Operations" class="margin-all">
-              <mat-button-toggle value="results" *ngIf="element.state == 'COMPLETED'" (click)="openResultsDialog(element.reportUrl);"><mat-icon>multiline_chart</mat-icon></mat-button-toggle>
+              <mat-button-toggle value="results" (click)="openResultsDialog(element.reportUrl);" class="exd-table"><mat-icon >multiline_chart</mat-icon></mat-button-toggle>
             </mat-button-toggle-group>
           </td>
         </ng-container>
         <!-- TCR Column -->
         <ng-container matColumnDef="tcr">
-            <th mat-header-cell *matHeaderCellDef> Test Case Results </th>
-            <td mat-cell *matCellDef="let element">
+            <th fxHide.xs mat-header-cell *matHeaderCellDef> Test Case Results </th>
+            <td fxHide.xs mat-cell *matCellDef="let element">
                 <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical" *ngFor="let tc of element.testCaseResult | keyvalue">
                     <mat-chip style="background-color: green;" *ngIf="tc.value.resultCode == 'SUCCESSFUL'">Test Case {{tc.value.testCaseName}}</mat-chip>
-                    <mat-chip style="background-color: red;" *ngIf="tc.value.resultCode == 'FAILED'" title="{{tc.value.result}}">{{tc.value.testCaseName}}</mat-chip>
+                    <mat-chip style="background-color: red;" *ngIf="tc.value.resultCode == 'FAILED'">Test Case {{tc.value.testCaseName}}</mat-chip>
                 </mat-chip-list>
                 <!--tr *ngFor="let tc of element.testCaseResult | keyvalue">Test Case {{tc.key}} : {{tc.value.result}} </tr-->
             </td>
@@ -89,12 +68,55 @@
         <tr mat-header-row *matHeaderRowDef="executionsColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: executionsColumns;"></tr>
     </table>
+    </div>
+<!--
+    <table mat-table [dataSource]="executions" class="full-width-table exd-table">
+        <h3>Executions</h3>
 
-    <!--mat-paginator #paginator
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> Execution </th>
+          <td mat-cell *matCellDef="let element"> {{element.executionName}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="state">
+            <th mat-header-cell *matHeaderCellDef> State </th>
+            <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reportUrl" style="background: transparent; padding-left: 30px;">
+          <th mat-header-cell *matHeaderCellDef> Report </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-button-toggle-group name="operations" aria-label="Operations" class="margin-all">
+              <mat-button-toggle value="results" (click)="openResultsDialog(element.reportUrl);"><mat-icon>multiline_chart</mat-icon></mat-button-toggle>
+            </mat-button-toggle-group>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tcr">
+            <th mat-header-cell *matHeaderCellDef> Test Case Results </th>
+            <td mat-cell *matCellDef="let element">
+                <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical" *ngFor="let tc of element.testCaseResult | keyvalue">
+                    <mat-chip style="background-color: green;" *ngIf="tc.value.resultCode == 'SUCCESSFUL'">Test Case {{tc.value.testCaseName}}</mat-chip>
+                    <mat-chip style="background-color: red;" *ngIf="tc.value.resultCode == 'FAILED'">Test Case {{tc.value.testCaseName}}</mat-chip>
+                </mat-chip-list>
+                
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="executionsColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: executionsColumns;"></tr>
+    </table>
+
+    <mat-paginator #paginator  style="width: 100%;margin-top: 3%;" fxFlex="100%" fxLayout.xs="row" fxLayout="column" fxLayoutAlign="center center"
         [length]="dataSource?.data.length"
         [pageIndex]="0"
         [pageSize]="50"
         [pageSizeOptions]="[25, 50, 100, 250]"
-        style="background: transparent;">
-    </mat-paginator-->
+        class="exd-table"
+       >
+    </mat-paginator>
+-->
+</div>
 </div>

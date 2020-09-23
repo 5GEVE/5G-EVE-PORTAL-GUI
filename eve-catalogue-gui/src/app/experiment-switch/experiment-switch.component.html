@@ -1,25 +1,76 @@
 <app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
-<div class="grid-container">
-    <mat-grid-list cols="2" rowHeight="2:1">
-        <mat-grid-tile *ngFor="let card of cards" [colspan]="card.cols" [rowspan]="card.rows">
-            <mat-card class="grid-card">
-                <mat-card-header>
-                <mat-card-title >             
-                </mat-card-title>
-                <mat-card-subtitle></mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content >
-                    <div style="float: left;"><img src={{card.icon}} class="card-image"></div>
-                    <div class="card-title">
-                        <button class="card-actions" mat-button (click)="goTo(card.path);">
-                            <b>{{card.title}}</b><br/>{{card.subtitle}} <mat-icon>{{card.btn}}</mat-icon>
-                        </button>
-                    </div>     
-                </mat-card-content>
-                <!--mat-card-actions>
-                    <button class="card-actions" mat-button routerLink={{card.path}}><b>{{card.subtitle}}</b> <mat-icon>{{card.btn}}</mat-icon></button>
-                </mat-card-actions-->
-            </mat-card>
-        </mat-grid-tile>
-    </mat-grid-list>
+<div class="container" >
+    <!--
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center center" style="margin-top: 2%">
+        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="100%" class="experiment-switch-container box" style="background-color:#f0a30a"  *ngFor="let card of cards" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center center">
+            <button class="card-actions" mat-button  style="height: 100%;"   (click)="goTo(card.path);">
+                <div fxFlex="30%" fxFlex.xs="20%" style="text-align: left;">
+                    <img src={{card.icon}} class="card-image" >
+                </div>
+                <div fxFlex="70%" fxFlex.xs="80%">
+                    <b >{{card.title}}</b>
+                    <br/>
+                    <div style="float: left;width: 85%;">{{card.subtitle}}</div>
+                    <div style="float: right;width: 15%;margin-top: 3%;"><mat-icon fxHide.xs>{{card.btn}}</mat-icon></div>
+                </div>
+            </button> 
+        </div>
+   </div>
+
+-->
+
+
+   <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center" style="margin-top: 2%;" >
+    <div fxFlex="20%" fxFlex.sm="50%" fxFlex.xs="100%" class="experiment-switch-container box"   style="background-color:#f0a30a">
+        <button class="card-actions" mat-button  style="height: 120px;padding: 35px;" (click)="goTo('/descriptors_exp');" >
+            <div fxFlex="20%" fxHide.xs style="text-align: left;">
+                <img src="../../assets/images/content_copy_white.png" class="card-image">
+            </div>
+            <div fxFlex="80%" style="text-align:right ;">
+                <b class="dash-elem">Experiment Descriptors</b>
+                <br/>
+                <div style="float: left;width: 85%;">Schedule</div> 
+                <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>input</mat-icon></div>
+            </div>
+        </button> 
+    </div>
+    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%" class="experiment-switch-container box" style="background-color:#f0a30a">
+        <button class="card-actions" mat-button style="height: 120px;padding: 35px;" (click)="goTo('./schedule_experiment');"  >
+            <div fxFlex="20%" fxFlex.xs="100%" fxHide.xs style="text-align: left;"   >
+                <img  src="../../assets/images/layers_white.png" class="card-image">
+            </div>
+            <div fxFlex="80%" style="text-align:right ;" >
+                <b class="dash-elem">New Experiment</b>
+                <br/>
+                <div style="float: left;width: 85%;">Onboard</div> 
+                <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>event_note</mat-icon></div>
+            </div>
+        </button> 
+    </div>
 </div>
+<div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center" style="margin-top: 1%;">
+<div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%" class="experiment-switch-container box" style="background-color:#f0a30a">
+    <button class="card-actions" mat-button style="height: 120px;padding: 35px;" (click)="goTo('http://10.20.8.39:8080/Intent/IntentPage.jsp');">
+        <div fxFlex="30%" fxHide.xs style="text-align: left;"><img src="../../assets/images/lightbulb_outline_white.png" class="card-image"></div>
+        <div fxFlex="70%" >
+            <b>Intent Declaration</b>
+            <br/>
+            <div style="float: left;width: 85%;"></div> 
+            <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon></mat-icon></div>
+        </div>
+    </button> 
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+  

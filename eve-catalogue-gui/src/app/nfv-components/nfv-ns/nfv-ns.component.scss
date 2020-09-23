@@ -1,0 +1,42 @@
+@import '~@angular/material/theming';
+@mixin nfv-ns-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .nn-container{
+        background-color: mat-color($themestyle-primary,100);
+        width: 100%;
+       
+    }
+
+    .nn-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .nn-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+    .mat-dialog-container{
+        background-color: mat-color($themestyle-primary,100);
+    }
+
+    @media (max-width: 400px) {
+        .mat-dialog-container{
+          width: 100%;
+          margin-left:0; 
+          margin-right:0;
+          padding: 0;
+        }
+      }
+      @media (max-width: 800px) {
+        .mat-dialog-container {
+          width: 100%;
+          margin-left:0; 
+          margin-right:0;
+          padding: 0;
+        }
+      }
+}

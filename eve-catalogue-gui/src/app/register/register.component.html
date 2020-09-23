@@ -1,0 +1,51 @@
+<div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 5%;" class="container">
+      <mat-card class="my-card" style="width: 60%;background-color:#b3b3b3;margin-left: 20%;margin-right: 20%">
+         <mat-card-content style="width: 100%" >
+        <form class="rules-form"  [formGroup]="registrationFormGroup" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center left" >
+            <h2 class="mat-h2">Register</h2>
+            <mat-form-field appearance="outline" class="rules-full-width">
+                <mat-label>Email address</mat-label>
+                <input  matInput  formControlName="email" placeholder="Email address"  name="fname"  required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 100%;" class="rules-full-width">
+                <mat-label>Username</mat-label>
+                <input  matInput  formControlName="regUsername" placeholder="Username"  name="fname"  required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 100%;" class="rules-full-width">
+                <mat-label>First Name</mat-label>
+                <input  matInput  formControlName="firstName" placeholder="First Name"  name="fname"  required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 100%;" class="rules-full-width">
+                <mat-label>Last Name</mat-label>
+                <input  matInput  formControlName="lastName" placeholder="Last Name"  name="fname"  required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 100%;" class="rules-full-width">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="role" placeholder="Select a role" name="assignedTo"  required>
+                    <mat-option *ngFor="let role of roles" [value]="role" >{{ role.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 100%;" class="rules-full-width">
+                <mat-label>Password</mat-label>
+                <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'" formControlName="regPassword">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+            <div class="margin-top" style="text-align: center;"> 
+                <button mat-raised-button color="accent" class="margin-all" (click)="register();">Submit</button>
+            </div>
+        </form>
+         </mat-card-content>
+         <!--
+         <mat-card-actions style="text-align: center;">
+            <button mat-raised-button  color="primary">LOGIN</button>
+         </mat-card-actions>
+      -->
+      </mat-card>
+</div>

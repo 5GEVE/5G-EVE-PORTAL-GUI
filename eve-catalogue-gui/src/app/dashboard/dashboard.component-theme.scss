@@ -1,0 +1,22 @@
+@import '~@angular/material/theming';
+@mixin dashboard-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .dash-container{
+        background-color:  #1B5E20;
+        color: white;
+        padding:1%;
+        width: 80%;
+        min-height: 100%;
+       
+    }
+    @media (max-width: 400px) {
+        .grid-card-xs{
+            margin-top: 5%;
+        }
+    }
+
+
+
+}

@@ -1,9 +1,12 @@
 <app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
-<mat-toolbar style="background: transparent;">
+<mat-toolbar class="dtc-title">
   <span style="margin-left: 15px;"><h1 class="mat-h1">Test Case Descriptors</h1></span>
 </mat-toolbar>
-<div style="background: transparent; padding: 30px;">
-  <table mat-table class="full-width-table" matSort aria-label="Elements">
+<div class="dtc-container">
+  <div fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="   margin-left: 10%;
+  margin-right: 10%;
+  width: 90%">
+  <table mat-table class="full-width-table dtc-table" matSort aria-label="Elements">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
@@ -18,8 +21,8 @@
 
     <!-- Version Column -->
     <ng-container matColumnDef="version">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Version</th>
-      <td mat-cell *matCellDef="let row">{{row.version}}</td>
+      <th fxShow.xs="false" mat-header-cell *matHeaderCellDef mat-sort-header>Version</th>
+      <td fxShow.xs="false" mat-cell *matCellDef="let row">{{row.version}}</td>
     </ng-container>
 
     <!-- Blueprint Id Column -->
@@ -47,12 +50,13 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator #paginator
+  <mat-paginator #paginator fxFlex="100%" fxLayout.xs="row" fxLayout="column" fxLayoutAlign="center center"
       [length]="dataSource?.data.length"
       [pageIndex]="0"
       [pageSize]="50"
       [pageSizeOptions]="[25, 50, 100, 250]"
-      style="background: transparent;">
+      class="dtc-table paginator-xs">
   </mat-paginator>
+</div>
 </div>
       

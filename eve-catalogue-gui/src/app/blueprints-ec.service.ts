@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { CtxBlueprintInfo } from './blueprints-components/blueprints-ec/ctx-blueprint-info';
+import { CtxBlueprintInfo } from './blueprints-compnents/blueprints-ec/ctx-blueprint-info';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
 
@@ -43,7 +43,7 @@ export class BlueprintsEcService {
   postCtxBlueprint(onboardCtxBlueprintRequest: Object): Observable<String> {
     return this.http.post(this.baseUrl + this.ctxBlueprintUrl, onboardCtxBlueprintRequest, this.httpOptions)
       .pipe(
-        tap((blueprintId: String) => this.authService.log(`added CTX Blueprint w/ id=${blueprintId}`, 'SUCCESS', false)),
+        tap((blueprintId: String) => this.authService.log(`added CTX Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
         catchError(this.authService.handleError<String>('postCtxBlueprint'))
       );
   }
@@ -51,7 +51,7 @@ export class BlueprintsEcService {
   deleteCtxBlueprint(blueprintId: string): Observable<String> {
     return this.http.delete(this.baseUrl + this.ctxBlueprintUrl + '/' + blueprintId, this.httpOptions)
     .pipe(
-      tap((result: String) => this.authService.log(`deleted CTX Blueprint w/ id=${blueprintId}`, 'SUCCESS', false)),
+      tap((result: String) => this.authService.log(`deleted CTX Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
       catchError(this.authService.handleError<String>('deleteCtxBlueprint'))
     );
   }

@@ -1,8 +1,10 @@
 <app-experiment-sub-toolbar></app-experiment-sub-toolbar>
-<mat-toolbar style="background: transparent;">
+<mat-toolbar class="ex-title" >
   <span style="margin-left: 15px;"><h1 class="mat-h1">Experiments</h1></span>
 </mat-toolbar>
-<div style="background: transparent; padding: 30px; padding-bottom: 10%;">
+<div style="padding: 30px;" class="ex-container" >
+<div fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="width: 100%">
+<div fxFlex="100%" fxLayout.xs="row" fxLayout="row" fxLayoutAlign="left left" class="search-box">
   <mat-form-field>
     <mat-label>Filter by Status</mat-label>
     <mat-select (selectionChange)="onStatusSelected($event);" [(value)]="selectedState">
@@ -11,63 +13,55 @@
         </mat-option>
     </mat-select>
   </mat-form-field>
-  <!-- mat-form-field *ngIf="getRole().indexOf('EXPERIMENTER') >= 0;">
-    <mat-label>Filter by Site</mat-label>
-    <mat-select (selectionChange)="onSiteSelected($event);" [(value)]="selectedSite" style="margin-left: 10px;">
-        <mat-option *ngFor="let site of sites" [value]="site">
-            {{site}}
-        </mat-option>
-    </mat-select>
-  </mat-form-field -->
   <button mat-stroked-button aria-label="Clear" (click)="clearFilter(); selectedState=undefined; selectedSite=undefined; $event.stopPropagation()" style="margin-left: 10px;">Clear <mat-icon>close</mat-icon>
   </button>
-
-  <table mat-table [dataSource]="dataSource" matSort class="full-width-table">
+  </div>
+  <table mat-table [dataSource]="dataSource" matSort  class="ex-table full-width-table">
     <!-- Id Column -->
     <ng-container matColumnDef="experimentId">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+      <th fxShow.xs="false" mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
       <td mat-cell *matCellDef="let row"><b>{{row.experimentId}}</b></td>
     </ng-container>
 
     <!-- ExpD Id Column -->
     <ng-container matColumnDef="experimentDescriptorId">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Descriptor Id</th>
-      <td mat-cell *matCellDef="let row">
-        <tr *ngFor="let name of idToExpdId.get(row.experimentId) | keyvalue"><td><a (click)="viewExpDescriptor(name.key)">{{name.value}}</a></td></tr>
+      <th fxShow.xs="false" mat-header-cell *matHeaderCellDef mat-sort-header>Descriptor Id</th>
+      <td fxShow.xs="false" mat-cell *matCellDef="let row">
+        <tr *ngFor="let name of idToExpdId.get(row.experimentId) | keyvalue"><td><a (click)="viewExpDescriptor(name.key)" style="color: saddlebrown;cursor: pointer;">{{name.value}}</a></td></tr>
       </td>
     </ng-container>
 
     <!-- Sites Column -->
     <ng-container matColumnDef="sites">
-      <th mat-header-cell *matHeaderCellDef>Sites</th>
-      <td mat-cell *matCellDef="let row">{{row.targetSites}}</td>
+      <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>Sites</th>
+      <td fxShow.xs="false" mat-cell *matCellDef="let row">{{row.targetSites}}</td>
     </ng-container>
 
     <!-- Status Column -->
     <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Status</th>
-        <td mat-cell *matCellDef="let row">{{row.status}}</td>
+        <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>Status</th>
+        <td fxShow.xs="false" mat-cell *matCellDef="let row">{{row.status}}</td>
     </ng-container>
 
      <!-- Execution Status Column -->
      <ng-container matColumnDef="execStatus">
-        <th mat-header-cell *matHeaderCellDef>Execution Status</th>
-        <td mat-cell *matCellDef="let row">{{row.executionStatus}}</td>
+        <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>Execution Status</th>
+        <td fxShow.xs="false" mat-cell *matCellDef="let row" >{{row.executionStatus}}</td>
     </ng-container>
 
     <!-- Button Column -->
-    <ng-container matColumnDef="buttons">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let row">
-            <mat-button-toggle-group name="operations" aria-label="Operations" class="margin-all">
-              <mat-button-toggle value="instantiate" *ngIf="getRole().indexOf('EXPERIMENTER') >= 0 && ((row.status).indexOf('READY') >= 0 || (row.status).indexOf('INSTANTIATED') >= 0);" (click)="openExecDialog(row.experimentId, row.status, row.experimentDescriptorId);"><mat-icon>launch</mat-icon></mat-button-toggle>
+    <ng-container  matColumnDef="buttons">
+        <th fxShow.xs="false" mat-header-cell *matHeaderCellDef></th>
+        <td fxShow.xs="false" mat-cell *matCellDef="let row" style="text-align: left;">
+            <mat-button-toggle-group name="operations" aria-label="Operations" class="margin-all">              
+              <mat-button-toggle style="background-color: #b3b3b3;" value="instantiate" *ngIf="getRole().indexOf('EXPERIMENTER') >= 0 && ((row.status).indexOf('READY') >= 0 || (row.status).indexOf('INSTANTIATED') >= 0);" (click)="openExecDialog(row.experimentId, row.status, row.experimentDescriptorId);"><mat-icon>launch</mat-icon></mat-button-toggle>
               <!--mat-button-toggle value="activate" *ngIf="getRole().indexOf('EXPERIMENTER') >= 0 && (row.status).indexOf('INSTANTIATED') >= 0;"><mat-icon>play_arrow</mat-icon></mat-button-toggle-->
               <!--mat-button-toggle value="monitor" *ngIf="getRole().indexOf('EXPERIMENTER') >= 0;"><mat-icon>network_check</mat-icon></mat-button-toggle-->
               <!-- <mat-button-toggle value="results" *ngIf="(row.status).indexOf('TERMINATED') >= 0 || (row.status).indexOf('INSTANTIATED') >= 0;" (click)="openResultsDialog(row.experimentId, row.status, row.executions);"><mat-icon>multiline_chart</mat-icon></mat-button-toggle> -->
-              <mat-button-toggle value="manage" *ngIf="getRole().indexOf('SITE_MANAGER') >= 0 && ((row.status).indexOf('SCHEDULING') >= 0 || (row.status).indexOf('ACCEPTED') >= 0);" (click)="openMgmtDialog(row.experimentId, row.status);"><mat-icon>build</mat-icon></mat-button-toggle>
-              <mat-button-toggle value="view_descriptor" (click)="viewExperiment(row.experimentId)"><mat-icon>remove_red_eye</mat-icon></mat-button-toggle>
-              <mat-button-toggle value="view_metrics" *ngIf="((row.status).indexOf('TERMINATED') >= 0 || (row.status).indexOf('FAILED') >= 0 || (row.status).indexOf('INSTANTIATED') >= 0 || (row.status).indexOf('RUNNING_EXECUTION') >= 0);" (click)="viewMetrics(row.experimentId)"><mat-icon>multiline_chart</mat-icon></mat-button-toggle>
-              <mat-button-toggle value="delete" *ngIf="((row.status).indexOf('READY') >= 0 || (row.status).indexOf('TERMINATED') >= 0 || (row.status).indexOf('FAILED') >= 0 || (row.status).indexOf('REFUSED') >= 0)  || ( getRole().indexOf('EXPERIMENTER') >= 0);" (click)="deleteExperiment(row.experimentId)"><mat-icon>delete_forever</mat-icon></mat-button-toggle>
+              <mat-button-toggle style="background-color: #b3b3b3;" value="manage" *ngIf="getRole().indexOf('SITE_MANAGER') >= 0 && ((row.status).indexOf('SCHEDULING') >= 0 || (row.status).indexOf('ACCEPTED') >= 0);" (click)="openMgmtDialog(row.experimentId, row.status);"><mat-icon>build</mat-icon></mat-button-toggle>
+              <mat-button-toggle style="background-color: #b3b3b3;" value="view_descriptor" (click)="viewExperiment(row.experimentId)"><mat-icon>remove_red_eye</mat-icon></mat-button-toggle>
+              <mat-button-toggle style="background-color: #b3b3b3;" value="view_metrics" *ngIf="((row.status).indexOf('TERMINATED') >= 0 || (row.status).indexOf('FAILED') >= 0 || (row.status).indexOf('INSTANTIATED') >= 0 || (row.status).indexOf('RUNNING_EXECUTION') >= 0);" (click)="viewMetrics(row.experimentId)"><mat-icon>multiline_chart</mat-icon></mat-button-toggle>
+              <mat-button-toggle style="background-color: #b3b3b3;" value="delete" *ngIf="((row.status).indexOf('READY') >= 0 || (row.status).indexOf('TERMINATED') >= 0 || (row.status).indexOf('FAILED') >= 0 || (row.status).indexOf('REFUSED') >= 0)  || ( getRole().indexOf('EXPERIMENTER') >= 0);" (click)="deleteExperiment(row.experimentId)"><mat-icon>delete_forever</mat-icon></mat-button-toggle>
             </mat-button-toggle-group>
         </td>
     </ng-container>
@@ -76,11 +70,14 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator #paginator
+  <mat-paginator #paginator style="width: 100%" fxFlex="100%" fxLayout.xs="row" fxLayout="column" fxLayoutAlign="center center"
+
       [length]="dataSource?.data.length"
       [pageIndex]="0"
       [pageSize]="50"
       [pageSizeOptions]="[25, 50, 100, 250]"
-      style="background: transparent;"S>
+      class="ex-table paginator-xs">
   </mat-paginator>
 </div>
+</div>
+    

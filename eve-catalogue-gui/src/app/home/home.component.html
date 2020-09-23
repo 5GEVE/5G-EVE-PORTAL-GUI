@@ -1,0 +1,26 @@
+<div class="container"  >
+  <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center center" style="margin-top: 2%;">
+    <div fxFlex="20%"  >
+    <button mat-raised-button style="color: white;background-color: #1B5E20;" class="grid-button" (click)="goTo('/design_experiment');" [disabled]="roles.indexOf('ExperimentDeveloper') < 0">
+        <img mat-card-image class="img" src="assets/images/kd-ic-sdk-white.png" > <p style="font-size:20px;"><b>Design Experiment</b></p>
+    </button>  
+  </div>
+  <div fxFlex="20%">
+    <button mat-raised-button style="color: white; background-color: #f0a30a;" class="grid-button" (click)="goTo('/request_experiment');" [disabled]="roles.indexOf('Experimenter') < 0">
+        <img mat-card-image class="img" src="assets/images/kd-ic-slicer-white.png" ><p style="font-size:20px;"><b>Request Experiments</b></p>
+    </button>
+  </div>
+</div>
+<div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center center" style="margin-top:0.5%;">
+  <div fxFlex="20%">
+    <button mat-raised-button style="color: white; background-color: #B71C1C;" class="grid-button" (click)="goTo('/experiments');" [disabled]="roles.indexOf('Experimenter') < 0">
+        <img mat-card-image class="img" src="assets/images/kd-ic-Orchestrator-white.png"> <p style="font-size:20px;"><b>Manage Experiment</b></p>
+    </button>
+  </div>
+  <div fxFlex="20%" >
+    <button mat-raised-button style="color: white; background-color: #0277BD" class="grid-button" (click)="goTo('/manage_site')">
+      <img mat-card-image class="img" src="assets/images/kd-ic-virtual-net-white.png"> <p style="font-size:20px;"><b>Manage Site</b></p>
+    </button>
+  </div>
+</div>
+</div>

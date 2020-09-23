@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { VsBlueprintInfo } from './blueprints-components/blueprints-vs/vs-blueprint-info';
+import { VsBlueprintInfo } from './blueprints-compnents/blueprints-vs/vs-blueprint-info';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
 
@@ -21,7 +21,7 @@ export class BlueprintsVsService {
       })
   };
 
-  constructor(private http: HttpClient,
+  constructor(private http: HttpClient, 
     private authService: AuthService) { }
 
   getVsBlueprints(): Observable<VsBlueprintInfo[]> {
@@ -43,7 +43,7 @@ export class BlueprintsVsService {
   postVsBlueprint(onBoardVsRequest: Object): Observable<String> {
     return this.http.post(this.baseUrl + this.vsBlueprintInfoUrl, onBoardVsRequest, this.httpOptions)
       .pipe(
-        tap((blueprintId: String) => this.authService.log(`added VS Blueprint w/ id=${blueprintId}`, 'SUCCESS', false)),
+        tap((blueprintId: String) => this.authService.log(`added VS Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
         catchError(this.authService.handleError<String>('postVsBlueprint'))
       );
   }
@@ -51,7 +51,7 @@ export class BlueprintsVsService {
   deleteVsBlueprint(blueprintId: string): Observable<String> {
     return this.http.delete(this.baseUrl + this.vsBlueprintInfoUrl + '/' + blueprintId, this.httpOptions)
     .pipe(
-      tap((result: String) => this.authService.log(`deleted VS Blueprint w/ id=${blueprintId}`, 'SUCCESS', false)),
+      tap((result: String) => this.authService.log(`deleted VS Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
       catchError(this.authService.handleError<String>('deleteVsBlueprint'))
     );
   }

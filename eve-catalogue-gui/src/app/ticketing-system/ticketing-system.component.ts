@@ -3,8 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { TicketService } from './services/tickets.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { MatPaginator } from '@angular/material';
-import { MatProgressSpinnerModule } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 
 export interface PeriodicElement {
   name: string;
@@ -88,14 +87,14 @@ export class TicketingSystemComponent implements OnInit {
               this.refreshErrorHandler('getTickets');
             }
             else{
-              console.log('[TicketComponent][getTickets] Error trying to retrieve bugs after refresh');
+              //console.log('[TicketComponent][getTickets] Error trying to retrieve bugs after refresh');
               this.router.navigate(['/login']);           
             }
       });
   }
 
   pageEvents(event: any) {
-    console.log(event.pageIndex);
+    //console.log(event.pageIndex);
     this.getTickets(event.pageIndex);
     this.currentPage = event.pageIndex;
  }
@@ -124,7 +123,7 @@ export class TicketingSystemComponent implements OnInit {
           this.refreshErrorHandler('createTicket');
         }
         else{
-          console.log('[TicketComponent][ticketDetails] Error retrieving bug ' + ticket.id + ' after refresh');
+          //console.log('[TicketComponent][ticketDetails] Error retrieving bug ' + ticket.id + ' after refresh');
           this.refreshed = false;
           this.router.navigate(['/login']);
         }
@@ -155,16 +154,16 @@ export class TicketingSystemComponent implements OnInit {
       .pipe()
       .subscribe(
           data => {
-            console.log("getting data from create ticket")
+            //console.log("getting data from create ticket")
             this.ngOnInit();
           },
           error => {
             if ((error[0] == 401) && (!this.refreshed)) {
-              console.log("error from create ticket")
+              //console.log("error from create ticket")
               this.refreshErrorHandler('createTicket');
             }
             else{
-              console.log('[TicketComponent][onSubmit] Error retrieving bugs after refresh');
+              //console.log('[TicketComponent][onSubmit] Error retrieving bugs after refresh');
               this.refreshed = false;
               this.router.navigate(['/login']);
             }
@@ -180,7 +179,7 @@ export class TicketingSystemComponent implements OnInit {
       .pipe()
       .subscribe(
           data => {
-            console.log(data);
+            //console.log(data);
             this.ticketDetails(this.selectedTicket);
           },
           error => {
@@ -188,7 +187,7 @@ export class TicketingSystemComponent implements OnInit {
               this.refreshErrorHandler('createTicketComment');
             }
             else{
-              console.log('[TicketComponent][createComment] Error creating bug comment after refresh');
+              //console.log('[TicketComponent][createComment] Error creating bug comment after refresh');
               this.refreshed = false;
               this.router.navigate(['/login']);
             }
@@ -212,7 +211,7 @@ export class TicketingSystemComponent implements OnInit {
               this.refreshErrorHandler('getProducts');
             }
             else{
-              console.log('[TicketComponent][getProducts] Error retrieving bugs after refresh');
+              //console.log('[TicketComponent][getProducts] Error retrieving bugs after refresh');
               this.router.navigate(['/login']);              
             }
       });
@@ -224,7 +223,7 @@ export class TicketingSystemComponent implements OnInit {
     .pipe()
     .subscribe(
         data => {
-          console.log(data['details']);
+          //console.log(data['details']);
           this.components = data['details'];
           this.refreshed = false;
         },
@@ -233,7 +232,7 @@ export class TicketingSystemComponent implements OnInit {
               this.refreshErrorHandler('getComponents');
             }
           else{
-            console.log('[TicketComponent][getComponents] Error retrieving bugs after refresh');
+            //console.log('[TicketComponent][getComponents] Error retrieving bugs after refresh');
             this.router.navigate(['/login']);              
           }
       });
@@ -244,7 +243,7 @@ export class TicketingSystemComponent implements OnInit {
     .pipe()
     .subscribe(
         data => {
-          console.log(data['details']);
+          //console.log(data['details']);
           this.users = data['details']['users'];
           this.refreshed = false;
         },
@@ -253,7 +252,7 @@ export class TicketingSystemComponent implements OnInit {
             this.refreshErrorHandler('getAdminUsers');
           }
           else{
-            console.log('[TicketComponent][getAdminUsers] Error retrieving bugs for the second time (getAdminUsers)');
+            //console.log('[TicketComponent][getAdminUsers] Error retrieving bugs for the second time (getAdminUsers)');
             //this.authenticationService.clearCurrentUser();
             this.router.navigate(['/login']);              
           }
@@ -292,7 +291,7 @@ export class TicketingSystemComponent implements OnInit {
           }
         },
         error => {
-          console.log('TicketComponent > error refreshing token ' + funcName);
+          //console.log('TicketComponent > error refreshing token ' + funcName);
           this.refreshed = false;
           this.router.navigate(['/login']);                    
         }
