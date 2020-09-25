@@ -13,6 +13,8 @@ export class BlueprintsExpService {
 
   private baseUrl = environment.portalBaseUrl;
   private expBlueprintInfoUrl = 'expblueprint';
+  private supBaseUrl = environment.supportBaseUrl;
+
 
   httpOptions = {
     headers: new HttpHeaders(
@@ -54,5 +56,19 @@ export class BlueprintsExpService {
       tap((result: String) => this.authService.log(`deleted Exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
       catchError(this.authService.handleError<String>('deleteExpBlueprint'))
     );
+  }
+  validateExpBlueprint(onBoardExpRequest: Object): Observable<String> {
+    return this.http.post(this.supBaseUrl + "exp/validate", onBoardExpRequest, this.httpOptions)
+      .pipe(
+        tap((blueprintId: String) => this.authService.log(`validate exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
+        catchError(this.authService.handleError<String>('validateExpBlueprint'))
+      );
+  }
+  schemaExpBlueprint(): Observable<String> {
+    return this.http.get<any>(this.supBaseUrl+"exp/schema", this.httpOptions)
+      .pipe(
+        tap(_ => console.log('fetched exp schema - SUCCESS')),
+        catchError(this.authService.handleError<any>('schemaExpBlueprint'))
+      );
   }
 }

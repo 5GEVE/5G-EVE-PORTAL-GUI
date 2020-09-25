@@ -15,6 +15,7 @@ export class NsdsService {
 
   private baseUrl = environment.iwlBaseUrl;
   private nsdsInfoUrl = 'nsd/v1/ns_descriptors';
+  private supBaseUrl = environment.supportBaseUrl;
 
   httpOptions = {
     headers: new HttpHeaders(
@@ -51,5 +52,11 @@ export class NsdsService {
         catchError(this.authService.handleError<any>('getNsDescriptor'))
       );
   }
-
+  schemaNsDescriptor(): Observable<String> {
+    return this.http.get<any>(this.supBaseUrl+"nsd/schema", this.httpOptions)
+      .pipe(
+        tap(_ => console.log('fetched nsd schema - SUCCESS')),
+        catchError(this.authService.handleError<any>('schemaNsDescriptor'))
+      );
+  }
 }

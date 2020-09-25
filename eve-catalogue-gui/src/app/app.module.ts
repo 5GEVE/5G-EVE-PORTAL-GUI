@@ -89,6 +89,9 @@ import { TicketingSystemComponent } from './ticketing-system/ticketing-system.co
 import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboard/experiment-metric-dashboard.component';
 import { ExecutionTcDetailsComponent } from './execution-tc-details/execution-tc-details.component';
 import {APP_BASE_HREF} from '@angular/common';
+import { SupportToolsSchemasComponent } from './support-tools-schemas/support-tools-schemas.component';
+import { SupportToolsNsdComponent } from './support-tools-nsd/support-tools-nsd.component';
+import { SupportToolsComposerComponent } from './support-tools-composer/support-tools-composer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -142,8 +145,10 @@ import {APP_BASE_HREF} from '@angular/common';
     NfvPnfComponent,
     TicketingSystemComponent,
     ExperimentMetricDashboardComponent,
-    ExecutionTcDetailsComponent
-
+    ExecutionTcDetailsComponent,
+    SupportToolsSchemasComponent,
+    SupportToolsNsdComponent,
+    SupportToolsComposerComponent
 
 
   ],

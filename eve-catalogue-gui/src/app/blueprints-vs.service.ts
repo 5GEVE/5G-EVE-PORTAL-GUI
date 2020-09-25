@@ -12,14 +12,16 @@ import { AuthService } from './auth.service';
 export class BlueprintsVsService {
 
   private baseUrl = environment.portalBaseUrl;
+  private supBaseUrl = environment.supportBaseUrl;
+  
   private vsBlueprintInfoUrl = 'vsblueprint';
 
   httpOptions = {
     headers: new HttpHeaders(
       { 'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
-      })
-  };
+      })  
+    };
 
   constructor(private http: HttpClient, 
     private authService: AuthService) { }
@@ -54,5 +56,19 @@ export class BlueprintsVsService {
       tap((result: String) => this.authService.log(`deleted VS Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
       catchError(this.authService.handleError<String>('deleteVsBlueprint'))
     );
+  }
+  validateVsBlueprint(onBoardVsRequest: Object): Observable<String> {
+    return this.http.post(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
+      .pipe(
+        tap((blueprintId: String) => this.authService.log(`added VS Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
+        catchError(this.authService.handleError<String>('postVsBlueprint'))
+      );
+  }
+  schemaVsBlueprint(): Observable<String> {
+    return this.http.get<any>(this.supBaseUrl+ "vsb/schema", this.httpOptions)
+      .pipe(
+        tap(_ => console.log('fetched vsb schema - SUCCESS')),
+        catchError(this.authService.handleError<any>('schemaVsBlueprint'))
+      );
   }
 }

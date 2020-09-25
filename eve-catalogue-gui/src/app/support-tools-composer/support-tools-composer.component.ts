@@ -1,15 +1,15 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
-import { BlueprintsVsService } from '../../blueprints-vs.service';
-import { BlueprintsVsComponent} from '../blueprints-vs/blueprints-vs.component';
+import { BlueprintsVsService } from '../blueprints-vs.service';
+import { BlueprintsVsComponent} from '../blueprints-compnents/blueprints-vs/blueprints-vs.component';
 
 @Component({
-  selector: 'app-blueprints-vs-stepper',
-  templateUrl: './blueprints-vs-stepper.component.html',
-  styleUrls: ['./blueprints-vs-stepper.component.css']
+  selector: 'app-support-tools-composer',
+  templateUrl: './support-tools-composer.component.html',
+  styleUrls: ['./support-tools-composer.component.css']
 })
-export class BlueprintsVsStepperComponent implements OnInit {
+export class SupportToolsComposerComponent implements OnInit {
 
   nsdObj: Object;
 
@@ -29,8 +29,9 @@ export class BlueprintsVsStepperComponent implements OnInit {
 
   constructor(@Inject(DOCUMENT) document,
     private _formBuilder: FormBuilder,
-    private blueprintsVsService: BlueprintsVsService,
-    private blueprintsVsComponent: BlueprintsVsComponent) {
+    //private blueprintsVsService: BlueprintsVsService,
+    //private blueprintsVsComponent: BlueprintsVsComponent
+    ) {
   }
 
   ngOnInit() {
@@ -88,10 +89,8 @@ export class BlueprintsVsStepperComponent implements OnInit {
           }
         }
         console.log(this.vsbObj)
-        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
-        .subscribe(res => {
-        console.log("ressss",res)
-        });    });
+  
+      });
   }
 
   onUploadedNsd(event: any, nsds: File[]) {
@@ -173,13 +172,14 @@ export class BlueprintsVsStepperComponent implements OnInit {
 
           //var blueprintId = onBoardVsRequest.vsBlueprint.blueprintId;
 
-
+/*
           this.blueprintsVsService.postVsBlueprint(onBoardVsRequest)
           .subscribe(vsBlueprintId => {
             console.log("VS Blueprint with id " + vsBlueprintId);
             this.blueprintsVsComponent.selectedIndex = 0;
             this.blueprintsVsComponent.getVsBlueprints();
           });
+          */
       });
     }
   }
@@ -250,16 +250,18 @@ export class BlueprintsVsStepperComponent implements OnInit {
 
           }
           //console.log('onBoardVsRequest: ' + JSON.stringify(onBoardVsRequest, null, 4));
-
+/*
           this.blueprintsVsService.postVsBlueprint(onBoardVsRequest)
           .subscribe(vsBlueprintId => {
             //console.log("VS Blueprint with id " + vsBlueprintId);
             this.blueprintsVsComponent.selectedIndex = 0;
             this.blueprintsVsComponent.getVsBlueprints();
           });
+          */
       });
     }
   }
   }
 }
+
 
