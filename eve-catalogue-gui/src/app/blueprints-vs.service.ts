@@ -60,8 +60,8 @@ export class BlueprintsVsService {
   validateVsBlueprint(onBoardVsRequest: Object): Observable<String> {
     return this.http.post(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
       .pipe(
-        tap((blueprintId: String) => this.authService.log(`added VS Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
-        catchError(this.authService.handleError<String>('postVsBlueprint'))
+        tap((blueprintId: String) => console.log("validate vsb")),
+        catchError(this.authService.handleValidatorError<String>('validateVsBlueprint'))
       );
   }
   schemaVsBlueprint(): Observable<String> {

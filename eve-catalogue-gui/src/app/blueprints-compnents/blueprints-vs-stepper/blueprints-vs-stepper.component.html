@@ -4,7 +4,7 @@
             <ng-template matStepLabel>Upload Blueprint</ng-template>
             <input #blueprintFile type="file" formControlName="firstCtrl" (change)="onUploadedVsb($event,blueprintFile.files)" required/>
             <div class="margin-top">
-                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid">Next</button>
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid" id="firstNext">Next</button>
             </div>
         </form>
     </mat-step>
@@ -16,7 +16,7 @@
             <input #nsdFiles id="uploadFile" type="file" formControlName="secondCtrl" (change)="onUploadedNsd($event,nsdFiles.files)" required/>
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-                <button mat-raised-button matStepperNext id="nextButton" color="primary" class="margin-all"  [disabled]="secondFormGroup.invalid">Next</button>
+                <button mat-raised-button matStepperNext id="nextButton" color="primary" class="margin-all"  [disabled]="secondFormGroup.invalid" id="secondNext">Next</button>
                 <button mat-raised-button color="accent" id="submitButton" class="margin-all" (click)="createOnBoardingRequestWithoutNsds(blueprintFile.files);">Submit</button>
             </div>
         </form>

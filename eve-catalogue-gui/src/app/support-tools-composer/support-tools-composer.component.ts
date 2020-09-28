@@ -1,8 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { of } from 'rxjs';
+import { Component, OnInit, Inject} from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
+import { NsdsService } from '../nsds.service';
 import { BlueprintsVsService } from '../blueprints-vs.service';
-import { BlueprintsVsComponent} from '../blueprints-compnents/blueprints-vs/blueprints-vs.component';
 
 @Component({
   selector: 'app-support-tools-composer',
@@ -11,26 +12,19 @@ import { BlueprintsVsComponent} from '../blueprints-compnents/blueprints-vs/blue
 })
 export class SupportToolsComposerComponent implements OnInit {
 
-  nsdObj: Object;
-
   vsbObj: Object;
-
-  dfs: String[] = [];
-
-  instLevels: String[] = [];
-
-  translationParams: String[] = [];
-
-  isLinear = true;
-  items: FormArray;
+  bObj: Object;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
+  fourthFormGroup: FormGroup;
+  isLinear = true;
+
 
   constructor(@Inject(DOCUMENT) document,
     private _formBuilder: FormBuilder,
-    //private blueprintsVsService: BlueprintsVsService,
-    //private blueprintsVsComponent: BlueprintsVsComponent
+    private nsdsService: NsdsService,
+    private blueprintsVsService: BlueprintsVsService    
     ) {
   }
 
@@ -39,31 +33,19 @@ export class SupportToolsComposerComponent implements OnInit {
       firstCtrl: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
-      secondCtrl: ['', Validators.required],
-      deploymentType: ['']
+      firstCtrl: ['', Validators.required]
     });
     this.thirdFormGroup = this._formBuilder.group({
-      nsdId: ['', Validators.required],
-      nsdVersion: ['', Validators.required],
-      nsFlavourId: ['', Validators.required],
-      nsInstLevel: ['', Validators.required],
-      items: this._formBuilder.array([])
+      firstCtrl: ['', Validators.required]
     });
-
-  }
-
-  createItem(): FormGroup {
-    return this._formBuilder.group({
-      parameterId: '',
-      minValue: '',
-      maxValue: ''
-    });
+    this.fourthFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });   
   }
 
 
   onUploadedVsb(event: any, vsbs: File[]) {
-    //console.log(event);
-
+    //(<HTMLInputElement> document.getElementById("firstNext")).disabled = false;          
     let promises = [];
 
     for (let vsb of vsbs) {
@@ -77,191 +59,169 @@ export class SupportToolsComposerComponent implements OnInit {
 
     Promise.all(promises).then(fileContents => {
         this.vsbObj = JSON.parse(fileContents[0]);
+        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+          }else{
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
 
-        //console.log(JSON.stringify(this.vsbObj, null, 4));
-        if (this.vsbObj['parameters'] !== undefined){
-//          this.translationParams = this.vsbObj['parameters'];
-          for (var i = 0; i < this.vsbObj['parameters'].length; i++){
-            this.items = this.thirdFormGroup.get('items') as FormArray;
-            this.items.push(this.createItem());
-            //console.log(this.vsbObj['parameters'][i]['parameterId']);
-            this.translationParams.push(this.vsbObj['parameters'][i]['parameterId']);
           }
-        }
-        console.log(this.vsbObj)
-  
+        });
+           
       });
   }
-
-  onUploadedNsd(event: any, nsds: File[]) {
-    //console.log(event);
-    //this.uploadedNsdName = event.target.files[0].name;
-
+  onUploadedVsbNsd(event: any, vsbs: File[]) {
+    //(<HTMLInputElement> document.getElementById("firstNext")).disabled = false;          
     let promises = [];
 
-    for (let nsd of nsds) {
-        let nsdPromise = new Promise(resolve => {
+    for (let vsb of vsbs) {
+        let vsbPromise = new Promise(resolve => {
             let reader = new FileReader();
-            reader.readAsText(nsd);
+            reader.readAsText(vsb);
             reader.onload = () => resolve(reader.result);
         });
-        promises.push(nsdPromise);
+        promises.push(vsbPromise);
     }
 
     Promise.all(promises).then(fileContents => {
-        this.nsdObj = JSON.parse(fileContents[0]);
+        this.vsbObj = JSON.parse(fileContents[0]);
+        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+          }else{
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
 
-        //console.log(JSON.stringify(this.nsdObj, null, 4));
+          }
+        });
+           
+      });
+  }
+  onUploadedCtx(event: any, vsbs: File[]) {
+    //(<HTMLInputElement> document.getElementById("firstNext")).disabled = false;          
+    let promises = [];
 
-        this.thirdFormGroup.get('nsdId').setValue(this.nsdObj['nsdIdentifier']);
-        this.thirdFormGroup.get('nsdVersion').setValue(this.nsdObj['version']);
+    for (let vsb of vsbs) {
+        let vsbPromise = new Promise(resolve => {
+            let reader = new FileReader();
+            reader.readAsText(vsb);
+            reader.onload = () => resolve(reader.result);
+        });
+        promises.push(vsbPromise);
+    }
 
-        this.dfs = this.nsdObj['nsDf'];
+    Promise.all(promises).then(fileContents => {
+        this.vsbObj = JSON.parse(fileContents[0]);
+        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+          }else{
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
 
-        //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
-        //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
+          }
+        });
+           
+      });
+  }
+  onUploadedCtxNsd(event: any, vsbs: File[]) {
+    //(<HTMLInputElement> document.getElementById("firstNext")).disabled = false;          
+    let promises = [];
+
+    for (let vsb of vsbs) {
+        let vsbPromise = new Promise(resolve => {
+            let reader = new FileReader();
+            reader.readAsText(vsb);
+            reader.onload = () => resolve(reader.result);
+        });
+        promises.push(vsbPromise);
+    }
+
+    Promise.all(promises).then(fileContents => {
+        this.vsbObj = JSON.parse(fileContents[0]);
+        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+          }else{
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
+
+          }
+        });
+           
+      });
+  }
+
+
+  private setting = {
+    element: {
+      dynamicDownload: null as HTMLElement
+    }
+  }
+
+
+  fakeValidateUserData() {
+    return of({
+      userDate1: 1,
+      userData2: 2
     });
   }
 
 
-  hideNextShowSubmit($event:any){
-    var submit = document.getElementById("submitButton");
-    var next = document.getElementById("nextButton");
-    var uploadFile = document.getElementById("uploadFile");
-    if ($event.source.checked){
-      submit.style.display = 'inline';
-      next.style.display = 'none';
-      this.secondFormGroup.controls['secondCtrl'].disable();
-    } else {
-      next.style.display = 'inline';
-      submit.style.display = 'none';
-      this.secondFormGroup.controls['secondCtrl'].enable();
+
+  private dyanmicDownloadByHtmlTag(arg: {
+    fileName: string,
+    text: string
+  }) {
+    if (!this.setting.element.dynamicDownload) {
+      this.setting.element.dynamicDownload = document.createElement('a');
+    }
+    const element = this.setting.element.dynamicDownload;
+    const fileType = arg.fileName.indexOf('.json') > -1 ? 'text/json' : 'text/plain';
+    element.setAttribute('href', `data:${fileType};charset=utf-8,${encodeURIComponent(arg.text)}`);
+    element.setAttribute('download', arg.fileName);
+
+    var event = new MouseEvent("click");
+    element.dispatchEvent(event);
+  }
+
+  onUploadedBlueprint(event: any, blueprints: File[]) {
+
+    let promises = [];
+
+    for (let blu of blueprints) {
+        let bPromise = new Promise(resolve => {
+            let reader = new FileReader();
+            reader.readAsText(blu);
+            reader.onload = () => resolve(reader.result);
+        });
+        promises.push(bPromise);
     }
 
-  }
+    Promise.all(promises).then(fileContents => {
+        this.bObj = JSON.parse(fileContents[0]);
+        this.nsdsService.composeNsDescriptor(this.bObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("download")).disabled = true;  
+          }else{
+            (<HTMLInputElement> document.getElementById("download")).disabled = false;  
 
-  onNsDfSelected(event:any) {
-    var selectedDf = event.value;
-
-    for (var i = 0; i < this.nsdObj['nsDf'].length; i++) {
-      if (this.nsdObj['nsDf'][i]['nsDfId'] == selectedDf) {
-        this.instLevels = this.nsdObj['nsDf'][i]['nsInstantiationLevel'];
-      }
-    }
-  }
-
-
-  createOnBoardingRequestWithoutNsds(blueprints: File[]){
-    if (blueprints.length > 0) {
-      var blueprint = blueprints[0];
-      var onBoardVsRequest = JSON.parse('{}');
-      let promises = [];
-      let blueprintPromise = new Promise(resolve => {
-          let reader = new FileReader();
-          reader.readAsText(blueprint);
-          reader.onload = () => resolve(reader.result);
+          }    
+        });  
       });
-      promises.push(blueprintPromise);
-
-
-      Promise.all(promises).then(fileContents => {
-          onBoardVsRequest['vsBlueprint'] = JSON.parse(fileContents[0]);
-          for (var i = 1; i < fileContents.length; i++) {
-            onBoardVsRequest['nsds'].push(JSON.parse(fileContents[i]));
-          }
-
-          //var blueprintId = onBoardVsRequest.vsBlueprint.blueprintId;
-
-/*
-          this.blueprintsVsService.postVsBlueprint(onBoardVsRequest)
-          .subscribe(vsBlueprintId => {
-            console.log("VS Blueprint with id " + vsBlueprintId);
-            this.blueprintsVsComponent.selectedIndex = 0;
-            this.blueprintsVsComponent.getVsBlueprints();
-          });
-          */
-      });
-    }
   }
 
-  createOnBoardVsBlueprintRequest(blueprints: File[], nsds: File[]) {
-    if(!this.thirdFormGroup.invalid){
-    var onBoardVsRequest = JSON.parse('{}');
-    onBoardVsRequest['nsds'] = [];
-    onBoardVsRequest['translationRules'] = [];
-    if (blueprints.length > 0) {
-      var blueprint = blueprints[0];
-
-      let promises = [];
-      let blueprintPromise = new Promise(resolve => {
-          let reader = new FileReader();
-          reader.readAsText(blueprint);
-          reader.onload = () => resolve(reader.result);
-      });
-      promises.push(blueprintPromise);
-
-      for (let nsd of nsds) {
-          let nsdPromise = new Promise(resolve => {
-              let reader = new FileReader();
-              reader.readAsText(nsd);
-              reader.onload = () => resolve(reader.result);
-          });
-          promises.push(nsdPromise);
-      }
-
-
-      Promise.all(promises).then(fileContents => {
-          onBoardVsRequest['vsBlueprint'] = JSON.parse(fileContents[0]);
-          for (var i = 1; i < fileContents.length; i++) {
-            onBoardVsRequest['nsds'].push(JSON.parse(fileContents[i]));
-          }
-          if (this.translationParams !== undefined && this.translationParams !== []){
-            //console.log(this.translationParams);
-
-            var translationRule = JSON.parse('{}');
-            //var blueprintId = onBoardVsRequest.vsBlueprint.blueprintId;
-            var nsdId = this.thirdFormGroup.get('nsdId').value;
-            var nsdVersion = this.thirdFormGroup.get('nsdVersion').value;
-            var nsFlavourId = this.thirdFormGroup.get('nsFlavourId').value;
-            var nsInstLevel = this.thirdFormGroup.get('nsInstLevel').value;
-
-
-            translationRule['nsdId'] = nsdId;
-            translationRule['nsdVersion'] = nsdVersion;
-            translationRule['nsFlavourId'] = nsFlavourId;
-            translationRule['nsInstantiationLevelId'] = nsInstLevel;
-
-                      //translationRule['blueprintId'] = blueprintId;
-          var paramsRows = this.thirdFormGroup.controls.items as FormArray;
-         // console.log(paramsRows.controls);
-          var controls = paramsRows.controls;
-          var paramsObj = [];
-
-          for (var j = 0; j < controls.length; j++) {
-            paramsObj.push(controls[j].value);
-            //console.log(paramsObj);
-          }
-
-          var blueprintId = onBoardVsRequest.vsBlueprint.blueprintId;
-
-          translationRule['input'] = paramsObj;
-          onBoardVsRequest.translationRules.push(translationRule);
-
-
-          }
-          //console.log('onBoardVsRequest: ' + JSON.stringify(onBoardVsRequest, null, 4));
-/*
-          this.blueprintsVsService.postVsBlueprint(onBoardVsRequest)
-          .subscribe(vsBlueprintId => {
-            //console.log("VS Blueprint with id " + vsBlueprintId);
-            this.blueprintsVsComponent.selectedIndex = 0;
-            this.blueprintsVsComponent.getVsBlueprints();
-          });
-          */
-      });
-    }
+  dynamicDownloadJson() {
+    this.nsdsService.composeNsDescriptor(this.bObj)
+    .subscribe(res => {
+      this.dyanmicDownloadByHtmlTag({
+        fileName: 'compose_nsd.json',
+        text: JSON.stringify(res)
+      });     
+    });  
   }
-  }
+  
 }
-
 

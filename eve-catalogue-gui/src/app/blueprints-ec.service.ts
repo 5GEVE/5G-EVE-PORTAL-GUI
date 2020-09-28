@@ -60,8 +60,8 @@ export class BlueprintsEcService {
   validateCtxBlueprint(onboardCtxBlueprintRequest: Object): Observable<String> {
     return this.http.post(this.supBaseUrl + "ctx/validate", onboardCtxBlueprintRequest, this.httpOptions)
       .pipe(
-        tap((blueprintId: String) => this.authService.log(`validate ctx Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
-        catchError(this.authService.handleError<String>('validateCtxBlueprint'))
+        tap((blueprintId: String) => console.log("validate ctx")),
+        catchError(this.authService.handleValidatorError<String>('validateCtxBlueprint'))
       );
   }
   schemaCtxBlueprint(): Observable<String> {

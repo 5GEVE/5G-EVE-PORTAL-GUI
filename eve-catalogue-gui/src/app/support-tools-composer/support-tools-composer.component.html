@@ -1,3 +1,4 @@
+<!--
 <mat-toolbar  class="blvs-title">
     <span style="margin-left: 15px">
       <h1 class="mat-h1">Compose Exp NSD</h1></span>
@@ -5,10 +6,51 @@
   <div style="padding: 30px;" class="desch-container">
     <div class="rules-div rules-div-xs rules-div-md" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="left left">
         <form [formGroup]="firstFormGroup">
-            <input #blueprintFile type="file" formControlName="firstCtrl" (change)="onUploadedVsb($event,blueprintFile.files)" required/>
+            <input #blueprintFile type="file" formControlName="firstCtrl" (change)="onUploadedBlueprint($event,blueprintFile.files)" required/>
             <div class="margin-top">
-                <button mat-raised-button  color="primary" class="margin-all" [disabled]="firstFormGroup.invalid">Download</button>
+                <button mat-raised-button color="primary" class="margin-all" [disabled]="firstFormGroup.invalid" (click)="dynamicDownloadJson()" id="download">Download</button>
             </div>
         </form>
 </div>
 </div>
+-->
+<mat-horizontal-stepper [linear]="isLinear" #stepper class="full-width-table blvss-container full-width-table-md full-width-table-xs">
+    <mat-step [stepControl]="firstFormGroup" > 
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Upload VS Blueprint</ng-template>
+            <input #vsbFile type="file" formControlName="firstCtrl" (change)="onUploadedVsb($event,vsbFile.files)" required/>
+            <div class="margin-top">
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid" id="firstNext">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Upload VS Blueprint NSD</ng-template>
+            <input #vsbNsdFile type="file" formControlName="secondCtrl" (change)="onUploadedVsbNsd($event,vsbNsdFile.files)" required/>
+            <div class="margin-top">
+                <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
+                <button mat-raised-button matStepperNext id="nextButton" color="primary" class="margin-all"  [disabled]="secondFormGroup.invalid" id="secondNext">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="thirdFormGroup" > 
+        <form [formGroup]="thirdFormGroup">
+            <ng-template matStepLabel>Upload CTX Blueprint</ng-template>
+            <input #ctxFile type="file" formControlName="thirdCtrl" (change)="onUploadedCtx($event,ctxFile.files)" required/>
+            <div class="margin-top">
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid" id="firstNext">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="fourthFormGroup">
+        <form [formGroup]="fourthFormGroup">
+            <ng-template matStepLabel>Upload CTX Blueprint NSDs</ng-template>
+            <input #ctxNsdFile type="file" formControlName="fourthCtrl" (change)="onUploadedCtxNsd($event,ctxNsdFile.files)" required/>
+            <div class="margin-top">
+                <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
+                <button mat-raised-button color="accent" id="submitButton" class="margin-all" >Submit</button>
+            </div>
+        </form>
+    </mat-step>
+</mat-horizontal-stepper>

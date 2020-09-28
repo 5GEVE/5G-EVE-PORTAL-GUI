@@ -464,6 +464,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { FormulaCheckService} from '../../formula-check.service';
 import { FormulaCheckInfo}  from '../../formula-check-info';
 import { BlueprintsEComponent} from '../blueprints-e/blueprints-e.component';
+import { NsdsService} from '../../nsds.service';
 
 
 
@@ -594,7 +595,8 @@ export class BlueprintsEStepperComponent implements OnInit {
     private blueprintsTcService: BlueprintsTcService,
     private blueprintsExpService: BlueprintsExpService,
     private formulaCheckService: FormulaCheckService,
-    private blueprintsEComponent: BlueprintsEComponent
+    private blueprintsEComponent: BlueprintsEComponent,
+    private nsdsService: NsdsService
     ) {
   }
 
@@ -828,7 +830,15 @@ export class BlueprintsEStepperComponent implements OnInit {
         this.fourthFormGroup.get('nsdVersionCtrl').setValue(this.nsdObj['version']);
 
         this.dfs = this.nsdObj['nsDf'];
+        this.nsdsService.validateNsDescriptor(this.nsdObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("nsdNext")).disabled = true;  
+          }else{
+            (<HTMLInputElement> document.getElementById("nsdNext")).disabled = false;  
 
+          }
+        });
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });
@@ -1033,7 +1043,7 @@ export class BlueprintsEStepperComponent implements OnInit {
             metricsObj.push(newMetric);
           }
         }
-        console.log(metricsObj);
+        //console.log(metricsObj);
           expBlueprint['metrics'] = metricsObj;
         //console.log(expBlueprint);
 

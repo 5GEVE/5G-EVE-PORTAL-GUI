@@ -119,8 +119,8 @@ export class BlueprintsTcService {
   validateTcBlueprint(onBoardTcRequest: Object): Observable<String> {
     return this.http.post(this.supBaseUrl + "tcb/validate", onBoardTcRequest, this.httpOptions)
       .pipe(
-        tap((blueprintId: String) => this.authService.log(`validate tc Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
-        catchError(this.authService.handleError<String>('validateTcBlueprint'))
+        tap((blueprintId: String) => console.log("validate tcb")),
+        catchError(this.authService.handleValidatorError<String>('validateTcBlueprint'))
       );
   }
   schemaTcBlueprint(): Observable<String> {

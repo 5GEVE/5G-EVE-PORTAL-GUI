@@ -2,8 +2,7 @@ import { of } from 'rxjs';
 import { Component, OnInit, Inject} from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
-import { BlueprintsVsService } from '../blueprints-vs.service';
-import { BlueprintsVsComponent} from '../blueprints-compnents/blueprints-vs/blueprints-vs.component';
+import { NsdsService } from '../nsds.service';
 
 @Component({
   selector: 'app-support-tools-nsd',
@@ -12,19 +11,13 @@ import { BlueprintsVsComponent} from '../blueprints-compnents/blueprints-vs/blue
 })
 export class SupportToolsNsdComponent implements OnInit {
 
-  nsdObj: Object;
-
-  vsbObj: Object;
-
-  isLinear = true;
-
+  bObj: Object;
   firstFormGroup: FormGroup;
 
 
   constructor(@Inject(DOCUMENT) document,
     private _formBuilder: FormBuilder,
-    //private blueprintsVsService: BlueprintsVsService,
-    //private blueprintsVsComponent: BlueprintsVsComponent
+    private nsdsService: NsdsService    
     ) {
   }
 
@@ -52,15 +45,7 @@ export class SupportToolsNsdComponent implements OnInit {
     });
   }
 
-  dynamicDownloadJson() {
-    this.fakeValidateUserData().subscribe((res) => {
-      this.dyanmicDownloadByHtmlTag({
-        fileName: 'My Report.json',
-        text: JSON.stringify(res)
-      });
-    });
-  }
-  
+
 
   private dyanmicDownloadByHtmlTag(arg: {
     fileName: string,
@@ -78,25 +63,42 @@ export class SupportToolsNsdComponent implements OnInit {
     element.dispatchEvent(event);
   }
 
-  onUploadedVsb(event: any, vsbs: File[]) {
+  onUploadedBlueprint(event: any, blueprints: File[]) {
 
     let promises = [];
 
-    for (let vsb of vsbs) {
-        let vsbPromise = new Promise(resolve => {
+    for (let blu of blueprints) {
+        let bPromise = new Promise(resolve => {
             let reader = new FileReader();
-            reader.readAsText(vsb);
+            reader.readAsText(blu);
             reader.onload = () => resolve(reader.result);
         });
-        promises.push(vsbPromise);
+        promises.push(bPromise);
     }
 
     Promise.all(promises).then(fileContents => {
-        this.vsbObj = JSON.parse(fileContents[0]);
-        console.log(this.vsbObj)
-  
+        this.bObj = JSON.parse(fileContents[0]);
+        this.nsdsService.generateNsDescriptor(this.bObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("download")).disabled = true;  
+          }else{
+            (<HTMLInputElement> document.getElementById("download")).disabled = false;  
+
+          }    
+        });  
       });
   }
 
+  dynamicDownloadJson() {
+    this.nsdsService.generateNsDescriptor(this.bObj)
+    .subscribe(res => {
+      this.dyanmicDownloadByHtmlTag({
+        fileName: 'nsd.json',
+        text: JSON.stringify(res)
+      });     
+    });  
+  }
+  
 }
 
