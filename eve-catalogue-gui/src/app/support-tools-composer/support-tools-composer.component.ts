@@ -14,6 +14,9 @@ export class SupportToolsComposerComponent implements OnInit {
 
   vsbObj: Object;
   bObj: Object;
+  vnsdObj:Object;
+  ctxObj: Object;
+  ctxnObj: Object;
   firstFormGroup: FormGroup;
   secondFormGroup: FormGroup;
   thirdFormGroup: FormGroup;
@@ -33,19 +36,18 @@ export class SupportToolsComposerComponent implements OnInit {
       firstCtrl: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+      secondCtrl: ['', Validators.required]
     });
     this.thirdFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+      thirdCtrl: ['', Validators.required]
     });
     this.fourthFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+      fourthCtrl: ['', Validators.required]
     });   
   }
 
 
   onUploadedVsb(event: any, vsbs: File[]) {
-    //(<HTMLInputElement> document.getElementById("firstNext")).disabled = false;          
     let promises = [];
 
     for (let vsb of vsbs) {
@@ -59,6 +61,7 @@ export class SupportToolsComposerComponent implements OnInit {
 
     Promise.all(promises).then(fileContents => {
         this.vsbObj = JSON.parse(fileContents[0]);
+        /*
         this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
         .subscribe(res => {
           if(res===undefined){
@@ -68,25 +71,81 @@ export class SupportToolsComposerComponent implements OnInit {
 
           }
         });
+           */
+      });
+  }
+  onUploadedVsbNsd(event: any, vnsds: File[]) {
+    let promises = [];
+
+    for (let vnsd of vnsds) {
+        let vnsdPromise = new Promise(resolve => {
+            let reader = new FileReader();
+            reader.readAsText(vnsd);
+            reader.onload = () => resolve(reader.result);
+        });
+        promises.push(vnsdPromise);
+    }
+
+    Promise.all(promises).then(fileContents => {
+        this.vnsdObj = JSON.parse(fileContents[0]);
+        /*
+        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+          }else{
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
+
+          }
+        });
+           */
+      });
+  }
+  onUploadedCtx(event: any, ctxs: File[]) {
+    let promises = [];
+
+    for (let ctx of ctxs) {
+        let ctxPromise = new Promise(resolve => {
+            let reader = new FileReader();
+            reader.readAsText(ctx);
+            reader.onload = () => resolve(reader.result);
+        });
+        promises.push(ctxPromise);
+    }
+
+    Promise.all(promises).then(fileContents => {
+        this.ctxObj = JSON.parse(fileContents[0]);
+        /*
+        this.blueprintsVsService.validateVsBlueprint(this.ctxObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+          }else{
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
+
+          }
+        });
+        */
            
       });
   }
-  onUploadedVsbNsd(event: any, vsbs: File[]) {
+  onUploadedCtxNsd(event: any, ctxns: File[]) {
     //(<HTMLInputElement> document.getElementById("firstNext")).disabled = false;          
     let promises = [];
 
-    for (let vsb of vsbs) {
-        let vsbPromise = new Promise(resolve => {
+    for (let ctxn of ctxns) {
+        let ctxnPromise = new Promise(resolve => {
             let reader = new FileReader();
-            reader.readAsText(vsb);
+            reader.readAsText(ctxn);
             reader.onload = () => resolve(reader.result);
         });
-        promises.push(vsbPromise);
+        promises.push(ctxnPromise);
     }
 
     Promise.all(promises).then(fileContents => {
-        this.vsbObj = JSON.parse(fileContents[0]);
-        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+        this.ctxnObj = JSON.parse(fileContents[0]);
+        /*
+        this.blueprintsVsService.validateVsBlueprint(this.ctxnObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
@@ -95,60 +154,7 @@ export class SupportToolsComposerComponent implements OnInit {
 
           }
         });
-           
-      });
-  }
-  onUploadedCtx(event: any, vsbs: File[]) {
-    //(<HTMLInputElement> document.getElementById("firstNext")).disabled = false;          
-    let promises = [];
-
-    for (let vsb of vsbs) {
-        let vsbPromise = new Promise(resolve => {
-            let reader = new FileReader();
-            reader.readAsText(vsb);
-            reader.onload = () => resolve(reader.result);
-        });
-        promises.push(vsbPromise);
-    }
-
-    Promise.all(promises).then(fileContents => {
-        this.vsbObj = JSON.parse(fileContents[0]);
-        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
-        .subscribe(res => {
-          if(res===undefined){
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
-          }else{
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
-
-          }
-        });
-           
-      });
-  }
-  onUploadedCtxNsd(event: any, vsbs: File[]) {
-    //(<HTMLInputElement> document.getElementById("firstNext")).disabled = false;          
-    let promises = [];
-
-    for (let vsb of vsbs) {
-        let vsbPromise = new Promise(resolve => {
-            let reader = new FileReader();
-            reader.readAsText(vsb);
-            reader.onload = () => resolve(reader.result);
-        });
-        promises.push(vsbPromise);
-    }
-
-    Promise.all(promises).then(fileContents => {
-        this.vsbObj = JSON.parse(fileContents[0]);
-        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
-        .subscribe(res => {
-          if(res===undefined){
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
-          }else{
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
-
-          }
-        });
+        */
            
       });
   }
@@ -186,33 +192,6 @@ export class SupportToolsComposerComponent implements OnInit {
     element.dispatchEvent(event);
   }
 
-  onUploadedBlueprint(event: any, blueprints: File[]) {
-
-    let promises = [];
-
-    for (let blu of blueprints) {
-        let bPromise = new Promise(resolve => {
-            let reader = new FileReader();
-            reader.readAsText(blu);
-            reader.onload = () => resolve(reader.result);
-        });
-        promises.push(bPromise);
-    }
-
-    Promise.all(promises).then(fileContents => {
-        this.bObj = JSON.parse(fileContents[0]);
-        this.nsdsService.composeNsDescriptor(this.bObj)
-        .subscribe(res => {
-          if(res===undefined){
-            (<HTMLInputElement> document.getElementById("download")).disabled = true;  
-          }else{
-            (<HTMLInputElement> document.getElementById("download")).disabled = false;  
-
-          }    
-        });  
-      });
-  }
-
   dynamicDownloadJson() {
     this.nsdsService.composeNsDescriptor(this.bObj)
     .subscribe(res => {
@@ -223,5 +202,46 @@ export class SupportToolsComposerComponent implements OnInit {
     });  
   }
   
+  createComposedNsd(){
+    var onBoardComNsdRequest = JSON.parse('{}');
+    var onBoardctxbRequest = JSON.parse('{}');
+    var onBoardTrRequest = JSON.parse('{}');
+
+    onBoardComNsdRequest['vsbRequest']= JSON.parse('{}');
+    onBoardComNsdRequest['vsbRequest']['nsds']=[];
+    onBoardComNsdRequest['vsbRequest']['nsds'].push(this.vnsdObj);
+    onBoardComNsdRequest['vsbRequest']['translationRules'] =[];
+
+    onBoardTrRequest['input']=[{"parameterId": "string","minValue": 0,"maxValue": 0}];
+    onBoardTrRequest['blueprintId']="";
+    onBoardTrRequest['nstId']="";
+    onBoardTrRequest['nsdId']="";
+    onBoardTrRequest['nsdVersion']="";
+    onBoardTrRequest['nsFlavourId'] ="";
+    onBoardTrRequest['nsInstantiationLevelId']="";
+    //onBoardTrRequest['default']=true;
+
+    onBoardComNsdRequest['vsbRequest']['translationRules'].push(onBoardTrRequest);
+    onBoardComNsdRequest['vsbRequest']['vsBlueprint'] =this.vsbObj;
+    onBoardComNsdRequest['contexts']=[];
+    
+    onBoardctxbRequest['ctxbRequest']= JSON.parse('{}');
+    onBoardctxbRequest['ctxbRequest']['nsds']=[];
+    onBoardctxbRequest['ctxbRequest']['nsds'].push(this.ctxnObj);
+    onBoardctxbRequest['connectInput']= JSON.parse('{}');
+    onBoardctxbRequest['connectInput']['additionalProp1'] ="";
+    onBoardctxbRequest['connectInput']['additionalProp2'] ="";
+    onBoardctxbRequest['connectInput']['additionalProp3'] ="";
+    onBoardComNsdRequest['contexts'].push(onBoardctxbRequest);
+    onBoardctxbRequest['ctxbRequest']['translationRules'] =[];
+    onBoardctxbRequest['ctxbRequest']['translationRules'].push(onBoardTrRequest);
+    onBoardctxbRequest['ctxbRequest']['ctxBlueprint']=this.ctxObj
+    console.log("onBoardctxbRequest",onBoardComNsdRequest)
+    this.nsdsService.composeNsDescriptor(onBoardComNsdRequest)
+    .subscribe(res => {
+      console.log("reeeeeeees",res);     
+    }); 
+    
+  }
 }
 

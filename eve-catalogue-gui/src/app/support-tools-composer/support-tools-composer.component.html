@@ -39,7 +39,7 @@
             <ng-template matStepLabel>Upload CTX Blueprint</ng-template>
             <input #ctxFile type="file" formControlName="thirdCtrl" (change)="onUploadedCtx($event,ctxFile.files)" required/>
             <div class="margin-top">
-                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid" id="firstNext">Next</button>
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="thirdFormGroup.invalid" id="firstNext">Next</button>
             </div>
         </form>
     </mat-step>
@@ -49,7 +49,7 @@
             <input #ctxNsdFile type="file" formControlName="fourthCtrl" (change)="onUploadedCtxNsd($event,ctxNsdFile.files)" required/>
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-                <button mat-raised-button color="accent" id="submitButton" class="margin-all" >Submit</button>
+                <button mat-raised-button color="accent"  class="margin-all" (click)="createComposedNsd()" >Download</button>
             </div>
         </form>
     </mat-step>
