@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { NsdsService } from '../nsds.service';
 import { BlueprintsVsService } from '../blueprints-vs.service';
+import { BlueprintsEcService } from '../blueprints-ec.service';
+
 
 @Component({
   selector: 'app-support-tools-composer',
@@ -27,7 +29,10 @@ export class SupportToolsComposerComponent implements OnInit {
   constructor(@Inject(DOCUMENT) document,
     private _formBuilder: FormBuilder,
     private nsdsService: NsdsService,
-    private blueprintsVsService: BlueprintsVsService    
+    private blueprintsVsService: BlueprintsVsService,
+    private blueprintsEcService: BlueprintsEcService,
+
+        
     ) {
   }
 
@@ -61,7 +66,7 @@ export class SupportToolsComposerComponent implements OnInit {
 
     Promise.all(promises).then(fileContents => {
         this.vsbObj = JSON.parse(fileContents[0]);
-        /*
+        
         this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
         .subscribe(res => {
           if(res===undefined){
@@ -71,7 +76,7 @@ export class SupportToolsComposerComponent implements OnInit {
 
           }
         });
-           */
+           
       });
   }
   onUploadedVsbNsd(event: any, vnsds: File[]) {
@@ -88,17 +93,17 @@ export class SupportToolsComposerComponent implements OnInit {
 
     Promise.all(promises).then(fileContents => {
         this.vnsdObj = JSON.parse(fileContents[0]);
-        /*
-        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+        
+        this.nsdsService.validateNsDescriptor(this.vnsdObj)
         .subscribe(res => {
           if(res===undefined){
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+            (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;  
           }else{
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
+            (<HTMLInputElement> document.getElementById("secondNext")).disabled = false;  
 
           }
         });
-           */
+        
       });
   }
   onUploadedCtx(event: any, ctxs: File[]) {
@@ -115,22 +120,21 @@ export class SupportToolsComposerComponent implements OnInit {
 
     Promise.all(promises).then(fileContents => {
         this.ctxObj = JSON.parse(fileContents[0]);
-        /*
-        this.blueprintsVsService.validateVsBlueprint(this.ctxObj)
+        
+        this.blueprintsEcService.validateCtxBlueprint(this.ctxObj)
         .subscribe(res => {
           if(res===undefined){
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+            (<HTMLInputElement> document.getElementById("thirdNext")).disabled = true;  
           }else{
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
+            (<HTMLInputElement> document.getElementById("thirdNext")).disabled = false;  
 
           }
         });
-        */
+        
            
       });
   }
   onUploadedCtxNsd(event: any, ctxns: File[]) {
-    //(<HTMLInputElement> document.getElementById("firstNext")).disabled = false;          
     let promises = [];
 
     for (let ctxn of ctxns) {
@@ -144,17 +148,18 @@ export class SupportToolsComposerComponent implements OnInit {
 
     Promise.all(promises).then(fileContents => {
         this.ctxnObj = JSON.parse(fileContents[0]);
-        /*
-        this.blueprintsVsService.validateVsBlueprint(this.ctxnObj)
+        
+        this.nsdsService.validateNsDescriptor(this.ctxnObj)
         .subscribe(res => {
           if(res===undefined){
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+            (<HTMLInputElement> document.getElementById("download")).disabled = true;  
           }else{
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
+            (<HTMLInputElement> document.getElementById("download")).disabled = false;  
 
           }
         });
-        */
+        
+        
            
       });
   }
@@ -236,10 +241,15 @@ export class SupportToolsComposerComponent implements OnInit {
     onBoardctxbRequest['ctxbRequest']['translationRules'] =[];
     onBoardctxbRequest['ctxbRequest']['translationRules'].push(onBoardTrRequest);
     onBoardctxbRequest['ctxbRequest']['ctxBlueprint']=this.ctxObj
-    console.log("onBoardctxbRequest",onBoardComNsdRequest)
+    console.log(onBoardComNsdRequest)
     this.nsdsService.composeNsDescriptor(onBoardComNsdRequest)
     .subscribe(res => {
-      console.log("reeeeeeees",res);     
+      if(res!==undefined){
+        this.dyanmicDownloadByHtmlTag({
+          fileName: 'compose_nsd.json',
+          text: JSON.stringify(res)
+        });      
+       }     
     }); 
     
   }
