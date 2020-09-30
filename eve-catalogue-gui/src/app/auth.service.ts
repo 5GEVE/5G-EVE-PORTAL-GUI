@@ -180,11 +180,7 @@ export class AuthService {
    */
   handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      //console.log(error); // log to console instead
-
-      if (error.status == 401 /*|| error.status == 400*/) {
+      if (error.status === 401 /*|| error.status == 400*/) {
         if (operation.indexOf('refresh') >= 0 || operation.indexOf('login') >= 0) {
           // TODO: better job of transforming error for user consumption
           this.log(`${operation} failed: ${error.message}`, 'FAILED', false);
@@ -209,7 +205,7 @@ export class AuthService {
         }
 
       } else {
-        if (error.status == 400) {
+        if (error.status === 400) {
           if (operation.indexOf('refresh') >= 0 || operation.indexOf('login') >= 0) {
             // TODO: better job of transforming error for user consumption
             this.log(`${operation} failed: ${error.message}`, 'FAILED', false);
@@ -223,8 +219,8 @@ export class AuthService {
             });
           }
         } else {
-          console.log(error.status + " after " + operation);
-          this.log("Account not yet activated", 'FAILED', true);
+            console.log(error.status + ' after ' + operation);
+            this.log(`${operation} failed: ${error.error}`, 'FAILED', false);
         }
       }
 
