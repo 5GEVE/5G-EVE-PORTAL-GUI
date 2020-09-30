@@ -231,9 +231,10 @@ export class AuthService {
 
   handleValidatorError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
+      console.log("eeeeeee",error)
         if (error.status === 400  || error.status === 500) {
-          console.log(error.status + ' after ' + operation);
-          this.log(`${operation} failed`, 'FAILED', false);
+          console.log(error.message + ' after ' + operation);
+          this.log(`${error.error.message} failed`, 'FAILED', false);
         } 
       return of(result as T);
     };
