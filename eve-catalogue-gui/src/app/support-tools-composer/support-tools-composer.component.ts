@@ -5,6 +5,7 @@ import { DOCUMENT } from '@angular/common';
 import { NsdsService } from '../nsds.service';
 import { BlueprintsVsService } from '../blueprints-vs.service';
 import { BlueprintsEcService } from '../blueprints-ec.service';
+import { AuthService} from '../auth.service';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class SupportToolsComposerComponent implements OnInit {
     private nsdsService: NsdsService,
     private blueprintsVsService: BlueprintsVsService,
     private blueprintsEcService: BlueprintsEcService,
-
+    private authService: AuthService
         
     ) {
   }
@@ -56,14 +57,21 @@ export class SupportToolsComposerComponent implements OnInit {
     let promises = [];
 
     for (let vsb of vsbs) {
+      if(vsb.type=='application/json' && vsb.name.includes('json')){
+
         let vsbPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(vsb);
             reader.onload = () => resolve(reader.result);
         });
         promises.push(vsbPromise);
-    }
+    }else{
+      this.authService.log(`the file is not json`, 'FAILED', false);
+      (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
 
+    }
+  }
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.vsbObj = JSON.parse(fileContents[0]);
         
@@ -78,22 +86,28 @@ export class SupportToolsComposerComponent implements OnInit {
         });
            
       });
+    }
   }
   onUploadedVsbNsd(event: any, vnsds: File[]) {
     let promises = [];
 
     for (let vnsd of vnsds) {
+      if(vnsd.type=='application/json' && vnsd.name.includes('json')){
         let vnsdPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(vnsd);
             reader.onload = () => resolve(reader.result);
         });
         promises.push(vnsdPromise);
-    }
+    }else{
+      this.authService.log(`the file is not json`, 'FAILED', false);
+      (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;  
 
+    }
+  }
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.vnsdObj = JSON.parse(fileContents[0]);
-        
         this.nsdsService.validateNsDescriptor(this.vnsdObj)
         .subscribe(res => {
           if(res===undefined){
@@ -105,19 +119,27 @@ export class SupportToolsComposerComponent implements OnInit {
         });
         
       });
+    }
   }
   onUploadedCtx(event: any, ctxs: File[]) {
     let promises = [];
 
     for (let ctx of ctxs) {
+      if(ctx.type=='application/json' && ctx.name.includes('json')){
+
         let ctxPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(ctx);
             reader.onload = () => resolve(reader.result);
         });
         promises.push(ctxPromise);
-    }
+    }else{
+      this.authService.log(`the file is not json`, 'FAILED', false);
+      (<HTMLInputElement> document.getElementById("thirdNext")).disabled = true;  
 
+    }
+  }
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.ctxObj = JSON.parse(fileContents[0]);
         
@@ -133,19 +155,27 @@ export class SupportToolsComposerComponent implements OnInit {
         
            
       });
+    }
   }
   onUploadedCtxNsd(event: any, ctxns: File[]) {
     let promises = [];
 
     for (let ctxn of ctxns) {
+      if(ctxn.type=='application/json' && ctxn.name.includes('json')){
+
         let ctxnPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(ctxn);
             reader.onload = () => resolve(reader.result);
         });
         promises.push(ctxnPromise);
-    }
+    }else{
+      this.authService.log(`the file is not json`, 'FAILED', false);
+      (<HTMLInputElement> document.getElementById("download")).disabled = true;  
 
+    }
+  }
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.ctxnObj = JSON.parse(fileContents[0]);
         
@@ -162,6 +192,7 @@ export class SupportToolsComposerComponent implements OnInit {
         
            
       });
+    }
   }
 
 

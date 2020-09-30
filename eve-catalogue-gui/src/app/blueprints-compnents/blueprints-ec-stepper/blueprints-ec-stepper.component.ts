@@ -4,6 +4,7 @@ import { DOCUMENT } from '@angular/common';
 import { BlueprintsEcService } from '../../blueprints-ec.service';
 import { BlueprintsEcComponent} from '../blueprints-ec/blueprints-ec.component';
 import { NsdsService} from '../../nsds.service';
+import { AuthService} from '../../auth.service';
 
 @Component({
   selector: 'app-blueprints-ec-stepper',
@@ -33,7 +34,8 @@ export class BlueprintsEcStepperComponent implements OnInit {
   private _formBuilder: FormBuilder,
   private blueprintsEcService: BlueprintsEcService,
   private blueprintEcComponent: BlueprintsEcComponent,
-  private nsdsService: NsdsService) { }
+  private nsdsService: NsdsService,
+  private authService: AuthService) { }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
@@ -83,14 +85,21 @@ export class BlueprintsEcStepperComponent implements OnInit {
     let promises = [];
 
     for (let ctx of ctxbs) {
+      if(ctx.type=='application/json' && ctx.name.includes('json')){
+
         let ctxbPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(ctx);
             reader.onload = () => resolve(reader.result);
         });
         promises.push(ctxbPromise);
+      }else{
+        this.authService.log(`the file is not json`, 'FAILED', false);
+        (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+  
+      }
     }
-
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.ctxbObj = JSON.parse(fileContents[0]);
 
@@ -113,22 +122,27 @@ export class BlueprintsEcStepperComponent implements OnInit {
         });
     });
   }
+  }
 
   onUploadedNsd(event: any, nsds: File[]) {
-    //console.log(event);
-    //this.uploadedNsdName = event.target.files[0].name;
-
     let promises = [];
 
     for (let nsd of nsds) {
+      if(nsd.type=='application/json' && nsd.name.includes('json')){
+
         let nsdPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(nsd);
             reader.onload = () => resolve(reader.result);
         });
         promises.push(nsdPromise);
+      }else{
+        this.authService.log(`the file is not json`, 'FAILED', false);
+        (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;  
+  
+      }
     }
-
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.nsdObj = JSON.parse(fileContents[0]);
 
@@ -150,6 +164,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });
+  }
   }
 
   onNsDfSelected(event:any) {

@@ -3,6 +3,7 @@ import { Component, OnInit, Inject} from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { NsdsService } from '../nsds.service';
+import { AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-support-tools-nsd',
@@ -17,7 +18,9 @@ export class SupportToolsNsdComponent implements OnInit {
 
   constructor(@Inject(DOCUMENT) document,
     private _formBuilder: FormBuilder,
-    private nsdsService: NsdsService    
+    private nsdsService: NsdsService,
+    private authService: AuthService
+    
     ) {
   }
 
@@ -68,14 +71,21 @@ export class SupportToolsNsdComponent implements OnInit {
     let promises = [];
 
     for (let blu of blueprints) {
+      if(blu.type=='application/json' && blu.name.includes('json')){
+
         let bPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(blu);
             reader.onload = () => resolve(reader.result);
         });
         promises.push(bPromise);
-    }
+    }else{
+      this.authService.log(`the file is not json`, 'FAILED', false);
+      (<HTMLInputElement> document.getElementById("download")).disabled = true;  
 
+    }
+  }
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.bObj = JSON.parse(fileContents[0]);
         this.nsdsService.generateNsDescriptor(this.bObj)
@@ -89,6 +99,7 @@ export class SupportToolsNsdComponent implements OnInit {
         });  
       });
   }
+}
 
   dynamicDownloadJson() {
     this.nsdsService.generateNsDescriptor(this.bObj)

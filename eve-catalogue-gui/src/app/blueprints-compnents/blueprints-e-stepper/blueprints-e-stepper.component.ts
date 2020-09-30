@@ -465,6 +465,7 @@ import { FormulaCheckService} from '../../formula-check.service';
 import { FormulaCheckInfo}  from '../../formula-check-info';
 import { BlueprintsEComponent} from '../blueprints-e/blueprints-e.component';
 import { NsdsService} from '../../nsds.service';
+import { AuthService} from '../../auth.service';
 
 
 
@@ -596,7 +597,8 @@ export class BlueprintsEStepperComponent implements OnInit {
     private blueprintsExpService: BlueprintsExpService,
     private formulaCheckService: FormulaCheckService,
     private blueprintsEComponent: BlueprintsEComponent,
-    private nsdsService: NsdsService
+    private nsdsService: NsdsService,
+    private authService: AuthService
     ) {
   }
 
@@ -815,14 +817,21 @@ export class BlueprintsEStepperComponent implements OnInit {
     let promises = [];
 
     for (let nsd of nsds) {
+      if(nsd.type=='application/json' && nsd.name.includes('json')){
+
         let nsdPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(nsd);
             reader.onload = () => resolve(reader.result);
         });
         promises.push(nsdPromise);
+      }else{
+        this.authService.log(`the file is not json`, 'FAILED', false);
+        (<HTMLInputElement> document.getElementById("nsdNext")).disabled = true;  
+  
+      }
     }
-
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.nsdObj = JSON.parse(fileContents[0]);
 
@@ -842,6 +851,7 @@ export class BlueprintsEStepperComponent implements OnInit {
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });
+  }
   }
 
   onNsDfSelected(event:any) {

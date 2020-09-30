@@ -8,6 +8,7 @@ import { BlueprintsTcDataSource } from './blueprints-tc-datasource';
 import { BlueprintsTcService } from '../../blueprints-tc.service';
 import { FormBuilder, FormArray, FormGroup, Validators, FormGroupName } from '@angular/forms';
 import { DescriptorsTcService } from '../../descriptors-tc.service';
+import { AuthService} from '../../auth.service';
 
 @Component({
   selector: 'app-blueprints-tc',
@@ -35,7 +36,8 @@ export class BlueprintsTcComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder,
     private blueprintsTcService: BlueprintsTcService,
     private descriptorsTcService: DescriptorsTcService,
-    private router: Router) { }
+    private router: Router,
+    private authService: AuthService) { }
 
   ngOnInit() {
 
@@ -148,14 +150,21 @@ export class BlueprintsTcComponent implements OnInit {
     let promises = [];
 
     for (let tcb of tcbs) {
+      if(tcb.type=='application/json' && tcb.name.includes('json')){
+
         let vsbPromise = new Promise(resolve => {
             let reader = new FileReader();
             reader.readAsText(tcb);
             reader.onload = () => resolve(reader.result);
         });
         promises.push(vsbPromise);
-    }
+    }else{
+      this.authService.log(`the file is not json`, 'FAILED', false);
+      (<HTMLInputElement> document.getElementById("submit")).disabled = true;  
 
+    }
+  }
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.tcbObj = JSON.parse(fileContents[0]);
         this.blueprintsTcService.validateTcBlueprint(this.tcbObj)
@@ -168,6 +177,7 @@ export class BlueprintsTcComponent implements OnInit {
         });
            
       });
+    }
   }
 
 
