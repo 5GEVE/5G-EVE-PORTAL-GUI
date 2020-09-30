@@ -105,14 +105,20 @@ export class AuthService {
       .pipe(
         tap((token: Token) =>
         {
-          this.log(`login w/ id=${loginInfo['email']}`, 'SUCCESS', false);
-          this.parseToken(token.access_token);
-          localStorage.setItem('token', token.access_token);
-          localStorage.setItem('refreshtoken', token.refresh_token);
-          localStorage.setItem('logged', 'true');
-          this.router.navigate([redirection]).then(() => {
-            window.location.reload();
-          });
+          if (token['details'] !== undefined && token['details'] ===
+            'User account not activated. Please, wait until the administrator validates your account') {
+            this.log(token['details'], 'FAILED', true);
+          } else {
+            this.log(`login w/ id=${loginInfo['email']}`, 'SUCCESS', false);
+            this.parseToken(token.access_token);
+            localStorage.setItem('token', token.access_token);
+            localStorage.setItem('refreshtoken', token.refresh_token);
+            localStorage.setItem('logged', 'true');
+            this.router.navigate([redirection]).then(() => {
+              window.location.reload();
+            });
+
+          }
         }),
         catchError(this.handleError<Token>('login'))
       );
