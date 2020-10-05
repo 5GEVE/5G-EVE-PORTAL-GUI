@@ -1,0 +1,14 @@
+<mat-toolbar  class="blvs-title">
+    <span style="margin-left: 15px">
+      <h1 class="mat-h1">Upload Blueprints</h1></span>
+  </mat-toolbar>
+  <div style="padding: 30px;" class="desch-container">
+    <div class="rules-div rules-div-xs rules-div-md" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="left left">
+        <form [formGroup]="firstFormGroup">
+            <input #blueprintFile type="file" formControlName="firstCtrl" (change)="onUploadedBlueprint($event,blueprintFile.files)" required/>
+            <div class="margin-top">
+                <button mat-raised-button (click)="dynamicDownloadJson()" color="primary" class="margin-all" [disabled]="firstFormGroup.invalid" id="download" >Download</button>
+            </div>
+        </form>
+</div>
+</div>

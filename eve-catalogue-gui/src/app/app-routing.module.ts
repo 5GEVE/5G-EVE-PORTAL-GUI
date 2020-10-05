@@ -29,6 +29,10 @@ import { NfvVnfComponent } from './nfv-components/nfv-vnf/nfv-vnf.component';
 import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
 import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboard/experiment-metric-dashboard.component';
 import { ExecutionTcDetailsComponent } from './execution-tc-details/execution-tc-details.component';
+import { SupportToolsSchemasComponent } from './support-tools-schemas/support-tools-schemas.component';
+import { SupportToolsNsdComponent } from './support-tools-nsd/support-tools-nsd.component';
+import { SupportToolsComposerComponent } from './support-tools-composer/support-tools-composer.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -61,6 +65,9 @@ const routes: Routes = [
   { path: 'tickets', component: TicketingSystemComponent },
   { path: 'metrics_dashboard', component: ExperimentMetricDashboardComponent},
   { path: 'execute_tc_details', component: ExecutionTcDetailsComponent },
+  { path: 'support_schemas', component: SupportToolsSchemasComponent },
+  { path: 'support_nsd', component: SupportToolsNsdComponent},
+  { path: 'support_composer', component: SupportToolsComposerComponent },
 
   { path: '**', redirectTo: '/home' }
 

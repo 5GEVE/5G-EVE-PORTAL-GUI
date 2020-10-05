@@ -13,7 +13,8 @@ export const environment = {
   dcsBaseUrl: 'http://10.5.7.12:8080/portal/dcs/dashboard/',
   fsBaseUrl: 'http://10.5.7.11:9191/portal/fs/',
   formulaCheckUrl: 'http://10.5.7.10:8989/check',
-  backServerUrl: ''
+  backServerUrl: '',
+  supportBaseUrl:'http://10.5.7.10:8086/'
 };
 
 

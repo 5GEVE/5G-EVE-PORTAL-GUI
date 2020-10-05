@@ -184,8 +184,8 @@
             <form id="uploadProcedure" [formGroup]="uploadFormGroup" class="rules-form">
                 <h3>Upload Test Case from JSON file</h3>
                 <table class="rules-full-width">
-                  <tr><td><input #tcbFile type="file" id="uploadFile" formControlName="tcbFileCtrl" required/></td></tr>
-                  <tr><td><button mat-raised-button color="accent" class="margin-all" (click)="createTCBViaJSONFile(tcbFile.files);" [disabled]="uploadFormGroup.invalid">Submit</button></td></tr>
+                  <tr><td><input #tcbFile type="file" id="uploadFile" formControlName="tcbFileCtrl" (change)="onUploadedTcb($event,tcbFile.files)" required/></td></tr>
+                  <tr><td><button mat-raised-button color="accent" class="margin-all" (click)="createTCBViaJSONFile(tcbFile.files);" [disabled]="uploadFormGroup.invalid" id="submit">Submit</button></td></tr>
                 </table>
 
 
