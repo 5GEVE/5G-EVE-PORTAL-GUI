@@ -174,7 +174,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
               onBoardCtxRequest['nsds'].push(JSON.parse(fileContents[i]));
             }
 
-            if (this.translationParams !== undefined && this.translationParams !== []){
+            if (this.translationParams !== undefined && this.translationParams.length !== 0){
               var translationRule = JSON.parse('{}');
 
               var blueprintId = onBoardCtxRequest.ctxBlueprint.blueprintId;

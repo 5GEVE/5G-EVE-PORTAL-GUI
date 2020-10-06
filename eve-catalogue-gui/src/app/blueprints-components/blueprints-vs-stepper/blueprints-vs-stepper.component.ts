@@ -86,6 +86,8 @@ export class BlueprintsVsStepperComponent implements OnInit {
             console.log(this.vsbObj['parameters'][i]['parameterId']);
             this.translationParams.push(this.vsbObj['parameters'][i]['parameterId']);
           }
+        } else {
+          console.log("no parameters found");
         }
         console.log(JSON.stringify(this.translationParams, null, 4));
     });
@@ -212,8 +214,8 @@ export class BlueprintsVsStepperComponent implements OnInit {
           for (var i = 1; i < fileContents.length; i++) {
             onBoardVsRequest['nsds'].push(JSON.parse(fileContents[i]));
           }
-          if (this.translationParams !== undefined && this.translationParams !== []){
-            //console.log(this.translationParams);
+          if (this.translationParams !== undefined && this.translationParams.length !== 0){
+           console.log(this.translationParams.length);
 
             var translationRule = JSON.parse('{}');
             //var blueprintId = onBoardVsRequest.vsBlueprint.blueprintId;
@@ -245,6 +247,8 @@ export class BlueprintsVsStepperComponent implements OnInit {
           onBoardVsRequest.translationRules.push(translationRule);
 
 
+          } else {
+            console.log('translationRules empty');
           }
           //console.log('onBoardVsRequest: ' + JSON.stringify(onBoardVsRequest, null, 4));
 
