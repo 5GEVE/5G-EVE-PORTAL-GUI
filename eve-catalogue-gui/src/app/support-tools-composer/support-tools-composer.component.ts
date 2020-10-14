@@ -25,7 +25,7 @@ export class SupportToolsComposerComponent implements OnInit {
   thirdFormGroup: FormGroup;
   fourthFormGroup: FormGroup;
   isLinear = true;
-
+  addDetailsFlag : boolean;
 
   constructor(@Inject(DOCUMENT) document,
     private _formBuilder: FormBuilder,
@@ -195,6 +195,9 @@ export class SupportToolsComposerComponent implements OnInit {
     }
   }
 
+  addDetails(event: any){
+    this.addDetailsFlag=true;
+  }
 
   private setting = {
     element: {
@@ -272,17 +275,30 @@ export class SupportToolsComposerComponent implements OnInit {
     onBoardctxbRequest['ctxbRequest']['translationRules'] =[];
     onBoardctxbRequest['ctxbRequest']['translationRules'].push(onBoardTrRequest);
     onBoardctxbRequest['ctxbRequest']['ctxBlueprint']=this.ctxObj
-    console.log(onBoardComNsdRequest)
-    this.nsdsService.composeNsDescriptor(onBoardComNsdRequest)
-    .subscribe(res => {
-      if(res!==undefined){
-        this.dyanmicDownloadByHtmlTag({
-          fileName: 'compose_nsd.json',
-          text: JSON.stringify(res)
-        });      
-       }     
-    }); 
-    
+    console.log("this.addDetailsFlag",this.addDetailsFlag)
+    if(this.addDetailsFlag==true){
+      this.nsdsService.composeNsDescriptorDetails(onBoardComNsdRequest)
+      .subscribe(res => {
+        console.log("res",res)
+        if(res!==undefined){
+          this.dyanmicDownloadByHtmlTag({
+            fileName: 'compose_nsd-details.json',
+            text: JSON.stringify(res)
+          });      
+         }     
+      });  
+    }
+    else{
+      this.nsdsService.composeNsDescriptor(onBoardComNsdRequest)
+      .subscribe(res => {
+        if(res!==undefined){
+          this.dyanmicDownloadByHtmlTag({
+            fileName: 'compose_nsd.json',
+            text: JSON.stringify(res)
+          });      
+         }     
+      }); 
+    }
   }
 }
 
