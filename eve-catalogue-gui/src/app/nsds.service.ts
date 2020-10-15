@@ -36,10 +36,8 @@ export class NsdsService {
   detailsHttpOptions = {
     headers: new HttpHeaders(
       { 
-        'Accept': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('token'),
-      }),
-    responseType: 'blob' as 'text'
+      })
   };
   constructor(private http: HttpClient,
     private authService: AuthService) { }
@@ -81,12 +79,11 @@ export class NsdsService {
         catchError(this.authService.handleValidatorError<String>('composeNsDescriptor'))
       );
   }
-  composeNsDescriptorDetails(onBoardNsdRequest: Object): Observable<String> {
-    return this.http.post(this.supBaseUrl + "nsd/compose/details", onBoardNsdRequest, this.detailsHttpOptions)
-    .pipe()
+  composeNsDescriptorDetails(onBoardNsdRequest: Object): Observable<any> {
+    return this.http.post(this.supBaseUrl + "nsd/compose/details", onBoardNsdRequest, {responseType: 'arraybuffer'})
       .pipe(
-        tap((nsd: String) => console.log("compose Ns Descriptor Details")),
-        catchError(this.authService.handleValidatorError<String>('composeNsDescriptorDetails'))
+        tap((res: any) => console.log("compose Ns Descriptor Details")),
+        catchError(this.authService.handleValidatorError<any>('composeNsDescriptorDetails'))
       );
   }
   schemaNsDescriptor(): Observable<String> {

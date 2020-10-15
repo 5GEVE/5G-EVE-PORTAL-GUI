@@ -275,18 +275,25 @@ export class SupportToolsComposerComponent implements OnInit {
     onBoardctxbRequest['ctxbRequest']['translationRules'] =[];
     onBoardctxbRequest['ctxbRequest']['translationRules'].push(onBoardTrRequest);
     onBoardctxbRequest['ctxbRequest']['ctxBlueprint']=this.ctxObj
-    console.log("this.addDetailsFlag",this.addDetailsFlag)
     if(this.addDetailsFlag==true){
       this.nsdsService.composeNsDescriptorDetails(onBoardComNsdRequest)
       .subscribe(res => {
-        console.log("res",res)
+        console.log(res)
+        const blob = new Blob([res], {
+          type: 'application/zip'
+        });
+        console.log(blob)
+        const url = window.URL.createObjectURL(blob);
+        console.log("url",url+".zip")
+        /*
         if(res!==undefined){
           this.dyanmicDownloadByHtmlTag({
             fileName: 'compose_nsd-details.json',
             text: JSON.stringify(res)
           });      
-         }     
+         }   */  
       });  
+      
     }
     else{
       this.nsdsService.composeNsDescriptor(onBoardComNsdRequest)
