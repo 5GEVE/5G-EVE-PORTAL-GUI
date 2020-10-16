@@ -95,8 +95,8 @@ export class BlueprintsEcStepperComponent implements OnInit {
         promises.push(ctxbPromise);
       }else{
         this.authService.log(`the file is not json`, 'FAILED', false);
-        (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
-  
+        (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
+
       }
     }
   if(promises.length > 0){
@@ -114,9 +114,9 @@ export class BlueprintsEcStepperComponent implements OnInit {
         this.blueprintsEcService.validateCtxBlueprint(this.ctxbObj)
         .subscribe(res => {
           if(res===undefined){
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
           }else{
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;
 
           }
         });
@@ -138,8 +138,8 @@ export class BlueprintsEcStepperComponent implements OnInit {
         promises.push(nsdPromise);
       }else{
         this.authService.log(`the file is not json`, 'FAILED', false);
-        (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;  
-  
+        (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;
+
       }
     }
   if(promises.length > 0){
@@ -155,9 +155,9 @@ export class BlueprintsEcStepperComponent implements OnInit {
         this.nsdsService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
           if(res===undefined){
-            (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;  
+            (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;
           }else{
-            (<HTMLInputElement> document.getElementById("secondNext")).disabled = false;  
+            (<HTMLInputElement> document.getElementById("secondNext")).disabled = false;
 
           }
         });
@@ -208,7 +208,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
               onBoardCtxRequest['nsds'].push(JSON.parse(fileContents[i]));
             }
 
-            if (this.translationParams !== undefined && this.translationParams !== []){
+            if (this.translationParams !== undefined && this.translationParams.length !== 0){
               var translationRule = JSON.parse('{}');
 
               var blueprintId = onBoardCtxRequest.ctxBlueprint.blueprintId;
