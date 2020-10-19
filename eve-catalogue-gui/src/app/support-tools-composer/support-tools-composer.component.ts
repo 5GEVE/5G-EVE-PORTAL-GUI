@@ -25,8 +25,7 @@ export class SupportToolsComposerComponent implements OnInit {
   thirdFormGroup: FormGroup;
   fourthFormGroup: FormGroup;
   isLinear = true;
-
-
+  isChecked : boolean;
   constructor(@Inject(DOCUMENT) document,
     private _formBuilder: FormBuilder,
     private nsdsService: NsdsService,
@@ -50,7 +49,9 @@ export class SupportToolsComposerComponent implements OnInit {
     this.fourthFormGroup = this._formBuilder.group({
       fourthCtrl: ['', Validators.required]
     });   
+    
   }
+
 
 
   onUploadedVsb(event: any, vsbs: File[]) {
@@ -195,6 +196,9 @@ export class SupportToolsComposerComponent implements OnInit {
     }
   }
 
+  addDetails(event: any){
+    this.isChecked=event.checked
+  }
 
   private setting = {
     element: {
@@ -237,7 +241,14 @@ export class SupportToolsComposerComponent implements OnInit {
       });     
     });  
   }
-  
+  downLoadFile(data: any, type: string) {
+    let blob = new Blob([data], { type: type});
+    let url = window.URL.createObjectURL(blob);
+    let pwa = window.open(url);
+    if (!pwa || pwa.closed || typeof pwa.closed == 'undefined') {
+        alert( 'Please disable your Pop-up blocker and try again.');
+    }
+}
   createComposedNsd(){
     var onBoardComNsdRequest = JSON.parse('{}');
     var onBoardctxbRequest = JSON.parse('{}');
@@ -272,17 +283,40 @@ export class SupportToolsComposerComponent implements OnInit {
     onBoardctxbRequest['ctxbRequest']['translationRules'] =[];
     onBoardctxbRequest['ctxbRequest']['translationRules'].push(onBoardTrRequest);
     onBoardctxbRequest['ctxbRequest']['ctxBlueprint']=this.ctxObj
-    console.log(onBoardComNsdRequest)
-    this.nsdsService.composeNsDescriptor(onBoardComNsdRequest)
-    .subscribe(res => {
-      if(res!==undefined){
-        this.dyanmicDownloadByHtmlTag({
-          fileName: 'compose_nsd.json',
-          text: JSON.stringify(res)
-        });      
-       }     
-    }); 
-    
+    if(this.isChecked==true){
+      this.nsdsService.composeNsDescriptorDetails(onBoardComNsdRequest)
+      .subscribe(res => {
+        this.downLoadFile(res, "application/zip");
+        /*
+        console.log(res)
+        const blob = new Blob([res], {
+          type: 'application/zip'
+        });
+        console.log(blob)
+        const url = window.URL.createObjectURL(blob);
+        console.log("url",url+".zip")
+        */
+        /*
+        if(res!==undefined){
+          this.dyanmicDownloadByHtmlTag({
+            fileName: 'compose_nsd-details.json',
+            text: JSON.stringify(res)
+          });      
+         }   */  
+      });  
+      
+    }
+    else{
+      this.nsdsService.composeNsDescriptor(onBoardComNsdRequest)
+      .subscribe(res => {
+        if(res!==undefined){
+          this.dyanmicDownloadByHtmlTag({
+            fileName: 'compose_nsd.json',
+            text: JSON.stringify(res)
+          });      
+         }     
+      }); 
+    }
   }
 }
 

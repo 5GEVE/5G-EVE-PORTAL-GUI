@@ -46,6 +46,8 @@
     <mat-step [stepControl]="fourthFormGroup">
         <form [formGroup]="fourthFormGroup">
             <ng-template matStepLabel>Upload CTX Blueprint NSDs</ng-template>
+            <div style="margin-top: 5px;"><mat-checkbox (change)="addDetails($event);" style="color: black;">Add Details</mat-checkbox></div>
+        <br>
             <input #ctxNsdFile type="file" formControlName="fourthCtrl" (change)="onUploadedCtxNsd($event,ctxNsdFile.files)" required/>
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>

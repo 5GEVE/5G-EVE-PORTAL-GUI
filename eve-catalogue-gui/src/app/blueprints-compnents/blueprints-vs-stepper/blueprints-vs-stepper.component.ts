@@ -74,10 +74,10 @@ export class BlueprintsVsStepperComponent implements OnInit {
           reader.readAsText(vsb);
           reader.onload = () => resolve(reader.result);
       });
-      promises.push(vsbPromise);     
+      promises.push(vsbPromise);
      }else{
       this.authService.log(`the file is not json`, 'FAILED', false);
-      (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+      (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
 
     }
   }
@@ -94,18 +94,18 @@ export class BlueprintsVsStepperComponent implements OnInit {
     this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
     .subscribe(res => {
       if(res===undefined){
-        (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
+        (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
       }else{
-        (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;  
+        (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;
 
       }
-    
+
     });
-        
+
   });
  }
 
-       
+
   }
 
   onUploadedNsd(event: any, nsds: File[]) {
@@ -125,8 +125,8 @@ export class BlueprintsVsStepperComponent implements OnInit {
         promises.push(nsdPromise);
       }else{
         this.authService.log(`the file is not json`, 'FAILED', false);
-        (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;  
-  
+        (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;
+
       }
     }
     if(promises.length > 0){
@@ -139,13 +139,13 @@ export class BlueprintsVsStepperComponent implements OnInit {
         this.thirdFormGroup.get('nsdVersion').setValue(this.nsdObj['version']);
 
         this.dfs = this.nsdObj['nsDf'];
-        
+
         this.nsdsService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
           if(res===undefined){
-            (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;  
+            (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;
           }else{
-            (<HTMLInputElement> document.getElementById("secondNext")).disabled = false;  
+            (<HTMLInputElement> document.getElementById("secondNext")).disabled = false;
 
           }
         });
@@ -246,7 +246,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
           for (var i = 1; i < fileContents.length; i++) {
             onBoardVsRequest['nsds'].push(JSON.parse(fileContents[i]));
           }
-          if (this.translationParams !== undefined && this.translationParams !== []){
+          if (this.translationParams !== undefined && this.translationParams.length !== 0){
             //console.log(this.translationParams);
 
             var translationRule = JSON.parse('{}');
