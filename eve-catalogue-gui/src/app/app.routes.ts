@@ -27,6 +27,7 @@ import { RegisterComponent } from './register/register.component';
 import { TicketingSystemComponent } from './ticketing-system/ticketing-system.component';
 import { ExperimentMetricDashboardComponent } from './experiment-metric-dashboard/experiment-metric-dashboard.component';
 import { ExecutionTcDetailsComponent } from './execution-tc-details/execution-tc-details.component';
+import { FilesServiceComponent } from './files-service/files-service.component';
 
 export const AppRoutes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -58,7 +59,7 @@ export const AppRoutes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'metrics_dashboard', component: ExperimentMetricDashboardComponent},
     { path: 'execute_tc_details', component: ExecutionTcDetailsComponent },
-
+    { path: 'vnfs', component: FilesServiceComponent },
     
     // otherwise redirect to home
     { path: '**', redirectTo: '/home' }

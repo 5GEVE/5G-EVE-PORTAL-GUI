@@ -1,0 +1,185 @@
+<app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
+
+<div class="contentBlock" style="background: transparent; padding: 30px; padding-bottom: 10%;">
+    <!-- Action buttons -->
+    <section class="mat-typography title-group">
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle value="bold"  (click)="goTo('add')"  *ngIf="isVnfDev()">
+                <mat-icon aria-hidden="false" aria-label="">cloud_upload</mat-icon> Upload VNF
+            </mat-button-toggle>
+            <mat-button-toggle value="bold"   (click)="goTo('dp_requests')">
+                <mat-icon aria-hidden="false" >cloud_queue</mat-icon> Deployment Requests
+            </mat-button-toggle>
+            <mat-button-toggle value="bold"  (click)="goTo('list')"  *ngIf="isVnfDev()">
+                <mat-icon aria-hidden="false" aria-label="">home</mat-icon> My VNFs
+            </mat-button-toggle>            
+            <mat-button-toggle value="bold"   *ngIf="getStatus() != 'add'" (click)="goTo(getStatus())">
+                <mat-icon aria-hidden="false" aria-label="">refresh</mat-icon> Update List
+            </mat-button-toggle>
+
+        </mat-button-toggle-group>
+        <input type="file" id="fileUpload" name="fileUpload" multiple="multiple" style="display:none;" />
+
+        <mat-progress-bar *ngIf="showMatProgress" [value]="downloadProgress"></mat-progress-bar>
+
+        <mat-divider></mat-divider>
+    </section>
+
+    <!-- Content -->
+    <!-- VNFs list -->
+    <table mat-table [dataSource]="fetchedFiles" class="mat-elevation-z8" *ngIf="getStatus() == 'list'&&!fetching">
+
+        <ng-container matColumnDef="filename">
+            <th mat-header-cell *matHeaderCellDef> Filename </th>
+            <td mat-cell *matCellDef="let element"> {{element.filename}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="owner">
+            <th mat-header-cell *matHeaderCellDef> Owner </th>
+            <td mat-cell *matCellDef="let element"> {{element.creator}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="updated_at">
+            <th mat-header-cell *matHeaderCellDef> Last Updated </th>
+            <td mat-cell *matCellDef="let element"> {{element.updated_at}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+            <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+
+                <mat-button-toggle title="Create Request" value="italic" 
+                    (click)='createRequestDialog(element.filename, element.creator)' *ngIf="!isSiteManager()"
+                >
+                    <mat-icon aria-hidden="false" aria-label="Delete">near_me</mat-icon>
+                </mat-button-toggle>        
+
+                <mat-button-toggle title="Donwload" value="bold" (click)='downloadDialog(element.filename)'>
+                    <mat-icon aria-hidden="false" aria-label="Example edit icon">cloud_download</mat-icon>
+                </mat-button-toggle>
+
+                <mat-button-toggle title="Delete" value="italic" (click)='deleteDialog(element.filename)'>
+                    <mat-icon aria-hidden="false" aria-label="Delete">delete_forever</mat-icon>
+                </mat-button-toggle>
+
+            </mat-button-toggle-group>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="element-row" (click)=fileDetails(element)></tr>
+
+    </table>
+
+    <!-- Deployment requests -->
+    <table mat-table [dataSource]="fetchedRequests" class="mat-elevation-z8" *ngIf="getStatus() == 'dp_requests'&&!fetching">
+
+        <ng-container matColumnDef="request_id">
+            <th mat-header-cell *matHeaderCellDef> Request ID </th>
+            <td mat-cell *matCellDef="let element" > {{element.request_id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="filename" *ngIf="!isSiteManager()">
+            <th mat-header-cell *matHeaderCellDef class="dp-requests-filename"> Filename </th>
+            <td mat-cell *matCellDef="let element"> {{element.filename}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="owner" *ngIf="!isVnfDev()">
+            <th mat-header-cell *matHeaderCellDef class="dp-requests-owner"> Owner </th>
+            <td mat-cell *matCellDef="let element"> {{element.creator}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="site">
+            <th mat-header-cell *matHeaderCellDef class="dp-requests-site"> Associated Site </th>
+            <td mat-cell *matCellDef="let element"> {{element.site}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef class="dp-requests-status"> Status </th>
+            <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+            <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+
+                <mat-button-toggle title="Change status" value="bold" *ngIf="isSiteManager()" 
+                    (click)='fileStatusDialog(element.request_id, element.filename, element.site, "edit")'
+                >
+                    <mat-icon aria-hidden="false" aria-label="Example edit icon">reply</mat-icon>
+                </mat-button-toggle>
+
+                <mat-button-toggle title="Download" value="bold" (click)='downloadAssociatedDialog(element.filename, element.request_id)'>
+                    <mat-icon aria-hidden="false" aria-label="Example edit icon">cloud_download</mat-icon>
+                </mat-button-toggle>
+
+                <mat-button-toggle title="Delete" value="italic" 
+                    (click)='deleteRequestDialog(element.request_id, element.filename, element.site)'
+                >
+                    <mat-icon aria-hidden="false" aria-label="Delete">delete_forever</mat-icon>
+                </mat-button-toggle>
+
+            </mat-button-toggle-group>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="requestsColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: requestsColumns;" class="element-row" (click)=fileDetails(element)></tr>
+
+    </table>
+
+    <!-- Upload VNF form -->
+    <mat-card class="my-card" *ngIf="getStatus() == 'add'&&!fetching"> 
+        <form class="my-form" [formGroup]="uploadForm" >
+            <mat-card-header class="upload-header">
+                <mat-card-title class="upload-header-text">VNF upload</mat-card-title>
+            </mat-card-header>
+
+            <mat-form-field class="full-width">
+                <mat-label>Name of the file</mat-label>
+                <input  matInput  formControlName="filename" placeholder="Choose a name for the file to be uploaded" name="filename"  required>
+            </mat-form-field>
+
+            <div style="text-align:center;">
+                <mat-card class="upload-card" style="margin-top:10px;">                   
+                    <mat-card-content>
+                        <ul>
+                            <li *ngFor="let file of files">
+                                <mat-progress-bar [value]="file.progress"></mat-progress-bar>
+                                <span id="file-label">
+                                    {{file.filename}}
+                                    <mat-icon class="rm-upload-item" aria-hidden="false" (click)='deleteFromUploadList(file.filename)' aria-label="Delete">delete_forever</mat-icon>
+                                </span>
+                            </li>
+                        </ul>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <button mat-button color="warn" (click)="onClick()">
+                            <mat-icon>attach_file</mat-icon>
+                            Select File
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+                <input type="file" #fileUpload id="fileUpload" name="fileUpload" multiple="multiple" accept=".zip" style="display:none;" />
+            </div>
+
+            <mat-card-header class="site-facilities-header">
+                <mat-card-subtitle class="site-facilities-text">Site facilities where VNF should be loaded</mat-card-subtitle>
+            </mat-card-header>
+
+            <div *ngFor="let data of siteFacilities; let i=index">
+                <label>
+                  <input type="checkbox" [value]="data" (change)="onCheckboxChange($event)" />
+                  {{data}}
+                </label>
+            </div>
+
+            <div class="uploadButtonContainer">
+                <button mat-raised-button (click)="onSubmit()" color="primary" class="uploadButton">Upload File</button>
+            </div>
+        </form>
+    </mat-card>
+
+</div>

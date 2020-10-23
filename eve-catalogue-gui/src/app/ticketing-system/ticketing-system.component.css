@@ -81,3 +81,11 @@ table {
 .my-spinner{
   margin: auto;
 }
+
+.ticket-summary{
+  width: 30%;
+}
+
+.ticket-summary-text{
+  text-overflow: ellipsis;
+}

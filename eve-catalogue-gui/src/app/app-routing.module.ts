@@ -32,6 +32,7 @@ import { ExecutionTcDetailsComponent } from './execution-tc-details/execution-tc
 import { SupportToolsSchemasComponent } from './support-tools-schemas/support-tools-schemas.component';
 import { SupportToolsNsdComponent } from './support-tools-nsd/support-tools-nsd.component';
 import { SupportToolsComposerComponent } from './support-tools-composer/support-tools-composer.component';
+import { FilesServiceComponent } from './files-service/files-service.component';
 
 
 const routes: Routes = [
@@ -68,6 +69,7 @@ const routes: Routes = [
   { path: 'support_schemas', component: SupportToolsSchemasComponent },
   { path: 'support_nsd', component: SupportToolsNsdComponent},
   { path: 'support_composer', component: SupportToolsComposerComponent },
+  { path: 'vnfs', component: FilesServiceComponent },
 
   { path: '**', redirectTo: '/home' }
 

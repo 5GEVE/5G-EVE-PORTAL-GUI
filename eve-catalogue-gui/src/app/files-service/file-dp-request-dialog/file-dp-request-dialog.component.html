@@ -1,0 +1,23 @@
+<mat-card class="my-card"> 
+    <form class="my-form" [formGroup]="createRequestForm" >
+        <mat-card-header class="upload-header">
+            <mat-card-title class="upload-header-text">Create Deployment Request</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-header class="site-facilities-header">
+            <mat-card-subtitle class="site-facilities-text">Site facilities where VNF should be loaded</mat-card-subtitle>
+        </mat-card-header>
+
+        <div *ngFor="let data of siteFacilities; let i=index">
+            <label>
+              <input type="checkbox" [value]="data" (change)="onCheckboxChange($event)" />
+              {{data}}
+            </label>
+        </div>
+
+        <div class="createRequestButtonContainer">
+            <button mat-raised-button (click)="onSubmit()" color="primary" class="uploadButton">Create</button>
+            <button mat-raised-button color="warn" (click)="onNoClick()">Close</button>
+        </div>
+    </form>
+</mat-card>
