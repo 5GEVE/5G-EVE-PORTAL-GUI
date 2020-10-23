@@ -92,6 +92,11 @@ import {APP_BASE_HREF} from '@angular/common';
 import { SupportToolsSchemasComponent } from './support-tools-schemas/support-tools-schemas.component';
 import { SupportToolsNsdComponent } from './support-tools-nsd/support-tools-nsd.component';
 import { SupportToolsComposerComponent } from './support-tools-composer/support-tools-composer.component';
+import { FilesServiceComponent } from './files-service/files-service.component';
+import { FileServiceDialogComponent } from './files-service/file-service-dialog/file-service-dialog.component';
+import { FileUploadDialogComponent } from './files-service/file-upload-dialog/file-upload-dialog.component';
+import { FileDialogComponent } from './files-service/file-dialog/file-dialog.component';
+import { FileDpRequestDialogComponent } from './files-service/file-dp-request-dialog/file-dp-request-dialog.component' 
 @NgModule({
   declarations: [
     AppComponent,
@@ -148,8 +153,12 @@ import { SupportToolsComposerComponent } from './support-tools-composer/support-
     ExecutionTcDetailsComponent,
     SupportToolsSchemasComponent,
     SupportToolsNsdComponent,
-    SupportToolsComposerComponent
-
+    SupportToolsComposerComponent,
+    FilesServiceComponent,
+    FileServiceDialogComponent,
+    FileUploadDialogComponent,
+    FileDialogComponent,
+    FileDpRequestDialogComponent
 
   ],
   imports: [
@@ -207,7 +216,11 @@ entryComponents: [
   NfvNsDialogComponent,
   NfvNsGraphDialogComponent,
   NfvVnfGraphDialogComponent,
-  ExecutionTcDetailsComponent
+  ExecutionTcDetailsComponent,
+  FileServiceDialogComponent,
+  FileUploadDialogComponent,
+  FileDialogComponent,
+  FileDpRequestDialogComponent  
 ],
 
 providers: [

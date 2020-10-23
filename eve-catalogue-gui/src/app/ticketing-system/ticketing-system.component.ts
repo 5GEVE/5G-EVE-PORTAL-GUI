@@ -26,7 +26,7 @@ export class TicketingSystemComponent implements OnInit {
   fetching: boolean = true;
   username: string = '';
   ticketingStatus: string = 'list';
-  displayedColumns: string[] = ['id', 'product','component', 'status', 'summary', 'actions'];
+  displayedColumns: string[] = ['id','component', 'status', 'summary', 'actions'];
   tickets = [];
   totalTickets = 0;
   numTickets = 0;
