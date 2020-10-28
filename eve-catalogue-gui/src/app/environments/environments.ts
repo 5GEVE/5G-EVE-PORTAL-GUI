@@ -14,7 +14,7 @@ export const environment = {
   fsBaseUrl: 'http://10.5.7.11:9191/portal/fs/',
   formulaCheckUrl: 'http://10.5.7.10:8989/check',
   backServerUrl: '',
-  supportBaseUrl:'http://10.5.7.10:8086/'
+  supportBaseUrl: 'http://10.5.7.10:8086/'
 };
 
 
