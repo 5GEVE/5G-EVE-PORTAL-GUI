@@ -66,14 +66,14 @@
                     <h4>Parameters</h4>
                     <div formArrayName="items" *ngFor="let item of thirdFormGroup.get('items')?.controls; let i=index;" fxFlex="100%"  fxLayout.xs="row" fxLayout="row" fxLayoutAlign="center center">
                         <div [formGroupName]="i" fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
-                            
+
                             <td fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
                                 <label style="color: black;">{{this.translationParams[i]}}</label>
                               <!-- <mat-select formControlName="parameterId" style="display:none;">
                                 <mat-option value="{{this.translationParams[i]}}" selected >
                                   {{this.translationParams[i]}}
                                 </mat-option>
-                            </mat-select> 
+                            </mat-select>
                               <mat-form-field appearance="outline" color=primary class="invisible rules-full-width" >
                                   <input matInput placeholder="{{this.translationParams[i]}}" [ngModel]="this.translationParams[i]" formControlName="parameterId" >
                                 </mat-form-field>

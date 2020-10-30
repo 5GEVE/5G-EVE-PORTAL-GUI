@@ -43,7 +43,7 @@ export class FilesServiceComponent implements OnInit {
   checkArray: FormArray;
 
   @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;
-  files  = []; 
+  files  = [];
 
   downloadProgress: number = 0;
   showMatProgress: boolean = false;
@@ -117,7 +117,7 @@ export class FilesServiceComponent implements OnInit {
     }
     else{
       return false;
-    }    
+    }
   }
 
   goTo(route: string){
@@ -127,7 +127,7 @@ export class FilesServiceComponent implements OnInit {
         this.ngOnInit();
         this.setStatus('list');
         break;
-      case 'add': 
+      case 'add':
         this.getSiteFacilities();
         this.setStatus('add');
         break;
@@ -136,7 +136,7 @@ export class FilesServiceComponent implements OnInit {
         this.getDeploymentRequests();
         this.getColumns();
         this.setStatus('dp_requests');
-    }   
+    }
   }
 
   getSiteFacilities(){
@@ -154,7 +154,7 @@ export class FilesServiceComponent implements OnInit {
           }
           else{
             this.fetching = false;
-            this.router.navigate(['/login']);           
+            this.router.navigate(['/login']);
           }
     });
   }
@@ -182,7 +182,7 @@ export class FilesServiceComponent implements OnInit {
             }
             else{
               this.fetching = false;
-              this.router.navigate(['/login']);           
+              this.router.navigate(['/login']);
             }
       });
   }
@@ -214,7 +214,7 @@ export class FilesServiceComponent implements OnInit {
             }
             else{
               this.fetching = false;
-              this.router.navigate(['/login']);           
+              this.router.navigate(['/login']);
             }
       });
   }
@@ -227,11 +227,11 @@ export class FilesServiceComponent implements OnInit {
     this.uploadFiles(this.f.filename.value, this.selectedSites);
   }
 
-  onClick() {  
+  onClick() {
     const fileUpload = this.fileUpload.nativeElement;
-    fileUpload.onchange = () => {  
-      for (let index = 0; index < fileUpload.files.length; index++){  
-        const file = fileUpload.files[index];  
+    fileUpload.onchange = () => {
+      for (let index = 0; index < fileUpload.files.length; index++){
+        const file = fileUpload.files[index];
         var extension =file.name.split(".").pop();
         var fileSizeGb = file.size / 1000000;
 
@@ -242,11 +242,11 @@ export class FilesServiceComponent implements OnInit {
           this.fileNotSupportedDialog("File size exceeded (limited to 50GB)");
         }
         else{
-          this.files.push({ data: file, filename: file.name, inProgress: false, progress: 0});  
+          this.files.push({ data: file, filename: file.name, inProgress: false, progress: 0});
         }
-      }  
-    };  
-    fileUpload.click();  
+      }
+    };
+    fileUpload.click();
 }
 
 fileNotSupportedDialog(error: string) {
@@ -261,35 +261,35 @@ fileNotSupportedDialog(error: string) {
 
 deleteFromUploadList(filename){
   const fileUpload = this.fileUpload.nativeElement;
-  for (let index = 0; index < fileUpload.files.length; index++){    
+  for (let index = 0; index < fileUpload.files.length; index++){
     this.files.filter(f =>{
       if (f.filename == filename){
         this.files.splice(index, 1);
       }
     })
-  }  
+  }
 }
 
 
-private uploadFiles(filename, sites: string[]) {  
-  this.fileUpload.nativeElement.value = '';  
+private uploadFiles(filename, sites: string[]) {
+  this.fileUpload.nativeElement.value = '';
 
-  this.files.forEach(file => {  
-    this.uploadFile(file, filename, sites);  
-  });  
+  this.files.forEach(file => {
+    this.uploadFile(file, filename, sites);
+  });
 
 }
 
 
-uploadFile(file, filename: string, sites: string[]) {  
-  const formData = new FormData();  
-  formData.append('file', file.data);  
-  file.inProgress = true;  
+uploadFile(file, filename: string, sites: string[]) {
+  const formData = new FormData();
+  formData.append('file', file.data);
+  file.inProgress = true;
   filename = filename.split(" ").join("_");
   filename = filename + ".zip";
 
   this.filesService.check_file(filename).pipe()
-  .subscribe((event: any) => { 
+  .subscribe((event: any) => {
     if (event instanceof HttpResponse){
       let data = JSON.parse(JSON.stringify(event.body))
       if ((event.status == 200) && (Object.keys(data['details']).length != 0)){
@@ -298,22 +298,22 @@ uploadFile(file, filename: string, sites: string[]) {
       }
       else if ((event.status == 200) && (Object.keys(data['details']).length == 0)){
         this.filesService.upload(formData, filename)
-        .pipe(  
+        .pipe(
           map(event => {
-            switch (event.type) {  
-              case HttpEventType.UploadProgress:  
-                file.progress = Math.round(event.loaded * 100 / event.total);  
-                break;  
-              case HttpEventType.Response: 
-                return event;  
-            } 
-          }),  
-          catchError((error: HttpErrorResponse) => { 
-            file.inProgress = false;  
+            switch (event.type) {
+              case HttpEventType.UploadProgress:
+                file.progress = Math.round(event.loaded * 100 / event.total);
+                break;
+              case HttpEventType.Response:
+                return event;
+            }
+          }),
+          catchError((error: HttpErrorResponse) => {
+            file.inProgress = false;
             return of(`${file.data.name} upload failed.`);
         }))
         .subscribe((event: any) => {
-          if (typeof (event) === 'object') {  
+          if (typeof (event) === 'object') {
             this.filesService.setSites(filename, sites)
             .pipe()
             .subscribe(
@@ -324,14 +324,14 @@ uploadFile(file, filename: string, sites: string[]) {
                 //TODO: show error when requests were not creted
                 this.router.navigate(['/login']);
             });
-          }  
+          }
         });
       }
       else{
         console.log(event);
       }
     }
-  });  
+  });
 }
 
 cleanUploadForm(){
@@ -352,52 +352,52 @@ filenameAlreadyInUseDialog(error: string) {
 
 downloadFile(filename: string){
   this.filesService.downloadFile(filename)
-  .pipe(  
-    map(event => {  
-      switch (event.type) {  
-        case HttpEventType.DownloadProgress:  
+  .pipe(
+    map(event => {
+      switch (event.type) {
+        case HttpEventType.DownloadProgress:
           this.downloadProgress = Math.round(100 * event.loaded / event.total);
 
-          break;  
-        case HttpEventType.Response: 
+          break;
+        case HttpEventType.Response:
           fileSaver.saveAs(event.body, filename);
           this.downloadProgress = 0;
           this.showMatProgress = false;
-  
-          return event;  
-      } 
-    }),  
-    catchError((error: HttpErrorResponse) => {  
+
+          return event;
+      }
+    }),
+    catchError((error: HttpErrorResponse) => {
       return of('Download failed.');
     })).subscribe((event: any) => {
-      if (typeof (event) === 'object') {  
-      }  
-    }); 
+      if (typeof (event) === 'object') {
+      }
+    });
 }
 
 downloadAssociatedFile(filename: string, request_id: string){
   this.filesService.downloadAssociatedFile(request_id)
-  .pipe(  
-    map(event => {  
-      switch (event.type) {  
-        case HttpEventType.DownloadProgress:  
+  .pipe(
+    map(event => {
+      switch (event.type) {
+        case HttpEventType.DownloadProgress:
           this.downloadProgress = Math.round(100 * event.loaded / event.total);
 
-          break;  
-        case HttpEventType.Response: 
+          break;
+        case HttpEventType.Response:
           fileSaver.saveAs(event.body, filename);
           this.downloadProgress = 0;
           this.showMatProgress = false;
-  
-          return event;  
-      } 
-    }),  
-    catchError((error: HttpErrorResponse) => {  
+
+          return event;
+      }
+    }),
+    catchError((error: HttpErrorResponse) => {
       return of('Download failed.');
     })).subscribe((event: any) => {
-      if (typeof (event) === 'object') {  
-      }  
-    }); 
+      if (typeof (event) === 'object') {
+      }
+    });
 }
 
 deleteFile(filename: string){
@@ -412,7 +412,7 @@ deleteFile(filename: string){
             this.refreshErrorHandler('deleteFile');
           }
           else{
-            this.router.navigate(['/login']);           
+            this.router.navigate(['/login']);
           }
     });
 }
@@ -528,7 +528,7 @@ fileStatusDialog(requestId: string, filename: string, site: string, action: stri
 
 onCheckboxChange(e) {
   this.checkArray = this.uploadForm.get('selectedSiteFacilities') as FormArray;
-  
+
   if (e.target.checked) {
     this.checkArray.push(new FormControl(e.target.value));
     this.selectedSites.push(e.target.value);
@@ -565,8 +565,8 @@ onCheckboxChange(e) {
         },
         error => {
           this.refreshed = false;
-          this.router.navigate(['/login']);                    
+          this.router.navigate(['/login']);
         }
-      )    
+      )
   }
 }

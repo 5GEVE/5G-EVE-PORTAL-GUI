@@ -1,10 +1,15 @@
 <app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
+<mat-tab-group selectedIndex="1" class="ble-container">
+<mat-tab label="Onboard VNFs">
+  <app-files-service></app-files-service>
+</mat-tab>
+<mat-tab label="VNF Packages">
 <mat-toolbar class="nv-title">
   <span style="margin-left: 15px;"><h1 class="mat-h1">Vnf Packages</h1></span>
 </mat-toolbar>
 <div style="padding: 30px;" class="nv-container" >
-<div fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="width: 100%">
-  <table mat-table class="nv-table full-width-table" matSort aria-label="Elements" height="100%">
+  <div fxFlex="100%" fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="width: 100%">
+    <table mat-table class="nv-table full-width-table" matSort aria-label="Elements" height="100%">
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
@@ -67,3 +72,5 @@
   </mat-paginator>
 </div>
 </div>
+</mat-tab>
+</mat-tab-group>
