@@ -61,7 +61,7 @@ export class BlueprintsExpService {
     return this.http.post(this.supBaseUrl + "exp/validate", onBoardExpRequest, this.httpOptions)
       .pipe(
         tap((blueprintId: String) => this.authService.log(`validate exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
-        catchError(this.authService.handleError<String>('validateExpBlueprint'))
+        catchError(this.authService.handleValidatorError<String>('validateExpBlueprint'))
       );
   }
   schemaExpBlueprint(): Observable<String> {

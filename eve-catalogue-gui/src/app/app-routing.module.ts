@@ -33,6 +33,7 @@ import { SupportToolsSchemasComponent } from './support-tools-schemas/support-to
 import { SupportToolsNsdComponent } from './support-tools-nsd/support-tools-nsd.component';
 import { SupportToolsComposerComponent } from './support-tools-composer/support-tools-composer.component';
 import { FilesServiceComponent } from './files-service/files-service.component';
+import { FilesServiceSecondComponent } from './files-service-second/files-service-second.component';
 
 
 const routes: Routes = [
@@ -70,6 +71,7 @@ const routes: Routes = [
   { path: 'support_nsd', component: SupportToolsNsdComponent},
   { path: 'support_composer', component: SupportToolsComposerComponent },
   { path: 'vnfs', component: FilesServiceComponent },
+  { path: 'vnf-service', component: FilesServiceSecondComponent },
 
   { path: '**', redirectTo: '/home' }
 

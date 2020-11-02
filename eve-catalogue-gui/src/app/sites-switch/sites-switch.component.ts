@@ -11,7 +11,7 @@ export class SitesSwitchComponent implements OnInit {
   cards = [
     { title: 'View Tickets', subtitle: '', cols: 1, rows: 1, path: '/tickets', icon: '../../assets/images/format_list_bulleted_white.png', btn: '' },
     { title: 'Manage Experiments', subtitle: '', cols: 1, rows: 1, path: '/experiments', icon: '../../assets/images/build_white.png', btn: '' },
-    { title: 'Deployment Requests', subtitle: '', cols: 1, rows: 1, path: '/vnfs', icon: '../../assets/images/build_white.png', btn: '' }
+    { title: 'Deployment Requests', subtitle: '', cols: 1, rows: 1, path: '/vnf-service', icon: '../../assets/images/build_white.png', btn: '' }
   ];
 
   constructor(private router: Router) { }
