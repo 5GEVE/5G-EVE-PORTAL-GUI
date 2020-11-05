@@ -33,18 +33,18 @@ import { SupportToolsSchemasComponent } from './support-tools-schemas/support-to
 import { SupportToolsNsdComponent } from './support-tools-nsd/support-tools-nsd.component';
 import { SupportToolsComposerComponent } from './support-tools-composer/support-tools-composer.component';
 import { FilesServiceComponent } from './files-service/files-service.component';
-import { FilesServiceSecondComponent } from './files-service-second/files-service-second.component';
+import { DeploymentRequestComponent } from './deployment-request/deployment-request.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'register', component: RegisterComponent  },
   { path: 'design_experiment', component: DashboardComponent },
-  {path:'home',component:HomeComponent},
+  { path: 'home',component:HomeComponent},
   { path: 'blueprints_tc', component: BlueprintsTcComponent },
   { path: 'blueprints_ec', component: BlueprintsEcComponent },
   { path: 'blueprints_exp', component: BlueprintsEComponent },
-  { path: 'blueprints_vs', component: BlueprintsVsComponent }, 
+  { path: 'blueprints_vs', component: BlueprintsVsComponent },
   { path: 'request_experiment', component: ExperimentSwitchComponent },
   { path: 'schedule_experiment', component: DescriptorsESchedulerComponent },
   { path: 'descriptors_exp', component: DescriptorsEComponent },
@@ -71,7 +71,7 @@ const routes: Routes = [
   { path: 'support_nsd', component: SupportToolsNsdComponent},
   { path: 'support_composer', component: SupportToolsComposerComponent },
   { path: 'vnfs', component: FilesServiceComponent },
-  { path: 'vnf-service', component: FilesServiceSecondComponent },
+  { path: 'vnf-service', component: DeploymentRequestComponent },
 
   { path: '**', redirectTo: '/home' }
 

@@ -3,7 +3,7 @@
         <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="center center" >
         <div fxFlex="45%" style="width: 97%;">
             <div class="font-size-sm font-size-xs"  fxLayout="column" fxLayoutAlign="left left" *ngFor="let info of footerInfo">
-                <span style="text-align: left;"><b>{{info.title}}</b> {{info.context}}</span>
+                <span style="text-align: left;"><b><a href="{{info.link}}" style="font-size: 14px; font-weight: bold; margin: 5px 0 5px 0; " class="icon_social_link">{{info.title}}</a></b> | {{info.context}}</span>
             </div>
          </div>
          <div fxFlex="10%" fxFlex.sm="100%" >
@@ -14,9 +14,9 @@
                     <img class="social_icons" src="../../../assets/images/slack.png">
                 </a>
                 -->
-                <a href="https://5g-eve-support.slack.com" target="_blank" class="icon_social_link" style="color: white;" >
-                  <span class="iconify icon_social" data-icon="mdi-slack" data-inline="false" style="width: 27px;" ></span>
-                  
+                <a href="https://www.5g-eve.eu/news/" target="_blank" class="icon_social_link" style="color: white;" >
+                  <span class="iconify icon_social" data-icon="mdi-public" data-inline="false" style="width: 27px;" ></span>
+
                 </a>
                 </div>
                 <div fxFlex="50%" fxLayout="column" fxLayout.sm="row" fxLayout.xs="row" >

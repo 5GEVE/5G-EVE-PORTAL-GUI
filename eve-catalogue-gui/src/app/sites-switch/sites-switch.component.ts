@@ -14,7 +14,7 @@ export class SitesSwitchComponent implements OnInit {
   ];
 
   cardsRow2 = [
-    { title: 'Deployment Requests', subtitle: '', cols: 1, rows: 1, path: '/vnf-service', icon: '../../assets/images/build_white.png', btn: '' }
+    { title: 'Deployment Requests', subtitle: '', cols: 1, rows: 1, path: '/vnf-service', icon: 'cloud_download', btn: '' }
   ];
 
   constructor(private router: Router) { }
