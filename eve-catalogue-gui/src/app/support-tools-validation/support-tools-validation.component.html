@@ -1,0 +1,32 @@
+<mat-toolbar  class="blvs-title">
+    <span style="margin-left: 15px">
+      <h1 class="mat-h1">Schemas Validation</h1></span>
+  </mat-toolbar>
+  
+  <div style="padding: 30px;">
+    <div fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="left left" style="color: black;">
+        <form [formGroup]="firstFormGroup">
+            <mat-form-field appearance="outline" class="data-full-width" style="width:20%;" >
+                <mat-select formControlName="tools" name="tools" placeholder="Choose Schema" (selectionChange)="onChangetools($event)">
+                    <mat-option value="vsb">
+                        Vertical Service Blueprint Schema
+                    </mat-option>
+                    <mat-option value="ctx">
+                        Context Blueprint Schema
+                    </mat-option>
+                    <mat-option value="exp">
+                        Experiment Blueprint Schema
+                    </mat-option>
+                    <mat-option value="tcb">
+                        Test Case Blueprint Schema
+                    </mat-option>
+                    <mat-option value="nsd">
+                        Network Service Descriptor Schema
+                    </mat-option>
+                </mat-select>
+                </mat-form-field>
+                <br>
+            <input #toolFile type="file" formControlName="uploadF"  required (change)="onUploadedTool(toolFile.files)"/>
+        </form>
+</div>
+</div>

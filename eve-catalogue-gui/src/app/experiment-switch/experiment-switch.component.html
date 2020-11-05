@@ -13,7 +13,7 @@
                     <div style="float: left;width: 85%;">{{card.subtitle}}</div>
                     <div style="float: right;width: 15%;margin-top: 3%;"><mat-icon fxHide.xs>{{card.btn}}</mat-icon></div>
                 </div>
-            </button> 
+            </button>
         </div>
    </div>
 
@@ -21,7 +21,7 @@
 
 
    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center" style="margin-top: 2%;" >
-    <div fxFlex="20%" fxFlex.sm="50%" fxFlex.xs="100%" class="experiment-switch-container box"   style="background-color:#f0a30a">
+    <div fxFlex="25%" fxFlex.sm="50%" fxFlex.xs="100%" class="experiment-switch-container box"   style="background-color:#f0a30a">
         <button class="card-actions" mat-button  style="height: 120px;padding: 35px;" (click)="goTo('/descriptors_exp');" >
             <div fxFlex="20%" fxHide.xs style="text-align: left;">
                 <img src="../../assets/images/content_copy_white.png" class="card-image">
@@ -29,12 +29,12 @@
             <div fxFlex="80%" style="text-align:right ;">
                 <b class="dash-elem">Experiment Descriptors</b>
                 <br/>
-                <div style="float: left;width: 85%;">Schedule</div> 
+                <div style="float: left;width: 85%;">Schedule</div>
                 <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>input</mat-icon></div>
             </div>
-        </button> 
+        </button>
     </div>
-    <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%" class="experiment-switch-container box" style="background-color:#f0a30a">
+    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%" class="experiment-switch-container box" style="background-color:#f0a30a">
         <button class="card-actions" mat-button style="height: 120px;padding: 35px;" (click)="goTo('./schedule_experiment');"  >
             <div fxFlex="20%" fxFlex.xs="100%" fxHide.xs style="text-align: left;"   >
                 <img  src="../../assets/images/layers_white.png" class="card-image">
@@ -42,35 +42,26 @@
             <div fxFlex="80%" style="text-align:right ;" >
                 <b class="dash-elem">New Experiment</b>
                 <br/>
-                <div style="float: left;width: 85%;">Onboard</div> 
+                <div style="float: left;width: 85%;">Onboard</div>
                 <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon>event_note</mat-icon></div>
             </div>
-        </button> 
+        </button>
     </div>
 </div>
 <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center" style="margin-top: 1%;">
-<div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="50%" class="experiment-switch-container box" style="background-color:#f0a30a">
-    <button class="card-actions" mat-button style="height: 120px;padding: 35px;" (click)="goTo('http://10.20.8.39:8080/Intent/IntentPage.jsp');">
+<div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%" class="experiment-switch-container box" style="background-color:#f0a30a">
+    <button class="card-actions" mat-button style="height: 120px;padding: 35px;" (click)="goTo(ibnBaseUrl);">
         <div fxFlex="30%" fxHide.xs style="text-align: left;"><img src="../../assets/images/lightbulb_outline_white.png" class="card-image"></div>
         <div fxFlex="70%" >
             <b>Intent Declaration</b>
             <br/>
-            <div style="float: left;width: 85%;"></div> 
+            <div style="float: left;width: 85%;"></div>
             <div style="float: right;width: 15%;margin-top: 2%;"><mat-icon></mat-icon></div>
         </div>
-    </button> 
+    </button>
+</div>
+<div fxFlex="25%">
+
 </div>
 </div>
-
-
-
-
-
-
-
-
-
 </div>
-
-
-  

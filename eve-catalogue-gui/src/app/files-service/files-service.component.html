@@ -1,21 +1,18 @@
-
-<div class="contentBlock" style="background: transparent; padding: 30px; padding-bottom: 10%;">
-    <!-- Action buttons -->
+<div style="background: #b3b3b3; padding: 30px; padding-bottom: 10%;">
     <section class="mat-typography title-group">
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-            <mat-button-toggle value="bold"  (click)="goTo('add')"  *ngIf="isVnfDev()">
+            <mat-button-toggle value="bold"  (click)="goTo('add')"  *ngIf="isVnfDev()" style="background-color: #b3b3b3">
                 <mat-icon aria-hidden="false" aria-label="">cloud_upload</mat-icon> Upload VNF
             </mat-button-toggle>
-            <mat-button-toggle value="bold"   (click)="goTo('dp_requests')">
+            <mat-button-toggle value="bold"   (click)="goTo('dp_requests')" style="background-color: #b3b3b3">
                 <mat-icon aria-hidden="false" >cloud_queue</mat-icon> Deployment Requests
             </mat-button-toggle>
-            <mat-button-toggle value="bold"  (click)="goTo('list')"  *ngIf="isVnfDev()">
+            <mat-button-toggle value="bold"  (click)="goTo('list')"  *ngIf="isVnfDev()" style="background-color: #b3b3b3">
                 <mat-icon aria-hidden="false" aria-label="">home</mat-icon> My VNFs
             </mat-button-toggle>
-            <mat-button-toggle value="bold"   *ngIf="getStatus() != 'add'" (click)="goTo(getStatus())">
+            <mat-button-toggle value="bold"   *ngIf="getStatus() != 'add'" (click)="goTo(getStatus())" style="background-color: #b3b3b3">
                 <mat-icon aria-hidden="false" aria-label="">refresh</mat-icon> Update List
             </mat-button-toggle>
-
         </mat-button-toggle-group>
         <input type="file" id="fileUpload" name="fileUpload" multiple="multiple" style="display:none;" />
 
@@ -26,20 +23,20 @@
 
     <!-- Content -->
     <!-- VNFs list -->
-    <table mat-table [dataSource]="fetchedFiles" class="mat-elevation-z8" *ngIf="getStatus() == 'list'&&!fetching">
+    <table mat-table [dataSource]="fetchedFiles" *ngIf="getStatus() == 'list'&&!fetching" style="background-color: #b3b3b3;">
 
         <ng-container matColumnDef="filename">
-            <th mat-header-cell *matHeaderCellDef> Filename </th>
-            <td mat-cell *matCellDef="let element"> {{element.filename}} </td>
+            <th mat-header-cell *matHeaderCellDef fxShow.xs="false"> Filename </th>
+            <td mat-cell *matCellDef="let element" fxShow.xs="false"> {{element.filename}} </td>
         </ng-container>
 
         <ng-container matColumnDef="owner">
-            <th mat-header-cell *matHeaderCellDef> Owner </th>
-            <td mat-cell *matCellDef="let element"> {{element.creator}} </td>
+            <th mat-header-cell *matHeaderCellDef fxShow.xs="false"> Owner </th>
+            <td mat-cell *matCellDef="let element" fxShow.xs="false"> {{element.creator}} </td>
         </ng-container>
 
         <ng-container matColumnDef="updated_at">
-            <th mat-header-cell *matHeaderCellDef> Last Updated </th>
+            <th mat-header-cell *matHeaderCellDef > Last Updated </th>
             <td mat-cell *matCellDef="let element"> {{element.updated_at}} </td>
         </ng-container>
 
@@ -72,16 +69,16 @@
     </table>
 
     <!-- Deployment requests -->
-    <table mat-table [dataSource]="fetchedRequests" class="mat-elevation-z8" *ngIf="getStatus() == 'dp_requests'&&!fetching">
+    <table mat-table [dataSource]="fetchedRequests"  *ngIf="getStatus() == 'dp_requests'&&!fetching"  style="background-color: #b3b3b3;">
 
         <ng-container matColumnDef="request_id">
-            <th mat-header-cell *matHeaderCellDef> Request ID </th>
-            <td mat-cell *matCellDef="let element" > {{element.request_id}} </td>
+            <th mat-header-cell *matHeaderCellDef fxShow.xs="false" fxShow.sm="false"> Request ID </th>
+            <td mat-cell *matCellDef="let element" fxShow.xs="false" fxShow.sm="false"> {{element.request_id}} </td>
         </ng-container>
 
         <ng-container matColumnDef="filename" *ngIf="!isSiteManager()">
-            <th mat-header-cell *matHeaderCellDef class="dp-requests-filename"> Filename </th>
-            <td mat-cell *matCellDef="let element"> {{element.filename}} </td>
+            <th mat-header-cell *matHeaderCellDef class="dp-requests-filename" fxShow.xs="false"> Filename </th>
+            <td mat-cell *matCellDef="let element" fxShow.xs="false"> {{element.filename}} </td>
         </ng-container>
 
         <ng-container matColumnDef="owner" *ngIf="!isVnfDev()">
@@ -90,8 +87,8 @@
         </ng-container>
 
         <ng-container matColumnDef="site">
-            <th mat-header-cell *matHeaderCellDef class="dp-requests-site"> Associated Site </th>
-            <td mat-cell *matCellDef="let element"> {{element.site}} </td>
+            <th mat-header-cell *matHeaderCellDef class="dp-requests-site" fxShow.xs="false"> Associated Site </th>
+            <td mat-cell *matCellDef="let element" fxShow.xs="false"> {{element.site}} </td>
         </ng-container>
 
         <ng-container matColumnDef="status">
@@ -106,18 +103,18 @@
 
                 <mat-button-toggle title="Change status" value="bold" *ngIf="isSiteManager()"
                     (click)='fileStatusDialog(element.request_id, element.filename, element.site, "edit")'
-                >
+                    style="background-color: #b3b3b3;">
                     <mat-icon aria-hidden="false" aria-label="Example edit icon">reply</mat-icon>
                 </mat-button-toggle>
 
-                <mat-button-toggle title="Download" value="bold" (click)='downloadAssociatedDialog(element.filename, element.request_id)'>
-                    <mat-icon aria-hidden="false" aria-label="Example edit icon">cloud_download</mat-icon>
+                <mat-button-toggle title="Download" value="bold" (click)='downloadAssociatedDialog(element.filename, element.request_id)'
+                style="background-color: #b3b3b3;">
+                    <mat-icon aria-hidden="false" aria-label="Example edit icon" >cloud_download</mat-icon>
                 </mat-button-toggle>
 
-                <mat-button-toggle title="Delete" value="italic"
-                    (click)='deleteRequestDialog(element.request_id, element.filename, element.site)'
-                >
-                    <mat-icon aria-hidden="false" aria-label="Delete">delete_forever</mat-icon>
+                <mat-button-toggle title="Delete" value="italic" style="background-color: #b3b3b3;"
+                    (click)='deleteRequestDialog(element.request_id, element.filename, element.site)'>
+                    <mat-icon aria-hidden="false" aria-label="Delete" >delete_forever</mat-icon>
                 </mat-button-toggle>
 
             </mat-button-toggle-group>

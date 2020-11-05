@@ -96,7 +96,9 @@ import { FilesServiceComponent } from './files-service/files-service.component';
 import { FileServiceDialogComponent } from './files-service/file-service-dialog/file-service-dialog.component';
 import { FileUploadDialogComponent } from './files-service/file-upload-dialog/file-upload-dialog.component';
 import { FileDialogComponent } from './files-service/file-dialog/file-dialog.component';
-import { FileDpRequestDialogComponent } from './files-service/file-dp-request-dialog/file-dp-request-dialog.component' 
+import { FileDpRequestDialogComponent } from './files-service/file-dp-request-dialog/file-dp-request-dialog.component';
+import { SupportToolsValidationComponent } from './support-tools-validation/support-tools-validation.component';
+import { DeploymentRequestComponent } from './deployment-request/deployment-request.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -158,7 +160,9 @@ import { FileDpRequestDialogComponent } from './files-service/file-dp-request-di
     FileServiceDialogComponent,
     FileUploadDialogComponent,
     FileDialogComponent,
-    FileDpRequestDialogComponent
+    FileDpRequestDialogComponent,
+    SupportToolsValidationComponent,
+    DeploymentRequestComponent
 
   ],
   imports: [
@@ -220,7 +224,7 @@ entryComponents: [
   FileServiceDialogComponent,
   FileUploadDialogComponent,
   FileDialogComponent,
-  FileDpRequestDialogComponent  
+  FileDpRequestDialogComponent
 ],
 
 providers: [

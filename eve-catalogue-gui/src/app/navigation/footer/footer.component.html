@@ -3,7 +3,7 @@
         <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutAlign="center center" >
         <div fxFlex="45%" style="width: 97%;">
             <div class="font-size-sm font-size-xs"  fxLayout="column" fxLayoutAlign="left left" *ngFor="let info of footerInfo">
-                <span style="text-align: left;"><b><a href="{{info.link}}" style="font-size: 14px; font-weight: bold; margin: 5px 0 5px 0;" class="icon_social_link">{{info.title}}</a></b> {{info.context}}</span>
+                <span style="text-align: left;"><b><a href="{{info.link}}" style="font-size: 14px; font-weight: bold; margin: 5px 0 5px 0; " class="icon_social_link">{{info.title}}</a></b> | {{info.context}}</span>
             </div>
          </div>
          <div fxFlex="10%" fxFlex.sm="100%" >

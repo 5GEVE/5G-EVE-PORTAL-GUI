@@ -4,15 +4,17 @@
     height: 80%;
 
   }
-  
+
+.material-icons { font-size: 40px; }
+
 .fill-remaining-space {
-    /* This fills the remaining space, by using flexbox. 
+    /* This fills the remaining space, by using flexbox.
         Every toolbar row uses a flexbox row layout. */
     flex: 1 1 auto;
 }
 
 .grid-card {
-    width: 100%; 
+    width: 100%;
     height: 60%;
     color: white;
     font-weight: bold;
@@ -42,8 +44,8 @@
 }
 
 .card-image {
-    height: auto; 
-    width: auto; 
-    max-width: 40px; 
+    height: auto;
+    width: auto;
+    max-width: 40px;
     max-height: 40px;
 }

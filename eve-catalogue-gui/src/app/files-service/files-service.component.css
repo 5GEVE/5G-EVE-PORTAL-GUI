@@ -1,11 +1,7 @@
 table {
     width: 100% !important;
   }
-  .my-form{
-    min-width: 150px;
-    max-width: 500px;
-    margin: auto;
-  }
+
 
   .full-width {
     width: 80%;
@@ -18,13 +14,6 @@ table {
     padding-left: 40px;
   }
 
-  tr.element-row:not(.example-expanded-row):hover {
-    background: #bdbdbd;
-  }
-
-  tr.element-row:not(.example-expanded-row):active {
-    background: #efefef;
-  }
 
   .contentBlock{
     width: 80%;
@@ -38,11 +27,8 @@ table {
   }
 
   .title-group{
-    border-width: 1px;
-    border-style: solid;
     margin-top: 10px;
     margin-bottom: 10px;
-    border-color: #737373;
   }
 
   .mat-card-content{

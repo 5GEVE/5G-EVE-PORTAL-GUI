@@ -127,23 +127,23 @@ export class SupportToolsSchemasComponent implements OnInit {
     }else if(id=='ctx'){
       this.blueprintsEcService.schemaCtxBlueprint()
       .subscribe(res => {
-      console.log("ressss",res)
+      //console.log("ressss",res)
       });       
     }else if(id=='exp'){
       this.blueprintsExpService.schemaExpBlueprint()
       .subscribe(res => {
-      console.log("ressss",res)
+      //console.log("ressss",res)
       });       
     }else if(id=='tc'){
       this.blueprintsTcService.schemaTcBlueprint()
       .subscribe(res => {
-      console.log("ressss",res)
+      //console.log("ressss",res)
       });       
     }
     else if(id=='nsd'){
       this.nsdsService.schemaNsDescriptor()
       .subscribe(res => {
-      console.log("ressss",res)
+      //console.log("ressss",res)
       });       
     }
   
