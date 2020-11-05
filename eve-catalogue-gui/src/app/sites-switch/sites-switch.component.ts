@@ -8,9 +8,12 @@ import { Router } from '@angular/router';
 })
 export class SitesSwitchComponent implements OnInit {
 
-  cards = [
+  cardsRow1 = [
     { title: 'View Tickets', subtitle: '', cols: 1, rows: 1, path: '/tickets', icon: '../../assets/images/format_list_bulleted_white.png', btn: '' },
     { title: 'Manage Experiments', subtitle: '', cols: 1, rows: 1, path: '/experiments', icon: '../../assets/images/build_white.png', btn: '' },
+  ];
+
+  cardsRow2 = [
     { title: 'Deployment Requests', subtitle: '', cols: 1, rows: 1, path: '/vnf-service', icon: '../../assets/images/build_white.png', btn: '' }
   ];
 

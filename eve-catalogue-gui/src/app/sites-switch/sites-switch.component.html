@@ -1,7 +1,7 @@
 <app-experiment-sub-toolbar></app-experiment-sub-toolbar>
 <div class="container" >
-    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center center" style="margin-top: 2%">
-        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="80%" class="experiment-switch-container box" style="background-color:#0277BD;padding: 3%;"  *ngFor="let card of cards" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center" style="margin-top: 2%">
+        <div *ngFor="let card of cardsRow1" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%" class="experiment-switch-container box" style="background-color:#0277BD;padding: 3%;"  fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center">
             <button class="card-actions" mat-button  style="height: 100%;" (click)="goTo(card.path);">
                 <div fxFlex="20%" fxFlex.sm="10%" fxFlex.xs="20%" style="text-align: left;max-width: 40%;">
                     <img src={{card.icon}} class="card-image" >
@@ -9,10 +9,25 @@
                 <div fxFlex="80%" fxFlex.sm="90%" fxFlex.xs="80%" style="text-align: right;">
                     <b >{{card.title}}</b>
                 </div>
-            </button> 
+            </button>
         </div>
    </div>
+
+   <div fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center" style="margin-top: 1%">
+    <div *ngFor="let card of cardsRow2"  fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="50%" class="experiment-switch-container box" style="background-color:#0277BD;padding: 3%;"  fxLayout.xs="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center center">
+        <button class="card-actions" mat-button  style="height: 100%;" (click)="goTo(card.path);">
+            <div fxFlex="20%" fxFlex.sm="10%" fxFlex.xs="20%" style="text-align: left;max-width: 40%;">
+                <img src={{card.icon}} class="card-image" >
+            </div>
+            <div fxFlex="80%" fxFlex.sm="90%" fxFlex.xs="80%" style="text-align: right;">
+                <b >{{card.title}}</b>
+            </div>
+        </button>
+    </div>
+    <div fxFlex="25%">
+
+    </div>
+</div>
 </div>
 
 
-  
