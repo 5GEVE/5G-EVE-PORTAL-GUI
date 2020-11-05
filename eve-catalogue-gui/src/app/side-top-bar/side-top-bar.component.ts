@@ -14,11 +14,11 @@ export class SideTopBarComponent implements OnInit {
     {"title":"5G EVE Portal",
     "link":"https://portal.5g-eve.eu",
     "context":"Portal to design, manage and monitor experiments over the 5G EVE end-to-end facility infrastructures."},
-    {"title":"5G EVE Wiki",
-    "link":"http://wiki.5g-eve.eu",
+    {"title":"5G EVE Documentation",
+    "link":"http://portal.5g-eve.eu/#/documentation",
     "context":"Documentation for experimenters and developers operating on 5G EVE."},
     {"title":"Report Issues",
-    "link":"https://portal.5g-eve.eu/bugzilla",
+    "link":"https://portal.5g-eve.eu/#/tickets",
     "context":"Issues tracker for 5G EVE experimenters."}
   ];
 
