@@ -169,16 +169,7 @@ export class ExperimentsDetailsComponent implements OnInit {
       }
       this.tableData.push({key: "Sap Info", value: values});
       this.executions = this.experiment.executions;
-      var newExecutions=[];
-      
-      for(var exe of this.executions ){
-        if(exe['state']!='FAILED'){
-          newExecutions.push(exe)
-        }
-      
-      }
-      this.executions=[];
-      this.executions=newExecutions;
+
       this.dataSource = new ExperimentsDetailsDataSource(this.tableData);
       this.dataSource.sort = this.sort;
       //this.dataSource.paginator = this.paginator;

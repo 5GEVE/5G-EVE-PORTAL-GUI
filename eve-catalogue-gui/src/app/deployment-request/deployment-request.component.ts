@@ -12,7 +12,11 @@ export class DeploymentRequestComponent implements OnInit {
   constructor(private router: Router
     ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (localStorage.getItem('logged') != "true") {
+      this.router.navigate(['/login']);
+    }
+  }
 
 }
 

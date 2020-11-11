@@ -7,6 +7,7 @@ import { BlueprintsExpService } from '../blueprints-exp.service';
 import { BlueprintsTcService } from '../blueprints-tc.service';
 import { NsdsService } from '../nsds.service';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 export interface PeriodicElement {
   name: string;
@@ -30,13 +31,17 @@ export class SupportToolsSchemasComponent implements OnInit {
   selectedIndex = 0;
   displayedColumns = ['name','actions'];
   dataSource = ELEMENT_DATA;
-  constructor(private blueprintsVsService: BlueprintsVsService,
+  constructor(private router: Router,
+    private blueprintsVsService: BlueprintsVsService,
     private blueprintsEcService: BlueprintsEcService,
     private blueprintsExpService: BlueprintsExpService,
     private blueprintsTcService: BlueprintsTcService,
     private nsdsService: NsdsService) { }
 
   ngOnInit() {
+    if (localStorage.getItem('logged') != "true") {
+      this.router.navigate(['/login']);
+    }
   }
 
 
@@ -62,7 +67,7 @@ export class SupportToolsSchemasComponent implements OnInit {
           fileName: 'vsb.json',
           text: JSON.stringify(res)
         });
-      }); 
+      });
   }else if(id=='ctx'){
     this.blueprintsEcService.schemaCtxBlueprint()
     .subscribe(res => {
@@ -70,23 +75,23 @@ export class SupportToolsSchemasComponent implements OnInit {
         fileName: 'ctx.json',
         text: JSON.stringify(res)
       });
-    });       
+    });
   }else if(id=='exp'){
     this.blueprintsExpService.schemaExpBlueprint()
     .subscribe(res => {
       this.dyanmicDownloadByHtmlTag({
         fileName: 'exp.json',
         text: JSON.stringify(res)
-      });    
-    });       
+      });
+    });
   }else if(id=='tcb'){
     this.blueprintsTcService.schemaTcBlueprint()
     .subscribe(res => {
       this.dyanmicDownloadByHtmlTag({
         fileName: 'tcb.json',
         text: JSON.stringify(res)
-      });    
-    });       
+      });
+    });
   }
   else if(id=='nsd'){
     this.nsdsService.schemaNsDescriptor()
@@ -94,8 +99,8 @@ export class SupportToolsSchemasComponent implements OnInit {
       this.dyanmicDownloadByHtmlTag({
         fileName: 'nsd.json',
         text: JSON.stringify(res)
-      });     
-    });       
+      });
+    });
   }
   }
 
@@ -123,29 +128,29 @@ export class SupportToolsSchemasComponent implements OnInit {
       this.blueprintsVsService.schemaVsBlueprint()
       .subscribe(res => {
       console.log("ressss",res)
-      });  
+      });
     }else if(id=='ctx'){
       this.blueprintsEcService.schemaCtxBlueprint()
       .subscribe(res => {
       //console.log("ressss",res)
-      });       
+      });
     }else if(id=='exp'){
       this.blueprintsExpService.schemaExpBlueprint()
       .subscribe(res => {
       //console.log("ressss",res)
-      });       
+      });
     }else if(id=='tc'){
       this.blueprintsTcService.schemaTcBlueprint()
       .subscribe(res => {
       //console.log("ressss",res)
-      });       
+      });
     }
     else if(id=='nsd'){
       this.nsdsService.schemaNsDescriptor()
       .subscribe(res => {
       //console.log("ressss",res)
-      });       
+      });
     }
-  
+
   }
 }
