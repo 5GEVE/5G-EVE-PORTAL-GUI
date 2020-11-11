@@ -54,48 +54,15 @@ export class ExperimentsComponent implements OnInit {
   sites: string[] = [
     "ITALY_TURIN",
     "SPAIN_5TONIC",
-    "FRANCE_PARIS",
-    "FRANCE_NICE",
+    "FRANCE_CHATILLON",
+    "FRANCE_SACLAY",
     "FRANCE_RENNES",
+    "FRANCE_SOPHIA_ANTIPOLIS",
+    "FRANCE_LANNION",
     "GREECE_ATHENS"
   ];
 
-  tableData: ExperimentInfo[] = [
-    /*{
-      experimentId: 'experimentId',
-      tenantId: 'tenantId',
-      status: 'ACCEPTED',
-      experimentDescriptorId: '12',
-      lcTicketId: '23',
-      openTicketIds: ['16'],
-      targetSites: ['ITALY_TURIN'],
-      timeslot: {
-          startTime: 'today',
-          stopTime: 'tomorrow'
-      },
-      nfvNsInstanceId: '47',
-      executionId: '56',
-      executionStatus: 'INIT',
-      errorMessage: '!!!!!!!'
-    },
-    {
-      experimentId: 'experimentId_2',
-      tenantId: 'tenantId_2',
-      status: 'INSTANTIATED',
-      experimentDescriptorId: '13',
-      lcTicketId: '24',
-      openTicketIds: ['17'],
-      targetSites: ['ITALY_TURIN'],
-      timeslot: {
-          startTime: 'today',
-          stopTime: 'tomorrow'
-      },
-      nfvNsInstanceId: '48',
-      executionId: '57',
-      executionStatus: 'INIT',
-      errorMessage: '!!!!!!!'
-    }*/
-  ];
+  tableData: ExperimentInfo[] = [];
 
   testCaseBlueprints: TcBlueprintInfo[] = [];
   testCaseDescriptors: TcDescriptorInfo[] = [];

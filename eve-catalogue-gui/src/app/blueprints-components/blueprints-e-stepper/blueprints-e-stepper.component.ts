@@ -76,11 +76,12 @@ export class BlueprintsEStepperComponent implements OnInit {
     {value: 'ITALY_TURIN', viewValue: 'Turin, Italy'},
     {value: 'GREECE_ATHENS', viewValue: 'Athens, Greece'},
     {value: 'SPAIN_5TONIC', viewValue: 'Madrid, Spain'},
-    {value: 'FRANCE_PARIS', viewValue: 'Paris, France'},
+    {value: 'FRANCE_CHATILLON', viewValue: 'Chatillon, France'},
     {value: 'FRANCE_RENNES', viewValue: 'Rennes, France'},
-    {value: 'FRANCE_NICE', viewValue: 'Nice, France'}
+    {value: 'FRANCE_SOPHIA_ANTIPOLIS', viewValue: 'Sophia Antipolis, France'},
+    {value: 'FRANCE_LANNION', viewValue: 'Lannion, France'},
+    {value: 'FRANCE_SACLAY', viewValue: 'Saclay, France'}
   ];
-
 
   deployTypes: String[] = [
     "ON_DEMAND",
