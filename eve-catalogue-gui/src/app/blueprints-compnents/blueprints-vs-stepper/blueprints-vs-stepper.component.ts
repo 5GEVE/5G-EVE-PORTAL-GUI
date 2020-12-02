@@ -91,6 +91,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
         this.translationParams.push(this.vsbObj['parameters'][i]['parameterId']);
       }
     }
+    
     this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
     .subscribe(res => {
       if(res===undefined){
@@ -99,12 +100,23 @@ export class BlueprintsVsStepperComponent implements OnInit {
         (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;
 
       }
+      /*
+      for(var elem in this.vsbObj){
+        if(elem=="interSite"){
+          console.log("composite");
+        }
+        else{
+          (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'none';
 
+        }
+      }
+      */
     });
 
   });
  }
 
+       
 
   }
 
