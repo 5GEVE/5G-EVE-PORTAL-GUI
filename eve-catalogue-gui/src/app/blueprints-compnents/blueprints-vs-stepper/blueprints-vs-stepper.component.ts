@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
@@ -18,6 +19,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
   vsbObj: Object;
   validator:boolean;
   dfs: String[] = [];
+  showSteps:boolean;
 
   instLevels: String[] = [];
 
@@ -38,6 +40,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showSteps=true;
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
     });
@@ -76,7 +79,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
       });
       promises.push(vsbPromise);
      }else{
-      this.authService.log(`the file is not json`, 'FAILED', false);
+      this.authService.log('the file is not json', 'FAILED', false);
       (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
 
     }
@@ -91,7 +94,30 @@ export class BlueprintsVsStepperComponent implements OnInit {
         this.translationParams.push(this.vsbObj['parameters'][i]['parameterId']);
       }
     }
+      
+    if(this.vsbObj.hasOwnProperty('interSite')){
+      (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'none';
+      (<HTMLInputElement> document.getElementById("submitButtonFirst")).style.display = 'inline';
+      this.showSteps=false;
+      }
+      else{
+        
+        (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'inline';
+        (<HTMLInputElement> document.getElementById("submitButtonFirst")).style.display = 'none';
+        this.showSteps=true;
+        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+        .subscribe(res => {
+          if(res===undefined){
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
+          }else{
+            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;
     
+          }
+    
+        });
+      }
+      
+  /*
     this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
     .subscribe(res => {
       if(res===undefined){
@@ -100,18 +126,9 @@ export class BlueprintsVsStepperComponent implements OnInit {
         (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;
 
       }
-      /*
-      for(var elem in this.vsbObj){
-        if(elem=="interSite"){
-          console.log("composite");
-        }
-        else{
-          (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'none';
 
-        }
-      }
-      */
     });
+    */
 
   });
  }
@@ -124,7 +141,8 @@ export class BlueprintsVsStepperComponent implements OnInit {
     //console.log(event);
     //this.uploadedNsdName = event.target.files[0].name;
 
-    let promises = [];
+
+let promises = [];
 
     for (let nsd of nsds) {
       if(nsd.type=='application/json' && nsd.name.includes('json')){
@@ -136,7 +154,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
         });
         promises.push(nsdPromise);
       }else{
-        this.authService.log(`the file is not json`, 'FAILED', false);
+        this.authService.log('the file is not json', 'FAILED', false);
         (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;
 
       }
@@ -243,7 +261,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
       });
       promises.push(blueprintPromise);
 
-      for (let nsd of nsds) {
+for (let nsd of nsds) {
           let nsdPromise = new Promise(resolve => {
               let reader = new FileReader();
               reader.readAsText(nsd);
@@ -305,4 +323,3 @@ export class BlueprintsVsStepperComponent implements OnInit {
   }
   }
 }
-

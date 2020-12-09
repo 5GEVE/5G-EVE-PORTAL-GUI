@@ -33,6 +33,21 @@
     <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup" class="data-form" >
             <ng-template matStepLabel>VSB Selection</ng-template>
+     
+            <mat-form-field class="data-full-width">
+                <input type="text"
+                       placeholder="Select Blueprint"
+                       aria-label="Number"
+                       matInput
+                       [formControl]="myControl"
+                       [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            <!--
             <mat-form-field appearance="outline" class="data-full-width">
                 <mat-label>Site</mat-label>
                 <mat-select formControlName="selectSiteCtrl" name="site" (selectionChange)="onSiteSelected($event);">
@@ -50,6 +65,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+-->
             <div class="margin-top"></div>
             <p> Blueprint Name: {{expBlueprintName}}</p>
             <p> Selected Site: {{selectedSite}}</p>

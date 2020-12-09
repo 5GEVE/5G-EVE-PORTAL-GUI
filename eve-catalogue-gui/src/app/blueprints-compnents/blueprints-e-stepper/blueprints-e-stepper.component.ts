@@ -15,8 +15,9 @@ import { FormulaCheckInfo} from '../../formula-check-info';
 import { BlueprintsEComponent} from '../blueprints-e/blueprints-e.component';
 import { NsdsService} from '../../nsds.service';
 import { AuthService} from '../../auth.service';
-
-
+import {FormControl} from '@angular/forms';
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
 
 export interface Site {
   value: string;
@@ -53,7 +54,6 @@ export interface ActiveTcb {
 })
 
 export class BlueprintsEStepperComponent implements OnInit {
-
 
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
@@ -119,9 +119,9 @@ export class BlueprintsEStepperComponent implements OnInit {
   nsdObj: Object;
 
   dfs: String[] = [];
-
+  allVsbsElem:any;
   instLevels: String[] = [];
-
+  allVsb:any;
   translationParams: String[] = [];
 
   vsbs: Blueprint[] = [];
@@ -153,7 +153,12 @@ export class BlueprintsEStepperComponent implements OnInit {
     ) {
   }
 
+  myControl = new FormControl();
+  filteredOptions: Observable<any>;
+
+  vsbName:any;
   ngOnInit() {
+
     this.getVsBlueprints();
     this.getCtxBlueprints();
     this.getTcBlueprints();
@@ -192,7 +197,16 @@ export class BlueprintsEStepperComponent implements OnInit {
 
   }
 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+   // console.log("ssssssssssssss",this.vsbs,filterValue)
 
+    return this.vsbName.filter(option =>
+      option.toLowerCase().includes(filterValue)
+    );
+    
+  }
+  
   validateFormula(event: any, index){
     this.invalidFormula[index] = false;
     // console.log(value.target.value );
@@ -441,7 +455,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   }
 
   onSelectedTcbs(event: any, tcb: any) {
-    console.log(tcb);
+    //console.log(tcb);
     this.selectedTcbs = [];
     for (let i = 0; i < this.activeTestsCases.length; i++){
       if(this.activeTestsCases[i].value === tcb){
@@ -454,18 +468,26 @@ export class BlueprintsEStepperComponent implements OnInit {
       if (this.activeTestsCases[i].enabled === true){
         this.selectedTcbs.push(this.activeTestsCases[i].value);
       }
-      console.log(this.selectedTcbs);
+     // console.log(this.selectedTcbs);
     }
 
   }
 
   getVsBlueprints() {
+    this.vsbName=[];
     this.blueprintsVsService.getVsBlueprints().subscribe((vsBlueprintInfos: VsBlueprintInfo[]) =>
       {
         for (var i = 0; i < vsBlueprintInfos.length; i++) {
           this.vsbs.push({value: vsBlueprintInfos[i]['vsBlueprintId'], viewValue: vsBlueprintInfos[i]['vsBlueprint']['description'], sites: vsBlueprintInfos[i]['vsBlueprint']['compatibleSites'], obj: vsBlueprintInfos[i]['vsBlueprint']});
+          this.vsbName.push(vsBlueprintInfos[i]['vsBlueprint']['description']);
         }
+        
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(""),
+        map(value => this._filter(value))
+      );
       });
+
   }
 
   filterVsbsInSite(){
