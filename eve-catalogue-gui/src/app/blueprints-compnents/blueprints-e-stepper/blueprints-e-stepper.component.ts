@@ -72,7 +72,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   metricNames: string[] = [];
   kpiNames: string[] = [];
   selectedTcbs: string[] = [];
-
+  interSite:boolean;
   sites: Site[] = [
     {value: 'ITALY_TURIN', viewValue: 'Turin, Italy'},
     {value: 'GREECE_ATHENS', viewValue: 'Athens, Greece'},
@@ -123,7 +123,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   instLevels: String[] = [];
   allVsb:any;
   translationParams: String[] = [];
-
+  bluePrintsAssosiate:any;
   vsbs: Blueprint[] = [];
   ctxbs: Blueprint[] = [];
   tcbs: Blueprint[] = [];
@@ -158,7 +158,8 @@ export class BlueprintsEStepperComponent implements OnInit {
 
   vsbName:any;
   ngOnInit() {
-
+    this.interSite=false;
+    this.getAllVsBlueprints();
     this.getVsBlueprints();
     this.getCtxBlueprints();
     this.getTcBlueprints();
@@ -197,13 +198,12 @@ export class BlueprintsEStepperComponent implements OnInit {
 
   }
 
-  private _filter(value: string): string[] {
+  private _filter(value: string): Blueprint[] {
     const filterValue = value.toLowerCase();
-   // console.log("ssssssssssssss",this.vsbs,filterValue)
-
-    return this.vsbName.filter(option =>
-      option.toLowerCase().includes(filterValue)
+    return this.vsbs.filter(option =>
+      option.viewValue.toLowerCase().includes(filterValue)
     );
+    
     
   }
   
@@ -247,7 +247,8 @@ export class BlueprintsEStepperComponent implements OnInit {
       metricId: '',
       metricGraphType: '',
       name: '',
-      unit: ''
+      unit: '',
+      metricSelectSite:''
     });
   }
 
@@ -327,9 +328,19 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.selectedSite = event.value;
   }
 
-  onVsbSelected(event: any) {
-    //console.log(event);
-    this.selectedVsb = event.value;
+  onVsbSelected(event: any,value) {
+    this.selectedVsb = value;
+    this.blueprintsVsService.getVsBlueprint(this.selectedVsb).subscribe((vsBlueprintInfos) =>
+    {
+      if(vsBlueprintInfos['vsBlueprint'].hasOwnProperty('interSite') && vsBlueprintInfos['vsBlueprint']['interSite']==true){
+        this.interSite=true;
+
+    }else{
+      this.interSite=false;
+
+    }
+      this.bluePrintsAssosiate=vsBlueprintInfos['vsBlueprint']['atomicComponents'];
+    });
 
     for (var i = 0; i < this.vsbs.length; i ++) {
       if (this.vsbs[i]['obj']['blueprintId'] == event.value) {
@@ -339,11 +350,12 @@ export class BlueprintsEStepperComponent implements OnInit {
             this.items = this.fourthFormGroup.get('items') as FormArray;
             this.items.push(this.createItem());
           }
-          //console.log(this.translationParams);
         }
       }
     }
   }
+
+
   verifyForm(step: number){
     if(step == 0){
       if(this.zeroFormGroup.valid){
@@ -370,7 +382,6 @@ export class BlueprintsEStepperComponent implements OnInit {
           }
 
         }
-        //console.log(this.translationParams);
       }
     }
   }
@@ -487,9 +498,13 @@ export class BlueprintsEStepperComponent implements OnInit {
         map(value => this._filter(value))
       );
       });
-
+      console.log("this.vsbs",this.vsbs)
   }
 
+  getAllVsBlueprints() {
+    return this.vsbs;
+
+  }
   filterVsbsInSite(){
     return this.vsbs.filter(x => x.sites.indexOf(this.selectedSite) >= 0);
   }
