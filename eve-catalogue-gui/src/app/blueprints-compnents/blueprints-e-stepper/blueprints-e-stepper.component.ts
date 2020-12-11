@@ -73,6 +73,8 @@ export class BlueprintsEStepperComponent implements OnInit {
   kpiNames: string[] = [];
   selectedTcbs: string[] = [];
   interSite:boolean;
+  showSiteNotinterMode:boolean;
+  showSiteinterMode:boolean;
   sites: Site[] = [
     {value: 'ITALY_TURIN', viewValue: 'Turin, Italy'},
     {value: 'GREECE_ATHENS', viewValue: 'Athens, Greece'},
@@ -124,10 +126,11 @@ export class BlueprintsEStepperComponent implements OnInit {
   allVsb:any;
   translationParams: String[] = [];
   bluePrintsAssosiate:any;
+  compatibleSites:any;
   vsbs: Blueprint[] = [];
   ctxbs: Blueprint[] = [];
   tcbs: Blueprint[] = [];
-
+  selectedSiteArr=[];
   items: FormArray;
   metric_items: FormArray;
   kpi_items: FormArray;
@@ -159,6 +162,8 @@ export class BlueprintsEStepperComponent implements OnInit {
   vsbName:any;
   ngOnInit() {
     this.interSite=false;
+    this.showSiteNotinterMode=false;
+    this.showSiteinterMode=false;
     this.getAllVsBlueprints();
     this.getVsBlueprints();
     this.getCtxBlueprints();
@@ -172,7 +177,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       deploymentTypeCtrl: ['', Validators.required]
     });
     this.firstFormGroup = this._formBuilder.group({
-      selectSiteCtrl: ['', Validators.required],
+      //selectSiteCtrl: ['', Validators.required],
       selectVsbCtrl: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
@@ -266,6 +271,7 @@ export class BlueprintsEStepperComponent implements OnInit {
     });
   }
 
+
   goToStepIndex(index: number) {
     this.stepper.selectedIndex = index;
   }
@@ -323,23 +329,31 @@ export class BlueprintsEStepperComponent implements OnInit {
     }
   }
 
-  onSiteSelected(event: any) {
-    //console.log(event);
+  onSiteSelected(event: any,associatedVsbId) {
+
+
     this.selectedSite = event.value;
+    this.selectedSiteArr[associatedVsbId]=this.selectedSite;
+
+    console.log(this.selectedSiteArr)
   }
 
   onVsbSelected(event: any,value) {
+
     this.selectedVsb = value;
     this.blueprintsVsService.getVsBlueprint(this.selectedVsb).subscribe((vsBlueprintInfos) =>
     {
       if(vsBlueprintInfos['vsBlueprint'].hasOwnProperty('interSite') && vsBlueprintInfos['vsBlueprint']['interSite']==true){
         this.interSite=true;
-
-    }else{
-      this.interSite=false;
-
+        this.showSiteinterMode=true;
+        this.showSiteNotinterMode=false;
+        this.bluePrintsAssosiate=vsBlueprintInfos['vsBlueprint']['atomicComponents'];
     }
-      this.bluePrintsAssosiate=vsBlueprintInfos['vsBlueprint']['atomicComponents'];
+    else{
+      this.showSiteNotinterMode=true;
+      this.interSite=false;
+      this.showSiteinterMode=false;
+    }
     });
 
     for (var i = 0; i < this.vsbs.length; i ++) {
@@ -415,6 +429,7 @@ export class BlueprintsEStepperComponent implements OnInit {
         this.fourthFormGroup.get('nsdVersionCtrl').setValue(this.nsdObj['version']);
 
         this.dfs = this.nsdObj['nsDf'];
+        /*
         this.nsdsService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
           if(res===undefined){
@@ -424,6 +439,7 @@ export class BlueprintsEStepperComponent implements OnInit {
 
           }
         });
+        */
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });
@@ -498,7 +514,6 @@ export class BlueprintsEStepperComponent implements OnInit {
         map(value => this._filter(value))
       );
       });
-      console.log("this.vsbs",this.vsbs)
   }
 
   getAllVsBlueprints() {
@@ -613,19 +628,31 @@ export class BlueprintsEStepperComponent implements OnInit {
 
         //expBlueprint['expBlueprintId'] = blueprintId;
         expBlueprint['description'] = blueprintDesc;
+        
+        expBlueprint['expBlueprintId']="";
         expBlueprint['name'] = blueprintName;
         expBlueprint['version'] = bluepritnVersion;
 
         expBlueprint['vsBlueprintId'] = this.selectedVsb;
         expBlueprint['ctxBlueprintIds'] = this.selectedCbs;
         expBlueprint['tcBlueprintIds'] = this.selectedTcbs;
-        expBlueprint['sites'] = [this.selectedSite];
+        //expBlueprint['sites'] = [this.selectedSite];
+        expBlueprint['sites']=[];
+        Object.keys(this.selectedSiteArr).forEach(e =>  expBlueprint['sites'].push(this.selectedSiteArr[e]));
+        console.log("expBlueprint['sites']",expBlueprint['sites'])
+
+        for(var st of this.selectedSiteArr){
+        //  console.log("ddddddddd",st)
+          //expBlueprint['sites'].push(st);
+        }
+
+       // console.log("ddddddddddddd",expBlueprint['sites'])
         expBlueprint['deploymentType'] = this.zeroFormGroup.get('deploymentTypeCtrl').value;
 
 
         var metrics = this.fifthFormGroup.controls.metric_items as FormArray;
         var metric_controls = metrics.controls;
-        console.log(metric_controls);
+        //console.log(metric_controls);
         var metricsObj = [];
 
         for (var j = 0; j < metric_controls.length; j++) {
@@ -635,6 +662,7 @@ export class BlueprintsEStepperComponent implements OnInit {
             newMetric['interval'] = metric_controls[j].value['interval'];
             newMetric['metricCollectionType'] = metric_controls[j].value['metricCollectionType'];
             newMetric['metricGraphType'] = metric_controls[j].value['metricGraphType'];
+            newMetric['targetSite'] = metric_controls[j].value['metricSelectSite'];
             newMetric['metricId'] = metric_controls[j].value['iMetricType'];
             newMetric['name'] = metric_controls[j].value['name'];
             newMetric['unit'] = metric_controls[j].value['unit'];
@@ -674,7 +702,7 @@ export class BlueprintsEStepperComponent implements OnInit {
 
         onBoardExpRequest['expBlueprint'] = expBlueprint;
 
-        //console.log('onBoardVsRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
+        console.log('onBoardVsRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
 
       this.blueprintsExpService.postExpBlueprint(onBoardExpRequest)
         .subscribe(expBlueprintId => {

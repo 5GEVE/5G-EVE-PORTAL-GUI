@@ -41,6 +41,7 @@
                        aria-label="Number"
                        matInput
                        [formControl]="myControl"
+                       formControlName="selectVsbCtrl"
                        [matAutocomplete]="auto"
                        style="cursor: pointer;">
                 <mat-autocomplete #auto="matAutocomplete">
@@ -59,18 +60,34 @@
                 </mat-select>
             </mat-form-field>
         -->
-
-                <div *ngFor="let blue of bluePrintsAssosiate" style="color: black;margin-bottom: 70px;">
-                    <b>{{blue.associatedVsbId}}</b>
-                    <mat-form-field appearance="outline" class="data-full-width">
-                        <mat-label>Site</mat-label>
-                        <mat-select formControlName="selectSiteCtrl" name="site" (selectionChange)="onSiteSelected($event);">
-                            <mat-option *ngFor="let site of sites" [value]="site.value" #siteSelected>
-                                {{site.viewValue}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>  
+                <div *ngIf="interSite && showSiteinterMode">
+                    <div *ngFor="let blue of bluePrintsAssosiate" style="color: black;margin-bottom: 20px;">
+                        <b>{{blue.associatedVsbId}}</b>
+                        <mat-form-field appearance="outline" class="data-full-width">
+                            <mat-label>Site</mat-label>
+                            <mat-select  name="site" (selectionChange)="onSiteSelected($event,blue.associatedVsbId);">
+                                <div *ngFor="let site of sites">
+                                <mat-option  *ngIf="blue.compatibleSite.includes(site.value)" [value]="site.value" >
+                                    {{site.viewValue}}
+                                </mat-option>
+                            </div>
+                            </mat-select>
+                        </mat-form-field>  
+                    </div>
                 </div>
+
+            <div *ngIf="!interSite && showSiteNotinterMode">
+            <div  style="color: black;margin-bottom: 20px;">
+                <mat-form-field appearance="outline" class="data-full-width">
+                    <mat-label>Site</mat-label>
+                    <mat-select name="site" (selectionChange)="onSiteSelected($event,null);">
+                        <mat-option *ngFor="let site of sites" [value]="site.value" #siteSelected>
+                            {{site.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                </div>
+            </div>
             
    <!--
   
@@ -322,8 +339,8 @@
                             <tr>
                                 <td fxFlex="33%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center">
                                     <mat-form-field appearance="outline" class="data-full-width">
-                                        <mat-label>Site</mat-label>
-                                        <mat-select formControlName="metricSelectSite" name="site" (selectionChange)="onSiteSelected($event);">
+                                        <mat-label>Target Site</mat-label>
+                                        <mat-select formControlName="metricSelectSite" name="site">
                                             <mat-option *ngFor="let site of sites" [value]="site.value">
                                                 {{site.viewValue}}
                                             </mat-option>
@@ -465,7 +482,7 @@
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
                 <button mat-raised-button (click)="stepper.reset()" color="warn" class="margin-all">Reset</button>
-                <button mat-raised-button color="accent" class="margin-all"  [disabled]="sixthFormGroup.invalid" (click)="createOnBoardExpBlueprintRequest(nsdFiles.files);">Submit</button>
+                <button mat-raised-button color="accent" class="margin-all"  (click)="createOnBoardExpBlueprintRequest(nsdFiles.files);">Submit</button>
             </div>
         </form>
     </mat-step>
