@@ -63,6 +63,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   invalidFormula: boolean[] = [];
   isRegularExpression = true;
   selectedSite: string;
+  selectedSites: any;
   selectedVsb: string;
   deploymentType: string;
   expBlueprintName: string;
@@ -75,6 +76,8 @@ export class BlueprintsEStepperComponent implements OnInit {
   interSite:boolean;
   showSiteNotinterMode:boolean;
   showSiteinterMode:boolean;
+  noContextBlueprint:boolean;
+  contextBlueprint:boolean;
   sites: Site[] = [
     {value: 'ITALY_TURIN', viewValue: 'Turin, Italy'},
     {value: 'GREECE_ATHENS', viewValue: 'Athens, Greece'},
@@ -131,6 +134,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   ctxbs: Blueprint[] = [];
   tcbs: Blueprint[] = [];
   selectedSiteArr=[];
+  nsdArr=[];
   items: FormArray;
   metric_items: FormArray;
   kpi_items: FormArray;
@@ -158,9 +162,11 @@ export class BlueprintsEStepperComponent implements OnInit {
 
   myControl = new FormControl();
   filteredOptions: Observable<any>;
-
   vsbName:any;
   ngOnInit() {
+    this.contextBlueprint=false;
+    this.noContextBlueprint=false;
+    this.selectedSites=[];
     this.interSite=false;
     this.showSiteNotinterMode=false;
     this.showSiteinterMode=false;
@@ -280,12 +286,15 @@ export class BlueprintsEStepperComponent implements OnInit {
       this.currentStep = event.selectedIndex;
   }
 
-  disableCtxb($event){
+  disableCtxb($event,vsbId){
+    this.noContextBlueprint=true;
+    localStorage.setItem(vsbId,$event.checked);
     if ($event.source.checked){
       this.secondFormGroup.controls['selectCbsCtrl'].disable();
     } else {
       this.secondFormGroup.controls['selectCbsCtrl'].enable();
     }
+    console.log(localStorage.getItem(vsbId))
   }
 
 
@@ -334,12 +343,16 @@ export class BlueprintsEStepperComponent implements OnInit {
 
     this.selectedSite = event.value;
     this.selectedSiteArr[associatedVsbId]=this.selectedSite;
+}
 
-    console.log(this.selectedSiteArr)
+  onClickSecondNext(){
+    console.log( this.bluePrintsAssosiate)
+    Object.keys(this.selectedSiteArr).forEach(e =>  this.selectedSites.push(this.selectedSiteArr[e]));
+
   }
-
   onVsbSelected(event: any,value) {
-
+    this.selectedSiteArr=[];
+    this.selectedSite="";
     this.selectedVsb = value;
     this.blueprintsVsService.getVsBlueprint(this.selectedVsb).subscribe((vsBlueprintInfos) =>
     {
@@ -383,7 +396,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   }
 
   onSelectedCb(event: any) {
-    //console.log(event);
+    this.contextBlueprint=true;
     this.selectedCbs.push(event.value);
 
     for (var i = 0; i < this.ctxbs.length; i ++) {
@@ -400,8 +413,8 @@ export class BlueprintsEStepperComponent implements OnInit {
     }
   }
 
-  onUploadedNsd(event: any, nsds: File[]) {
-    //console.log(event);
+  onUploadedNsd(event: any, nsds: File[], vsbId) {
+
     this.uploadedNsdName = event.target.files[0].name;
 
     let promises = [];
@@ -424,6 +437,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.nsdObj = JSON.parse(fileContents[0]);
+        this.nsdArr[vsbId]=this.nsdObj;
 
         this.fourthFormGroup.get('nsdIdCtrl').setValue(this.nsdObj['nsdIdentifier']);
         this.fourthFormGroup.get('nsdVersionCtrl').setValue(this.nsdObj['version']);
@@ -444,6 +458,7 @@ export class BlueprintsEStepperComponent implements OnInit {
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });
   }
+  console.log("this.nsdArr",this.nsdArr)
   }
 
   onNsDfSelected(event:any) {
@@ -539,14 +554,18 @@ export class BlueprintsEStepperComponent implements OnInit {
   getCtxBlueprints() {
     this.blueprintsCtxService.getCtxBlueprints().subscribe((ctxBlueprintInfos: CtxBlueprintInfo[]) =>
       {
+        console.log("rrrrrrrrrrrrrrctxBlueprintInfos",ctxBlueprintInfos)
         for (var i = 0; i < ctxBlueprintInfos.length; i++) {
           this.ctxbs.push({value: ctxBlueprintInfos[i]['ctxBlueprintId'], viewValue: ctxBlueprintInfos[i]['ctxBlueprint']['description'], sites: ctxBlueprintInfos[i]['ctxBlueprint']['compatibleSites'], obj: ctxBlueprintInfos[i]['ctxBlueprint']});
         }
       });
   }
 
-  filterCtxbsInSite(){
-    return this.ctxbs.filter(x => x.sites.indexOf(this.selectedSite) >= 0);
+  filterCtxbsInSite(site){
+    if(site==null){
+      site=this.selectedSite;
+    }
+    return this.ctxbs.filter(x => x.sites.indexOf(site) >= 0);
   }
 
   getTcBlueprints() {
@@ -637,9 +656,11 @@ export class BlueprintsEStepperComponent implements OnInit {
         expBlueprint['ctxBlueprintIds'] = this.selectedCbs;
         expBlueprint['tcBlueprintIds'] = this.selectedTcbs;
         //expBlueprint['sites'] = [this.selectedSite];
-        expBlueprint['sites']=[];
-        Object.keys(this.selectedSiteArr).forEach(e =>  expBlueprint['sites'].push(this.selectedSiteArr[e]));
-        console.log("expBlueprint['sites']",expBlueprint['sites'])
+        
+        
+       // Object.keys(this.selectedSiteArr).forEach(e =>  this.selectedSites.push(this.selectedSiteArr[e]));
+        expBlueprint['sites']=this.selectedSites;
+        console.log("this.selectedSiteArr",this.selectedSites,"expBlueprint['sites']",expBlueprint['sites'])
 
         for(var st of this.selectedSiteArr){
         //  console.log("ddddddddd",st)
@@ -663,7 +684,7 @@ export class BlueprintsEStepperComponent implements OnInit {
             newMetric['metricCollectionType'] = metric_controls[j].value['metricCollectionType'];
             newMetric['metricGraphType'] = metric_controls[j].value['metricGraphType'];
             newMetric['targetSite'] = metric_controls[j].value['metricSelectSite'];
-            newMetric['metricId'] = metric_controls[j].value['iMetricType'];
+            newMetric['metricId'] = metric_controls[j].value['metricId'];
             newMetric['name'] = metric_controls[j].value['name'];
             newMetric['unit'] = metric_controls[j].value['unit'];
             metricsObj.push(newMetric);
