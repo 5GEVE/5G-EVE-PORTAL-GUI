@@ -50,16 +50,8 @@
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
-                <!--
-            <mat-form-field appearance="outline" class="data-full-width">
-                <mat-label>VSB</mat-label>
-                <mat-select formControlName="selectVsbCtrl" name="vsb" (selectionChange)="onVsbSelected($event);">
-                    <mat-option *ngFor="let vsb of getAllVsBlueprints()" [value]="vsb.value">
-                        {{vsb.viewValue}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        -->
+
+              <!--
                 <div *ngIf="interSite && showSiteinterMode">
                     <div *ngFor="let blue of bluePrintsAssosiate" style="color: black;margin-bottom: 20px;">
                         <b>{{blue.associatedVsbId}}</b>
@@ -75,36 +67,22 @@
                         </mat-form-field>  
                     </div>
                 </div>
+                -->
+
 
             <div *ngIf="!interSite && showSiteNotinterMode">
-            <div  style="color: black;margin-bottom: 20px;">
-                <mat-form-field appearance="outline" class="data-full-width">
-                    <mat-label>Site</mat-label>
-                    <mat-select name="site" (selectionChange)="onSiteSelected($event,null);">
-                        <mat-option *ngFor="let site of sites" [value]="site.value" #siteSelected>
-                            {{site.viewValue}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                </div>
+                    <mat-form-field appearance="outline" class="data-full-width">
+                        <mat-label>Site</mat-label>
+                        <mat-select  name="site" (selectionChange)="onSiteSelected($event,null);">
+                            <div *ngFor="let site of sites">
+                            <mat-option  *ngIf="bluePrintsAssosiate.includes(site.value)" [value]="site.value" >
+                                {{site.viewValue}}
+                            </mat-option>
+                        </div>
+                        </mat-select>
+                    </mat-form-field>  
             </div>
-            
-   <!--
-  
-            <mat-form-field class="data-full-width">
-                <input type="text"
-                       placeholder="Select Blueprint"
-                       aria-label="Number"
-                       matInput
-                       [formControl]="myControl"
-                       [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                    {{option}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            -->
+          
 
                 <!--
               <div *ngFor="let blue of bluePrintsAssosiate">
@@ -140,22 +118,20 @@
             <p> Blueprint Name: {{expBlueprintName}}</p>
             <div *ngIf="interSite">
                 <p> Selected Sites: </p>
-
-                <div style="color: black;" *ngFor="let blue of bluePrintsAssosiate">
-            
-                   <p style="margin-bottom: 3px;">{{selectedSiteArr[blue.associatedVsbId]}}</p> 
-
-                </div>
+                <div style="color: black;" *ngFor="let st of selectedSites">
+                    <p style="margin-bottom: 3px;">{{st}}</p> 
+                 </div>
             </div>
             <div *ngIf="!interSite" style="color: black;">
                 <p> Selected Site: {{selectedSite}}</p>
                 
-            </div>  
+            </div>   
+  
             <p style="margin-top: 5px;"> Selected VSB: {{selectedVsb}}</p>
         </div>
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid" (click)="onClickSecondNext()">Next</button>
+                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid">Next</button>
             </div>
         </form>
     </mat-step>
@@ -166,28 +142,25 @@
             <div *ngIf="interSite">
                 <div *ngFor="let vsbas of bluePrintsAssosiate">
        
-                    <mat-checkbox-group style="margin-bottom: 20px;" formControlName="selectCbsCtrl" *ngFor="let cb of filterCtxbsInSite(selectedSiteArr[vsbas.associatedVsbId]); let i=index" class="flex-column" (change)="onSelectedCb($event)" id="ctxbChoise">
+                    <mat-checkbox-group style="margin-bottom: 20px;" *ngFor="let cb of filterCtxbsInSite(selectedSiteArr[vsbas.associatedVsbId]); let i=index" class="flex-column"  id="ctxbChoise">
                        <b style="color: black;">{{vsbas.associatedVsbId}} : </b>  
-                       <mat-checkbox [value]="cb.value" class="margin-top" style="color: black;">{{cb.viewValue}}</mat-checkbox>
+                       <mat-checkbox [value]="cb.value" class="margin-top" style="color: black;" (change)="onSelectedCb($event)">{{cb.viewValue}}</mat-checkbox>
                     </mat-checkbox-group>
                 </div>
             </div>
             <div *ngIf="!interSite">
                 <mat-checkbox (change)="disableCtxb($event,null);" style="color: black;">No Context Blueprints</mat-checkbox>
-                <mat-checkbox-group formControlName="selectCbsCtrl" *ngFor="let cb of filterCtxbsInSite(null); let i=index" class="flex-column" (change)="onSelectedCb($event)" id="ctxbChoise">
-                    <mat-checkbox [value]="cb.value" class="margin-top" style="color: black;">{{cb.viewValue}}</mat-checkbox>
+                <mat-checkbox-group formControlName="selectCbsCtrl" *ngFor="let cb of filterCtxbsInSite(null); let i=index" class="flex-column"  id="ctxbChoise">
+                    <mat-checkbox [value]="cb.value" (change)="onSelectedCb($event)" class="margin-top" style="color: black;">{{cb.viewValue}}</mat-checkbox>
                 </mat-checkbox-group>
             </div>           
             <div class="margin-top"></div>
             <p> Blueprint Name: {{expBlueprintName}}</p>
             <div *ngIf="interSite">
                 <p> Selected Sites: </p>
-
-                <div style="color: black;" *ngFor="let blue of bluePrintsAssosiate">
-            
-                   <p style="margin-bottom: 3px;">{{selectedSiteArr[blue.associatedVsbId]}}</p> 
-
-                </div>
+                <div style="color: black;" *ngFor="let st of selectedSites">
+                    <p style="margin-bottom: 3px;">{{st}}</p> 
+                 </div>
             </div>
             <div *ngIf="!interSite" style="color: black;">
                 <p> Selected Site: {{selectedSite}}</p>
@@ -196,16 +169,9 @@
             <p> Selected VSB: {{selectedVsb}}</p>
             <p> Selected CBs: {{selectedCbs.join(', ')}}</p>
             <div class="margin-top">
-                <div *ngIf="interSite">
-                    <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-
-                    <button mat-raised-button id="onDemandType" matStepperNext color="primary" class="margin-all" >Next</button>
-                </div>
-                <div *ngIf="!interSite && noContextBlueprint">
-                    <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-
-                    <button mat-raised-button id="staticType" (click) = "goToStepIndex(5);" color="primary" [disabled]="secondFormGroup.invalid" class="margin-all" >Next</button>
-                </div>
+                <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
+                <button mat-raised-button id="onDemandType" matStepperNext color="primary" class="margin-all" >Next</button>
+                <button mat-raised-button id="staticType" (click) = "goToStepIndex(5);" color="primary" [disabled]="secondFormGroup.invalid" class="margin-all" >Next</button>
             </div>
         </form>
     </mat-step>
@@ -215,31 +181,34 @@
 
             <ng-template matStepLabel>NSD Onboarding</ng-template>
             <div *ngIf="interSite">
-                <div *ngFor="let vsbas of bluePrintsAssosiate">
-                    <label for="nsd" class="input-label">NSD For {{vsbas.associatedVsbId}}  </label>
-                    <input type="file" #nsdFiles  formControlName="uploadNsdCtrl" required (change)="onUploadedNsd($event,nsdFiles.files,vsbas.associatedVsbId)" style="color: black;margin-bottom: 20px" />
+                <div style="margin-top: 20px;">
+                    <label class="input-label" style="width: 200px">Composite NSD </label>
+                    <input type="file" #nsdFiles formControlName="uploadNsdCtrl"  required (change)="onUploadedNsd($event,nsdFiles.files,null,'composite')" style="color: black;margin-bottom: 20px" />
+                </div>
+                <mat-divider></mat-divider>
+                <label class="input-label" style="width: 200px;margin-top: 20px;margin-bottom: 20px;">Nested NSDs :</label>
+                <br style="margin-bottom: 30px;">
+                <div *ngFor="let vsbas of bluePrintsAssosiate" style="margin-top: 20px;">
+                    <label for="nsd" class="input-label"  style="width: 200px;" > NSD For {{vsbas.associatedVsbId}} (Optional) </label>
+                    <input type="file" #nsdFiles required (change)="onUploadedNsd($event,nsdFiles.files,vsbas.associatedVsbId,'single')" style="color: black;margin-bottom: 20px" />
                 </div>
             </div>
             <div *ngIf="!interSite">
                 <label for="nsd" class="input-label">NSD  </label>
-                <input type="file" #nsdFiles formControlName="uploadNsdCtrl" required (change)="onUploadedNsd($event,nsdFiles.files,null)" style="color: black;" />
+                <input type="file" #nsdFiles formControlName="uploadNsdCtrl" required (change)="onUploadedNsd($event,nsdFiles.files,null,'single')" style="color: black;" />
             </div>
             <div class="margin-top"></div>
             <p> Blueprint Name: {{expBlueprintName}}</p>
-            <p> Selected Site: {{selectedSite}}</p>
             <div *ngIf="interSite">
                 <p> Selected Sites: </p>
-
-                <div style="color: black;" *ngFor="let blue of bluePrintsAssosiate">
-            
-                   <p style="margin-bottom: 3px;">{{selectedSiteArr[blue.associatedVsbId]}}</p> 
-
-                </div>
+                <div style="color: black;" *ngFor="let st of selectedSites">
+                    <p style="margin-bottom: 3px;">{{st}}</p> 
+                 </div>
             </div>
             <div *ngIf="!interSite" style="color: black;">
                 <p> Selected Site: {{selectedSite}}</p>
-                
-            </div>               <p> Selected CBs: {{selectedCbs.join(', ')}}</p>
+            </div>               
+            <p> Selected CBs: {{selectedCbs.join(', ')}}</p>
             <p> Uploaded NSD: {{uploadedNsdName}}</p>
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
@@ -548,7 +517,8 @@
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
                 <button mat-raised-button (click)="stepper.reset()" color="warn" class="margin-all">Reset</button>
-               <!-- <button mat-raised-button color="accent" class="margin-all"  (click)="createOnBoardExpBlueprintRequest(nsdFiles.files);">Submit</button> -->
+               <!--<button mat-raised-button color="accent" class="margin-all"  (click)="createOnBoardExpBlueprintRequest(nsdFiles.files);">Submit</button>-->
+               <button mat-raised-button color="accent" class="margin-all"  (click)="createOnBoardExpBlueprintRequest(null);">Submit</button>
             </div>
         </form>
     </mat-step>

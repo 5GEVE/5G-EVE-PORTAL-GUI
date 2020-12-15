@@ -41,6 +41,12 @@ td {
     float: left;
 }
 
+.input-label-nsd {
+    font-style: oblique;
+    font-weight: bold; 
+    display: block; 
+}
+
 p {
     font-size: 12px;
     color: black;
