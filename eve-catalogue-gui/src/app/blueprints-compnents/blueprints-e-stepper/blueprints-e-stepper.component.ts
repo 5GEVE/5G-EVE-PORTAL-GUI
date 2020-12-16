@@ -134,7 +134,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   ctxbs: Blueprint[] = [];
   tcbs: Blueprint[] = [];
   selectedSiteArr=[];
-  nsdArr=[];
+  //nsdArr=[];
   items: FormArray;
   metric_items: FormArray;
   kpi_items: FormArray;
@@ -145,7 +145,9 @@ export class BlueprintsEStepperComponent implements OnInit {
   fourthFormGroup: FormGroup;
   fifthFormGroup: FormGroup;
   sixthFormGroup: FormGroup;
-
+  nsdArr: any;
+  nsdArrMandatory:any;
+  nsdListMap : Map<string, any> = new Map<string, any>();
   activeTestsCases: ActiveTcb[] = [];
 
   constructor(private _formBuilder: FormBuilder,
@@ -218,7 +220,6 @@ export class BlueprintsEStepperComponent implements OnInit {
   
   validateFormula(event: any, index){
     this.invalidFormula[index] = false;
-    // console.log(value.target.value );
     if (event.target.value === undefined || event.target.value === '') {
       this.invalidFormula[index] = false;
     } else {
@@ -349,17 +350,16 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.selectedVsb = value;
     this.blueprintsVsService.getVsBlueprint(this.selectedVsb).subscribe((vsBlueprintInfos) =>
     {
-      console.log("ffff",vsBlueprintInfos)
       if(vsBlueprintInfos['vsBlueprint'].hasOwnProperty('interSite') && vsBlueprintInfos['vsBlueprint']['interSite']==true){
         this.interSite=true;
         this.showSiteinterMode=true;
         this.showSiteNotinterMode=false;
         this.bluePrintsAssosiate=vsBlueprintInfos['vsBlueprint']['atomicComponents'];
         for(var bl of this.bluePrintsAssosiate){
-          if(!this.selectedSites.includes(bl['compatibleSite'][0])){
-            this.selectedSites.push(bl['compatibleSite'][0]);
+          if(!this.selectedSites.includes(bl['compatibleSite'])){
+            this.selectedSites.push(bl['compatibleSite']);
           }
-          this.selectedSiteArr[bl['associatedVsbId']]=bl['compatibleSite'][0];
+          this.selectedSiteArr[bl['associatedVsbId']]=bl['compatibleSite'];
         }
 
     }
@@ -400,7 +400,6 @@ export class BlueprintsEStepperComponent implements OnInit {
 
   onSelectedCb(event: any) {
     if(event.checked){
-      console.log("is checked",this.selectedCbs)
       if(!this.selectedCbs.includes(event.source.value)){
         this.selectedCbs.push(event.source.value);
         for (var i = 0; i < this.ctxbs.length; i ++) {
@@ -425,12 +424,9 @@ export class BlueprintsEStepperComponent implements OnInit {
     }
   }
 
-  onUploadedNsd(event: any, nsds: File[], vsbId,mode) {
-    if(mode=="composite"){
-      this.nsdFiles=nsds;
-    }
+  onUploadedNsd(event: any, nsds: File[], vsbId ,mode) {
     this.uploadedNsdName = event.target.files[0].name;
-
+    this.nsdArr=[];
     let promises = [];
 
     for (let nsd of nsds) {
@@ -448,11 +444,19 @@ export class BlueprintsEStepperComponent implements OnInit {
 
       }
     }
-  if(promises.length > 0){
+  if(promises.length > 0){   
     Promise.all(promises).then(fileContents => {
         this.nsdObj = JSON.parse(fileContents[0]);
-        this.nsdArr[vsbId]=this.nsdObj;
+        if(mode=="optional"){
+          this.nsdArr.push(this.nsdObj);
+        }
+        if(vsbId!=null){
+          this.nsdListMap.set(String(vsbId), this.nsdArr[0]);
 
+        }
+        if(mode=="mandatory"){
+          this.nsdArrMandatory=this.nsdObj;
+        }
         this.fourthFormGroup.get('nsdIdCtrl').setValue(this.nsdObj['nsdIdentifier']);
         this.fourthFormGroup.get('nsdVersionCtrl').setValue(this.nsdObj['version']);
 
@@ -472,7 +476,6 @@ export class BlueprintsEStepperComponent implements OnInit {
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });
   }
-  console.log("this.nsdArr",this.nsdArr)
   }
 
   onNsDfSelected(event:any) {
@@ -602,8 +605,17 @@ export class BlueprintsEStepperComponent implements OnInit {
   createOnBoardExpBlueprintRequest(nsds: File[]) {
     
     var onBoardExpRequest = JSON.parse('{}');
+    onBoardExpRequest['nsds']=[];
+
+    let jsonObject = {};  
+    this.nsdListMap.forEach((value, key) => {  
+        jsonObject[key] = value  
+    });  
+  //  console.log("fffffffffff",JSON.stringify(jsonObject)) 
+    onBoardExpRequest['enhancedVsbs']= jsonObject;
+
     if (this.deploymentType !== "STATIC"){
-      onBoardExpRequest['nsds'] = this.nsdArr;
+     
       onBoardExpRequest['translationRules'] = [];
     }
 
@@ -612,7 +624,11 @@ export class BlueprintsEStepperComponent implements OnInit {
 
     let promises = [];
 
+    onBoardExpRequest['nsds'].push(this.nsdArrMandatory);
+
     if (this.deploymentType !== "STATIC"){
+    
+/*
       for (let nsd of this.nsdFiles) {
         let nsdPromise = new Promise(resolve => {
             let reader = new FileReader();
@@ -621,13 +637,16 @@ export class BlueprintsEStepperComponent implements OnInit {
         });
         promises.push(nsdPromise);
     }
+    */
   }
+
     Promise.all(promises).then(fileContents => {
       if (this.deploymentType !== "STATIC"){
-
+        /*
       for (var i = 0; i < fileContents.length; i++) {
-          onBoardExpRequest['nsds'].push(JSON.parse(fileContents[i]));
+        onBoardExpRequest['nsds'].push(JSON.parse(fileContents[i]));
         }
+        */
 
         if (this.translationParams === []){
           var translationRule = JSON.parse('{}');
@@ -647,7 +666,6 @@ export class BlueprintsEStepperComponent implements OnInit {
 
           for (var j = 0; j < controls.length; j++) {
             paramsObj.push(controls[j].value);
-            //console.log(paramsObj);
           }
           translationRule['input'] = paramsObj;
           onBoardExpRequest.translationRules.push(translationRule);
@@ -659,7 +677,7 @@ export class BlueprintsEStepperComponent implements OnInit {
         var bluepritnVersion = this.zeroFormGroup.get('bpVersionCtrl').value;
         var blueprintDesc = this.zeroFormGroup.get('bpDescriptionCtrl').value;
 
-        //expBlueprint['expBlueprintId'] = blueprintId;
+        expBlueprint['expBlueprintId'] = blueprintId;
         expBlueprint['description'] = blueprintDesc;
         
         expBlueprint['expBlueprintId']="";
@@ -669,17 +687,12 @@ export class BlueprintsEStepperComponent implements OnInit {
         expBlueprint['vsBlueprintId'] = this.selectedVsb;
         expBlueprint['ctxBlueprintIds'] = this.selectedCbs;
         expBlueprint['tcBlueprintIds'] = this.selectedTcbs;
-        //expBlueprint['sites'] = [this.selectedSite];
-        
-        
-       // Object.keys(this.selectedSiteArr).forEach(e =>  this.selectedSites.push(this.selectedSiteArr[e]));
         expBlueprint['sites']=this.selectedSites;
         expBlueprint['deploymentType'] = this.zeroFormGroup.get('deploymentTypeCtrl').value;
 
 
         var metrics = this.fifthFormGroup.controls.metric_items as FormArray;
         var metric_controls = metrics.controls;
-        //console.log(metric_controls);
         var metricsObj = [];
 
         for (var j = 0; j < metric_controls.length; j++) {
@@ -696,10 +709,7 @@ export class BlueprintsEStepperComponent implements OnInit {
             metricsObj.push(newMetric);
           }
         }
-        //console.log(metricsObj);
           expBlueprint['metrics'] = metricsObj;
-        //console.log(expBlueprint);
-
 
         var kpis = this.fifthFormGroup.controls.kpi_items as FormArray;
         var kpi_controls = kpis.controls;
@@ -723,7 +733,6 @@ export class BlueprintsEStepperComponent implements OnInit {
             }
             kpisObj.push(newKpiObj);
           }
-          //console.log(kpisObj);
        }
           expBlueprint['kpis'] = kpisObj;
 

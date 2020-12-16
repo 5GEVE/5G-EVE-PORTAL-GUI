@@ -111,6 +111,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
             this.translationParams.push(this.ctxbObj['parameters'][i]['parameterId']);
           }
         }
+        /*
         this.blueprintsEcService.validateCtxBlueprint(this.ctxbObj)
         .subscribe(res => {
           if(res===undefined){
@@ -120,6 +121,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
 
           }
         });
+        */
     });
   }
   }
@@ -152,6 +154,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
         this.thirdFormGroup.get('nsdVersion').setValue(this.nsdObj['version']);
 
         this.dfs = this.nsdObj['nsDf'];
+        /*
         this.nsdsService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
           if(res===undefined){
@@ -161,6 +164,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
 
           }
         });
+        */
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });

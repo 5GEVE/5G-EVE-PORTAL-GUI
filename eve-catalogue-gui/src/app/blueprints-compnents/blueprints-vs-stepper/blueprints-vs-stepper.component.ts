@@ -105,6 +105,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
         (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'inline';
         (<HTMLInputElement> document.getElementById("submitButtonFirst")).style.display = 'none';
         this.showSteps=true;
+        /*
         this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
         .subscribe(res => {
           if(res===undefined){
@@ -115,6 +116,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
           }
     
         });
+        */
       }
       
   /*
@@ -169,7 +171,8 @@ let promises = [];
         this.thirdFormGroup.get('nsdVersion').setValue(this.nsdObj['version']);
 
         this.dfs = this.nsdObj['nsDf'];
-
+        
+      /*
         this.nsdsService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
           if(res===undefined){
@@ -179,6 +182,7 @@ let promises = [];
 
           }
         });
+        */
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });

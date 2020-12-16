@@ -183,19 +183,19 @@
             <div *ngIf="interSite">
                 <div style="margin-top: 20px;">
                     <label class="input-label" style="width: 200px">Composite NSD </label>
-                    <input type="file" #nsdFiles formControlName="uploadNsdCtrl"  required (change)="onUploadedNsd($event,nsdFiles.files,null,'composite')" style="color: black;margin-bottom: 20px" />
+                    <input type="file" #nsdFiles formControlName="uploadNsdCtrl"  required (change)="onUploadedNsd($event,nsdFiles.files,null,'mandatory')" style="color: black;margin-bottom: 20px" />
                 </div>
                 <mat-divider></mat-divider>
                 <label class="input-label" style="width: 200px;margin-top: 20px;margin-bottom: 20px;">Nested NSDs :</label>
                 <br style="margin-bottom: 30px;">
                 <div *ngFor="let vsbas of bluePrintsAssosiate" style="margin-top: 20px;">
                     <label for="nsd" class="input-label"  style="width: 200px;" > NSD For {{vsbas.associatedVsbId}} (Optional) </label>
-                    <input type="file" #nsdFiles required (change)="onUploadedNsd($event,nsdFiles.files,vsbas.associatedVsbId,'single')" style="color: black;margin-bottom: 20px" />
+                    <input type="file" #nsdFiles required (change)="onUploadedNsd($event,nsdFiles.files,vsbas.componentId,'optional')" style="color: black;margin-bottom: 20px" />
                 </div>
             </div>
             <div *ngIf="!interSite">
                 <label for="nsd" class="input-label">NSD  </label>
-                <input type="file" #nsdFiles formControlName="uploadNsdCtrl" required (change)="onUploadedNsd($event,nsdFiles.files,null,'single')" style="color: black;" />
+                <input type="file" #nsdFiles formControlName="uploadNsdCtrl" required (change)="onUploadedNsd($event,nsdFiles.files,null,'mandatory')" style="color: black;" />
             </div>
             <div class="margin-top"></div>
             <p> Blueprint Name: {{expBlueprintName}}</p>
