@@ -83,6 +83,8 @@ export class DescriptorsEStepperComponent implements OnInit {
     private descriptorExperiments: DescriptorsEComponent) { }
 
   ngOnInit() {
+
+
     this.getExpBlueprints();
     this.firstFormGroup = this._formBuilder.group({
       expBlueprintId: ['', Validators.required],
@@ -117,6 +119,7 @@ export class DescriptorsEStepperComponent implements OnInit {
   getExpBlueprints() {
     this.blueprintsExpService.getExpBlueprints().subscribe((expBlueprintInfos: ExpBlueprintInfo[]) =>
       {
+        console.log("ExpBlueprintInfo",expBlueprintInfos)
         for (var i = 0; i < expBlueprintInfos.length; i++) {
           this.expBlueprints.push({value: expBlueprintInfos[i]['expBlueprintId'], viewValue: expBlueprintInfos[i]['expBlueprint']['description'], item: expBlueprintInfos[i]['expBlueprint']});
         }
@@ -124,6 +127,10 @@ export class DescriptorsEStepperComponent implements OnInit {
   }
 
   onExpBSelected(event: any) {
+    this.descriptorsExpService.getCoverageArea('ITALY_TURIN').subscribe((info) =>
+    {
+      console.log("info",info)
+    });
     var selectedBlueprint = event.value;
     var vsbId;
     for (var i = 0; i < this.expBlueprints.length; i ++) {

@@ -741,7 +741,7 @@ export class BlueprintsEStepperComponent implements OnInit {
 
         onBoardExpRequest['expBlueprint'] = expBlueprint;
 
-        console.log('onBoardVsRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
+       // console.log('onBoardExpRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
 
 
 
