@@ -41,7 +41,7 @@
                        aria-label="Number"
                        matInput
                        [formControl]="myControl"
-                       formControlName="selectVsbCtrl"
+                       
                        [matAutocomplete]="auto"
                        style="cursor: pointer;">
                 <mat-autocomplete #auto="matAutocomplete">
@@ -57,7 +57,7 @@
                         <b>{{blue.associatedVsbId}}</b>
                         <mat-form-field appearance="outline" class="data-full-width">
                             <mat-label>Site</mat-label>
-                            <mat-select  name="site" (selectionChange)="onSiteSelected($event,blue.associatedVsbId);">
+                            <mat-select  name="site" (selectionChange)="onSiteSelected($event,blue.associatedVsbId);" formControlName="selectVsbCtrl">
                                 <div *ngFor="let site of sites">
                                 <mat-option  *ngIf="blue.compatibleSite.includes(site.value)" [value]="site.value" >
                                     {{site.viewValue}}
@@ -73,7 +73,7 @@
             <div *ngIf="!interSite && showSiteNotinterMode">
                     <mat-form-field appearance="outline" class="data-full-width">
                         <mat-label>Site</mat-label>
-                        <mat-select  name="site" (selectionChange)="onSiteSelected($event,null);">
+                        <mat-select  name="site" (selectionChange)="onSiteSelected($event,null);" formControlName="selectVsbCtrl">
                             <div *ngFor="let site of sites">
                             <mat-option  *ngIf="bluePrintsAssosiate.includes(site.value)" [value]="site.value" >
                                 {{site.viewValue}}
@@ -130,8 +130,16 @@
             <p style="margin-top: 5px;"> Selected VSB: {{selectedVsb}}</p>
         </div>
             <div class="margin-top">
-                <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-                <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid">Next</button>
+                <div *ngIf="!interSite">
+                    <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
+
+                    <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid">Next</button>
+                </div>
+                <div *ngIf="interSite">
+                    <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
+
+                    <button mat-raised-button matStepperNext color="primary" class="margin-all" >Next</button>
+                </div>
             </div>
         </form>
     </mat-step>
@@ -141,17 +149,17 @@
             <ng-template matStepLabel>CB Selection</ng-template>
             <div *ngIf="interSite">
                 <div *ngFor="let vsbas of bluePrintsAssosiate">
-       
+                    <mat-checkbox (change)="disableCtxb($event);" style="color: black;display: none" id="noCtx" formControlName="selectNoCbsCtrl">No Context Blueprints</mat-checkbox>
                     <mat-checkbox-group style="margin-bottom: 20px;" *ngFor="let cb of filterCtxbsInSite(selectedSiteArr[vsbas.associatedVsbId]); let i=index" class="flex-column"  id="ctxbChoise">
                        <b style="color: black;">{{vsbas.associatedVsbId}} : </b>  
-                       <mat-checkbox [value]="cb.value" class="margin-top" style="color: black;" (change)="onSelectedCb($event)">{{cb.viewValue}}</mat-checkbox>
+                       <mat-checkbox [value]="cb.value" class="margin-top" style="color: black;" (change)="onSelectedCb($event)" formControlName="selectCbsCtrl">{{cb.viewValue}}</mat-checkbox>
                     </mat-checkbox-group>
                 </div>
             </div>
             <div *ngIf="!interSite">
-                <mat-checkbox (change)="disableCtxb($event,null);" style="color: black;">No Context Blueprints</mat-checkbox>
-                <mat-checkbox-group formControlName="selectCbsCtrl" *ngFor="let cb of filterCtxbsInSite(null); let i=index" class="flex-column"  id="ctxbChoise">
-                    <mat-checkbox [value]="cb.value" (change)="onSelectedCb($event)" class="margin-top" style="color: black;">{{cb.viewValue}}</mat-checkbox>
+                <mat-checkbox (change)="disableCtxb($event);" style="color: black;" id="noCtx" formControlName="selectNoCbsCtrl">No Context Blueprints</mat-checkbox>
+                <mat-checkbox-group  *ngFor="let cb of filterCtxbsInSite(null); let i=index" class="flex-column"  id="ctxbChoise">
+                    <mat-checkbox  [value]="cb.value" (change)="onSelectedCb($event)" class="margin-top" style="color: black;" formControlName="selectCbsCtrl">{{cb.viewValue}}</mat-checkbox>
                 </mat-checkbox-group>
             </div>           
             <div class="margin-top"></div>
@@ -170,7 +178,7 @@
             <p> Selected CBs: {{selectedCbs.join(', ')}}</p>
             <div class="margin-top">
                 <button mat-raised-button matStepperPrevious color="primary" class="margin-all">Back</button>
-                <button mat-raised-button id="onDemandType" matStepperNext color="primary" class="margin-all" >Next</button>
+                <button mat-raised-button id="onDemandType" matStepperNext color="primary" class="margin-all" [disabled]="secondFormGroup.invalid" >Next</button>
                 <button mat-raised-button id="staticType" (click) = "goToStepIndex(5);" color="primary" [disabled]="secondFormGroup.invalid" class="margin-all" >Next</button>
             </div>
         </form>
@@ -291,7 +299,15 @@
             </table>
             <div class="margin-top"></div>
             <p> Blueprint Name: {{expBlueprintName}}</p>
-            <p> Selected Site: {{selectedSite}}</p>
+            <div *ngIf="interSite">
+                <p> Selected Sites: </p>
+                <div style="color: black;" *ngFor="let st of selectedSites">
+                    <p style="margin-bottom: 3px;">{{st}}</p> 
+                 </div>
+            </div>
+            <div *ngIf="!interSite" style="color: black;">
+                <p> Selected Site: {{selectedSite}}</p>
+            </div>              
             <p> Selected VSB: {{selectedVsb}}</p>
             <p> Selected CBs: {{selectedCbs.join(', ')}}</p>
             <p> Uploaded NSD: {{uploadedNsdName}}</p>
@@ -376,11 +392,15 @@
                             <td fxFlex="33%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center">
                                     <mat-form-field appearance="outline" class="data-full-width">
                                         <mat-label>Target Site</mat-label>
+                                       
                                         <mat-select formControlName="metricSelectSite" name="site">
-                                            <mat-option *ngFor="let site of sites" [value]="site.value">
+                                            <div *ngFor="let site of sites">
+                                            <mat-option *ngIf="selectedSites.includes(site.value)" [value]="site.value">
                                                 {{site.viewValue}}
                                             </mat-option>
+                                            </div>
                                         </mat-select>
+                                    
                                     </mat-form-field>
                                 </td>
                                 <td></td>
@@ -482,7 +502,15 @@
             </table>
             <div class="margin-top"></div>
             <p> Blueprint Name: {{expBlueprintName}}</p>
-            <p> Selected Site: {{selectedSite}}</p>
+            <div *ngIf="interSite">
+                <p> Selected Sites: </p>
+                <div style="color: black;" *ngFor="let st of selectedSites">
+                    <p style="margin-bottom: 3px;">{{st}}</p> 
+                 </div>
+            </div>
+            <div *ngIf="!interSite" style="color: black;">
+                <p> Selected Site: {{selectedSite}}</p>
+            </div>               
             <p> Selected VSB: {{selectedVsb}}</p>
             <p> Selected CBs: {{selectedCbs.join(', ')}}</p>
             <p> Uploaded NSD: {{uploadedNsdName}}</p>

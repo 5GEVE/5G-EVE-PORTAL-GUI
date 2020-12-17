@@ -184,10 +184,11 @@ export class BlueprintsEStepperComponent implements OnInit {
     });
     this.firstFormGroup = this._formBuilder.group({
       //selectSiteCtrl: ['', Validators.required],
-      selectVsbCtrl: ['', Validators.required]
+      selectVsbCtrl: ['']
     });
     this.secondFormGroup = this._formBuilder.group({
-      selectCbsCtrl: ['', Validators.required]
+      selectCbsCtrl: ['', Validators.required],
+      selectNoCbsCtrl: ['', Validators.required]
     });
     this.thirdFormGroup = this._formBuilder.group({
       uploadNsdCtrl: ['', Validators.required]
@@ -285,8 +286,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       this.currentStep = event.selectedIndex;
   }
 
-  disableCtxb($event,vsbId){
-    localStorage.setItem(vsbId,$event.checked);
+  disableCtxb($event){
     if ($event.source.checked){
       this.secondFormGroup.controls['selectCbsCtrl'].disable();
     } else {
@@ -400,6 +400,7 @@ export class BlueprintsEStepperComponent implements OnInit {
 
   onSelectedCb(event: any) {
     if(event.checked){
+      this.secondFormGroup.controls['selectNoCbsCtrl'].disable();
       if(!this.selectedCbs.includes(event.source.value)){
         this.selectedCbs.push(event.source.value);
         for (var i = 0; i < this.ctxbs.length; i ++) {
@@ -417,6 +418,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       }
 
     }else{
+      this.secondFormGroup.controls['selectNoCbsCtrl'].enable();
       const index: number = this.selectedCbs.indexOf(event.source.value);
       if (index !== -1) {
           this.selectedCbs.splice(index, 1);
@@ -612,10 +614,10 @@ export class BlueprintsEStepperComponent implements OnInit {
         jsonObject[key] = value  
     });  
   //  console.log("fffffffffff",JSON.stringify(jsonObject)) 
-    onBoardExpRequest['enhancedVsbs']= jsonObject;
 
     if (this.deploymentType !== "STATIC"){
-     
+      onBoardExpRequest['enhancedVsbs']= jsonObject;
+
       onBoardExpRequest['translationRules'] = [];
     }
 
@@ -624,9 +626,10 @@ export class BlueprintsEStepperComponent implements OnInit {
 
     let promises = [];
 
-    onBoardExpRequest['nsds'].push(this.nsdArrMandatory);
 
     if (this.deploymentType !== "STATIC"){
+      onBoardExpRequest['nsds'].push(this.nsdArrMandatory);
+
     
 /*
       for (let nsd of this.nsdFiles) {
