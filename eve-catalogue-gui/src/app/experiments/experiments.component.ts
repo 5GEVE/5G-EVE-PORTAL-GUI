@@ -58,7 +58,9 @@ export class ExperimentsComponent implements OnInit {
     "FRANCE_RENNES",
     "FRANCE_SOPHIA_ANTIPOLIS",
     "FRANCE_LANNION",
-    "GREECE_ATHENS"
+    "GREECE_ATHENS",
+    "ITALY_5GROWTH_COMAU",
+    "SPAIN_5GROWTH_INNOVALIA"
   ];
 
   tableData: ExperimentInfo[] = [];

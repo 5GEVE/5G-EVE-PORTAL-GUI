@@ -81,7 +81,9 @@ export class BlueprintsEStepperComponent implements OnInit {
     {value: 'FRANCE_RENNES', viewValue: 'Rennes, France'},
     {value: 'FRANCE_SACLAY', viewValue: 'Saclay, France'},
     {value: 'FRANCE_SOPHIA_ANTIPOLIS', viewValue: 'Sophia Antipolis, France'},
-    {value: 'FRANCE_LANNION', viewValue: 'Lannion, France'}
+    {value: 'FRANCE_LANNION', viewValue: 'Lannion, France'},
+    {value: 'ITALY_5GROWTH_COMAU', viewValue: '5G-Growth, Comau, Italy'},
+    {value: 'SPAIN_5GROWTH_INNOVALIA', viewValue: '5G-Growth, Innovalia, Spain'}
   ];
 
 
