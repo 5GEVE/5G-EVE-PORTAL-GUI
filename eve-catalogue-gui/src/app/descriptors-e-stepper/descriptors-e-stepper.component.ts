@@ -126,7 +126,7 @@ export class DescriptorsEStepperComponent implements OnInit {
     });
   }
 
-  sliceProfilesElements($event,con,elem){
+  sliceProfilesElements($event,endpointId,elem){
     if(elem=='radio'){
       this.sliceElements['radioAccessTechnology']= $event.value
     }
@@ -140,7 +140,7 @@ export class DescriptorsEStepperComponent implements OnInit {
       this.sliceElements['latency']= $event.target.value
     }
 
-    this.sliceProfilesMap.set(String(con), this.sliceElements);
+    this.sliceProfilesMap.set(String(endpointId), this.sliceElements);
   }
 
 
