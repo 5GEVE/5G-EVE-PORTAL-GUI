@@ -41,7 +41,17 @@ export class DescriptorsEStepperComponent implements OnInit {
   vsBlueprint: VsBlueprint = new VsBlueprint();
   ctxBlueprints: ViewValue[] = [];
   tcBlueprints: ViewValue[] = [];
-
+  ranCon:string[];
+  radioAccessTechnology:string[];
+  embbMode:boolean;
+  urllcMode:boolean;
+  upLink=[];
+  downLink=[];  
+  latency=[];
+  radio=[];
+  endPArr=[];
+  sliceElements = JSON.parse('{}');
+  sliceProfilesMap: Map<string, any> = new Map<string, any>();
   managementTypes: String[] = [
     "PROVIDER_MANAGED",
     "TENANT_MANAGED"
@@ -83,8 +93,7 @@ export class DescriptorsEStepperComponent implements OnInit {
     private descriptorExperiments: DescriptorsEComponent) { }
 
   ngOnInit() {
-
-
+    this.ranCon=[];
     this.getExpBlueprints();
     this.firstFormGroup = this._formBuilder.group({
       expBlueprintId: ['', Validators.required],
@@ -96,7 +105,8 @@ export class DescriptorsEStepperComponent implements OnInit {
       vsDescVersion: ['', Validators.required],
       managementType: [''],
       qosParam: [''],
-      ssType: [''],
+      radioAccessTechnology:[''],
+      //ssType: [''],
       isPublic: [false]/*,
       priorityType: ['', Validators.required],
       isSharable: [false],
@@ -116,6 +126,24 @@ export class DescriptorsEStepperComponent implements OnInit {
     });
   }
 
+  sliceProfilesElements($event,con,elem){
+    if(elem=='radio'){
+      this.sliceElements['radioAccessTechnology']= $event.value
+    }
+    if(elem=='Uplink'){
+      this.sliceElements['uplinkThroughput']= $event.target.value
+    }
+    if(elem=='Downlink'){
+      this.sliceElements['downlinkThroughput']= $event.target.value
+    }
+    if(elem=='latency'){
+      this.sliceElements['latency']= $event.target.value
+    }
+
+    this.sliceProfilesMap.set(String(con), this.sliceElements);
+  }
+
+
   getExpBlueprints() {
     this.blueprintsExpService.getExpBlueprints().subscribe((expBlueprintInfos: ExpBlueprintInfo[]) =>
       {
@@ -129,8 +157,9 @@ export class DescriptorsEStepperComponent implements OnInit {
   onExpBSelected(event: any) {
     this.descriptorsExpService.getCoverageArea('ITALY_TURIN').subscribe((info) =>
     {
-      console.log("info",info)
+    //  console.log("info",info)
     });
+    
     var selectedBlueprint = event.value;
     var vsbId;
     for (var i = 0; i < this.expBlueprints.length; i ++) {
@@ -155,14 +184,90 @@ export class DescriptorsEStepperComponent implements OnInit {
     }
     this.getVsBlueprint(vsbId);
   }
-
-
-
+/*
   getVsBlueprint(vsBlueprintId: string) {
+    this.ranCon=[];
     this.blueprintsVsService.getVsBlueprint(vsBlueprintId).subscribe((vsBlueprintInfo: VsBlueprintInfo) =>
       {
         this.vsBlueprint = vsBlueprintInfo['vsBlueprint'];
-        //console.log(this.vsBlueprint);
+      });
+  }
+  */
+
+  getVsBlueprint(vsBlueprintId: string) {
+  var coverageAreaBySite={
+    "_embedded": {
+      "coverageAreas": [
+        {
+          "id": 1,
+          "name": "ITALY.TIM_LAB",
+          "radioAccessTechnologies": [
+            "4G",
+            "5GSA",
+            "5GNSA"
+          ],
+          "latitude": 45.0984399,
+          "longitude": 7.6608915,
+          "radius": 1.0,
+          "frequencies": [
+            "800MHz"
+          ],
+          "_links": {
+            "self": {
+              "href": "http://10.3.3.30:8087/coverageAreas/1"
+            },
+            "coverageArea": {
+              "href": "http://10.3.3.30:8087/coverageAreas/1"
+            },
+            "ranOrchestrator": {
+              "href": "http://10.3.3.30:8087/coverageAreas/1/ranOrchestrator"
+            }
+          }
+        }
+      ]
+    },
+    "_links": {
+      "self": {
+        "href": "http://10.3.3.30:8087/coverageAreas/search/findBySiteName?name=ITALY_TURIN"
+      }
+    }
+  }
+  for(var cva of coverageAreaBySite._embedded.coverageAreas){
+    this.radioAccessTechnology=cva['radioAccessTechnologies'];
+  }
+    this.ranCon=[];
+    this.blueprintsVsService.getVsBlueprint(vsBlueprintId).subscribe((vsBlueprintInfo: VsBlueprintInfo) =>
+      {
+        this.vsBlueprint = vsBlueprintInfo['vsBlueprint'];
+        for(var vs of this.vsBlueprint['endPoints']){
+            if(vs['ranConnection']){
+              console.log("ran connection tue",vs['endPointId'])
+               this.ranCon.push(vs['endPointId'])
+               if(vs['sliceType']=='EMBB'){
+                 this.embbMode=true;
+               }else if(vs['sliceType']=='URLLC'){
+                 this.urllcMode=true;
+               }
+
+              /*
+              if(this.vsBlueprint['interSite']){
+                for(var assosiatedVsb of this.vsBlueprint['atomicComponents']){
+      
+                 // this.vasbIds.push(assosiatedVsb['associatedVsbId'])
+                }
+      
+              } 
+              */
+            }
+            else{
+             // console.log("vsBlueprintInfo",vsBlueprintInfo)
+
+            }
+          }
+
+
+
+
       });
   }
 
@@ -183,6 +288,9 @@ export class DescriptorsEStepperComponent implements OnInit {
   }
 
   createOnBoardExpDescriptorRequest() {
+
+ //   this.sliceProfilesMap.set(String(vsbId), this.nsdArr[0]);
+
     var onBoardExpRequest = JSON.parse('{}');
     onBoardExpRequest['testCaseConfiguration'] = [];
     onBoardExpRequest['contextDetails'] = [];
@@ -220,7 +328,13 @@ export class DescriptorsEStepperComponent implements OnInit {
     onBoardExpRequest['vsDescriptor']['name'] = this.secondFormGroup.get('vsDescName').value;
     onBoardExpRequest['vsDescriptor']['version'] = this.secondFormGroup.get('vsDescVersion').value;
     onBoardExpRequest['vsDescriptor']['vsBlueprintId'] = this.vsBlueprint['blueprintId'];
-    onBoardExpRequest['vsDescriptor']['sst'] = this.secondFormGroup.get('ssType').value;
+    let jsonObject = {};  
+    this.sliceProfilesMap.forEach((value, key) => {  
+        jsonObject[key] = value  
+    });  
+    onBoardExpRequest['vsDescriptor']['sliceProfiles'] = jsonObject;
+  //  console.log("sssssss",jsonObject)
+   // onBoardExpRequest['vsDescriptor']['sst'] = this.secondFormGroup.get('ssType').value;
     if (this.secondFormGroup.get('managementType').value === '') {
       onBoardExpRequest['vsDescriptor']['managementType'] = "PROVIDER_MANAGED";
     } else {
@@ -284,7 +398,7 @@ export class DescriptorsEStepperComponent implements OnInit {
     }
 
 
-    //console.log('onBoardExpRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
+    console.log('onBoardExpRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
     this.descriptorsExpService.postExpDescriptor(onBoardExpRequest)
       .subscribe(expDescriptortId => {
         //console.log("Successfully uploaded new Exp Descriptor with id " + expDescriptortId);
