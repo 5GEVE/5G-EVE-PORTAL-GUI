@@ -15,7 +15,9 @@ export const environment = {
     dcsBaseUrl: 'https://portal.5g-eve.eu/portal/dcs/dashboard/',
     fsBaseUrl: 'https://portal.5g-eve.eu/portal/fs/',
     formulaCheckUrl: 'https://portal.5g-eve.eu/portal/formula/check',
-    backServerUrl: ''
+    backServerUrl: '',
+    supportBaseUrl: 'http://10.5.7.20:8086/', //to be mapped in the nginx
+    iwfUrl: 'http://172.17.73.101:8087/'      //to be mapped in the nginx
 };
 ​
 /*

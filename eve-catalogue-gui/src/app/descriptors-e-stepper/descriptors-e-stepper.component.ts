@@ -9,11 +9,15 @@ import { ExpBlueprintInfo } from '../blueprints-compnents/blueprints-e/exp-bluep
 import { VsBlueprint } from '../blueprints-compnents/blueprints-vs/vs-blueprint';
 import { BlueprintsEcService } from '../blueprints-ec.service';
 import { BlueprintsTcService } from '../blueprints-tc.service';
+import { IWFRepository }  from '../iwf-repository.service';
 import { DescriptorsEComponent } from '../descriptors-e/descriptors-e.component';
 import { CtxBlueprintInfo } from '../blueprints-compnents/blueprints-ec/ctx-blueprint-info';
 import { TcBlueprintInfo } from '../blueprints-compnents/blueprints-tc/tc-blueprint-info';
+import { CoverageAreaInfo } from './coverage-area-info';
 
 import { DOCUMENT } from '@angular/common';
+import { ExperimentDescriptorRequest } from './experiment-descriptor-request';
+import { VsDescriptorInfo } from '../descriptors-vs/vs-descriptor-info';
 
 export interface ViewValue {
   value: string;
@@ -43,13 +47,15 @@ export class DescriptorsEStepperComponent implements OnInit {
   tcBlueprints: ViewValue[] = [];
   ranCon:string[];
   radioAccessTechnology:string[];
-  embbMode:boolean;
-  urllcMode:boolean;
+  embbMode:boolean[] = [];
+  urllcMode:boolean[] = [];
   upLink=[];
-  downLink=[];  
+  downLink=[];
   latency=[];
   radio=[];
   endPArr=[];
+  listOfVsbs: VsBlueprint[] = [];
+  activeCoverageAreas: CoverageAreaInfo[] = [];
   sliceElements = JSON.parse('{}');
   sliceProfilesMap: Map<string, any> = new Map<string, any>();
   managementTypes: String[] = [
@@ -57,11 +63,7 @@ export class DescriptorsEStepperComponent implements OnInit {
     "TENANT_MANAGED"
   ];
 
-  ssTypes: String[] = [
-    "EMBB",
-    "URLLC",
-    "M_IOT"
-  ];
+  experimentDescriptorRequest: ExperimentDescriptorRequest = new ExperimentDescriptorRequest();
 
   priorityTypes: String[] = [
     "LOW",
@@ -90,7 +92,8 @@ export class DescriptorsEStepperComponent implements OnInit {
     private blueprintsExpService: BlueprintsExpService,
     private blueprintsCtxService: BlueprintsEcService,
     private blueprintsTcService: BlueprintsTcService,
-    private descriptorExperiments: DescriptorsEComponent) { }
+    private descriptorExperiments: DescriptorsEComponent,
+    private iwfRepo: IWFRepository) { }
 
   ngOnInit() {
     this.ranCon=[];
@@ -126,40 +129,154 @@ export class DescriptorsEStepperComponent implements OnInit {
     });
   }
 
-  sliceProfilesElements($event,endpointId,elem){
-    if(elem=='radio'){
-      this.sliceElements['radioAccessTechnology']= $event.value
+  tempSliceProfiles: object [] = [];
+  selectRATElement($event, coverageArea, element, index){
+    //console.log(coverageArea);
+    if (index < this.tempSliceProfiles.length){
+      if(element === 'radio'){
+        this.tempSliceProfiles[index]['radioAccessTechnology']= $event.value;
+      } else if (element === 'Uplink'){
+        this.tempSliceProfiles[index]['uplinkThroughput']= $event.target.value
+      } else if (element === 'Downlink'){
+        this.tempSliceProfiles[index]['downlinkThroughput']= $event.target.value
+      } else if (element === 'latency'){
+        this.tempSliceProfiles[index]['latency']= $event.target.value
+      } else {
+        console.log("ERROR: element " + element + " not recognized");
+      }
+    } else {
+      var newSliceProfile = {};
+      var errorFound = false;
+      if(element === 'radio'){
+        newSliceProfile['radioAccessTechnology']= $event.value;
+      } else if (element === 'Uplink'){
+        newSliceProfile['uplinkThroughput']= $event.target.value
+      } else if (element === 'Downlink'){
+        newSliceProfile['downlinkThroughput']= $event.target.value
+      } else if (element === 'latency'){
+        newSliceProfile['latency']= $event.target.value
+      } else {
+        console.log("ERROR: element " + element + " not recognized");
+        errorFound = true;
+      }
+      if (!errorFound){
+        newSliceProfile['coverageArea'] = coverageArea;
+        this.tempSliceProfiles.push(newSliceProfile);
+      }
     }
-    if(elem=='Uplink'){
-      this.sliceElements['uplinkThroughput']= $event.target.value
-    }
-    if(elem=='Downlink'){
-      this.sliceElements['downlinkThroughput']= $event.target.value
-    }
-    if(elem=='latency'){
-      this.sliceElements['latency']= $event.target.value
-    }
-
-    this.sliceProfilesMap.set(String(endpointId), this.sliceElements);
+    //console.log(JSON.stringify(this.tempSliceProfiles));
   }
+
+  // sliceProfilesElements($event,endpointId,elem){
+  //   if(elem=='radio'){
+  //     this.sliceElements['radioAccessTechnology']= $event.value
+  //   }
+  //   if(elem=='Uplink'){
+  //     this.sliceElements['uplinkThroughput']= $event.target.value
+  //   }
+  //   if(elem=='Downlink'){
+  //     this.sliceElements['downlinkThroughput']= $event.target.value
+  //   }
+  //   if(elem=='latency'){
+  //     this.sliceElements['latency']= $event.target.value
+  //   }
+  //   this.sliceProfilesMap.set(String(endpointId), this.sliceElements);
+  // }
 
 
   getExpBlueprints() {
     this.blueprintsExpService.getExpBlueprints().subscribe((expBlueprintInfos: ExpBlueprintInfo[]) =>
       {
-        console.log("ExpBlueprintInfo",expBlueprintInfos)
+        //console.log("ExpBlueprintInfo",expBlueprintInfos)
         for (var i = 0; i < expBlueprintInfos.length; i++) {
-          this.expBlueprints.push({value: expBlueprintInfos[i]['expBlueprintId'], viewValue: expBlueprintInfos[i]['expBlueprint']['description'], item: expBlueprintInfos[i]['expBlueprint']});
+          this.expBlueprints.push({value: expBlueprintInfos[i]['expBlueprintId'], viewValue: expBlueprintInfos[i]['expBlueprint']['name'], item: expBlueprintInfos[i]['expBlueprint']});
         }
       });
   }
 
+  // getCoverageAreaDetails(site: string){
+  //   this.descriptorsExpService.getCoverageArea('ITALY_TURIN').subscribe((info) =>
+  //   {
+  //   return info;
+  //   });
+  // }
+
+
   onExpBSelected(event: any) {
-    this.descriptorsExpService.getCoverageArea('ITALY_TURIN').subscribe((info) =>
-    {
-    //  console.log("info",info)
+    //get expriment blueprint
+    //get vsb
+      //if composite, get associated VSBs
+    this.activeCoverageAreas = [];
+    this.listOfVsbs = [];
+    this.blueprintsExpService.getExpBlueprint(event.value).subscribe((expDescriptor: ExpBlueprintInfo) => {
+      this.blueprintsVsService.getVsBlueprints().subscribe((vsBlueprints: VsBlueprintInfo[]) => {
+        this.iwfRepo.getCoverageAreas().subscribe((coverageAreas) => {
+          for (let a = 0; a < vsBlueprints.length; a++){
+            if(expDescriptor.expBlueprint['vsBlueprintId'] === vsBlueprints[a].vsBlueprintId){
+              if (vsBlueprints[a].vsBlueprint.interSite){
+                vsBlueprints[a].vsBlueprint.atomicComponents.forEach(element => {
+
+                  for (let b = 0; b < vsBlueprints.length; b++){
+                    if(element['associatedVsbId'] === vsBlueprints[b].vsBlueprintId){
+                      this.listOfVsbs.push(vsBlueprints[b].vsBlueprint);
+                    }
+                  }
+                });
+              } else {
+                this.listOfVsbs.push(vsBlueprints[a].vsBlueprint);
+              }
+            }
+          }
+
+
+          // for each endpoint, need to map
+          //console.log(this.listOfVsbs);
+          for (let i = 0; i < this.listOfVsbs.length; i++){
+            for (let j = 0; j < this.listOfVsbs[i].endPoints.length; j++){
+              if (this.listOfVsbs[i].endPoints[j]['ranConnection'] && this.listOfVsbs[i].endPoints[j]['coverageArea'] !== undefined && this.listOfVsbs[i].endPoints[j]['coverageArea'] !== null){
+                for (let k = 0; k < coverageAreas['_embedded']['coverageAreas'].length; k++){
+                  if (this.listOfVsbs[i].endPoints[j]['coverageArea'] === coverageAreas['_embedded']['coverageAreas'][k]['name']){
+                    //console.log("here i am: " + JSON.stringify(this.listOfVsbs[i].endPoints[j]));
+                    var coverageAreaInfo: CoverageAreaInfo = new CoverageAreaInfo();
+                    coverageAreaInfo.coverageArea = this.listOfVsbs[i].endPoints[j]['coverageArea'];
+                    coverageAreaInfo.rat = coverageAreas['_embedded']['coverageAreas'][k]['radioAccessTechnologies'];
+                    coverageAreaInfo.sst = this.listOfVsbs[i].endPoints[j]['sliceType'];
+                    coverageAreaInfo.vsBlueprintId = this.listOfVsbs[i].blueprintId;
+                    coverageAreaInfo.endPointId = this.listOfVsbs[i].endPoints[j]['endPointId'];
+                    let existing: boolean = false;
+                    for (let l = 0; l < this.activeCoverageAreas.length; l++){
+                      if(this.activeCoverageAreas[l].coverageArea === coverageAreaInfo['coverageArea']){
+                        existing = true;
+                      }
+                    }
+                    if (!existing){
+                      this.activeCoverageAreas.push(coverageAreaInfo);
+                    }
+                  }
+                }
+              }
+            }
+          }
+          //to be removed, just for test purposes
+          // var testArea: CoverageAreaInfo = new CoverageAreaInfo();
+          // testArea.coverageArea = 'FRANCE.ORANGE_LAB';
+          // testArea.rat = ["4G", "5GSA"];
+          // testArea.sst = "URLLC";
+          // testArea.vsBlueprintId = "45";
+          // testArea.endPointId = "testEndpointId";
+          // this.activeCoverageAreas.push(testArea);
+          //console.log("Result: " + JSON.stringify(this.activeCoverageAreas));
+
+        })
+      });
     });
-    
+
+
+    // this.descriptorsExpService.getCoverageArea('ITALY_TURIN').subscribe((info) =>
+    // {
+    // //  console.log("info",info)
+    // });
+
     var selectedBlueprint = event.value;
     var vsbId;
     for (var i = 0; i < this.expBlueprints.length; i ++) {
@@ -168,23 +285,24 @@ export class DescriptorsEStepperComponent implements OnInit {
         vsbId = this.expBlueprints[i]['item']['vsBlueprintId'];
       }
     }
-    var ctxBlueprintIds = this.expBlueprint['ctxBlueprintIds'];
-    var tcBlueprintIds = this.expBlueprint['tcBlueprintIds'];
-    //console.log(ctxBlueprintIds);
-    //console.log(tcBlueprintIds);
-    if (ctxBlueprintIds !== undefined){
-      for (var i = 0; i < ctxBlueprintIds.length; i++) {
-        this.getCtxBlueprint(ctxBlueprintIds[i]);
-      }
-    }
+    // var ctxBlueprintIds = this.expBlueprint['ctxBlueprintIds'];
+    // var tcBlueprintIds = this.expBlueprint['tcBlueprintIds'];
+    // //console.log(ctxBlueprintIds);
+    // //console.log(tcBlueprintIds);
+    // if (ctxBlueprintIds !== undefined){
+    //   for (var i = 0; i < ctxBlueprintIds.length; i++) {
+    //     this.getCtxBlueprint(ctxBlueprintIds[i]);
+    //   }
+    // }
 
 
-    for (var i = 0; i < tcBlueprintIds.length; i++) {
-      this.getTcBlueprint(tcBlueprintIds[i]);
-    }
+    // for (var i = 0; i < tcBlueprintIds.length; i++) {
+    //   this.getTcBlueprint(tcBlueprintIds[i]);
+    // }
+    //console.log(JSON.stringify(this.experimentDescriptorRequest));
     this.getVsBlueprint(vsbId);
   }
-/*
+
   getVsBlueprint(vsBlueprintId: string) {
     this.ranCon=[];
     this.blueprintsVsService.getVsBlueprint(vsBlueprintId).subscribe((vsBlueprintInfo: VsBlueprintInfo) =>
@@ -192,84 +310,83 @@ export class DescriptorsEStepperComponent implements OnInit {
         this.vsBlueprint = vsBlueprintInfo['vsBlueprint'];
       });
   }
-  */
 
-  getVsBlueprint(vsBlueprintId: string) {
-  var coverageAreaBySite={
-    "_embedded": {
-      "coverageAreas": [
-        {
-          "id": 1,
-          "name": "ITALY.TIM_LAB",
-          "radioAccessTechnologies": [
-            "4G",
-            "5GSA",
-            "5GNSA"
-          ],
-          "latitude": 45.0984399,
-          "longitude": 7.6608915,
-          "radius": 1.0,
-          "frequencies": [
-            "800MHz"
-          ],
-          "_links": {
-            "self": {
-              "href": "http://10.3.3.30:8087/coverageAreas/1"
-            },
-            "coverageArea": {
-              "href": "http://10.3.3.30:8087/coverageAreas/1"
-            },
-            "ranOrchestrator": {
-              "href": "http://10.3.3.30:8087/coverageAreas/1/ranOrchestrator"
-            }
-          }
-        }
-      ]
-    },
-    "_links": {
-      "self": {
-        "href": "http://10.3.3.30:8087/coverageAreas/search/findBySiteName?name=ITALY_TURIN"
-      }
-    }
-  }
-  for(var cva of coverageAreaBySite._embedded.coverageAreas){
-    this.radioAccessTechnology=cva['radioAccessTechnologies'];
-  }
-    this.ranCon=[];
-    this.blueprintsVsService.getVsBlueprint(vsBlueprintId).subscribe((vsBlueprintInfo: VsBlueprintInfo) =>
-      {
-        this.vsBlueprint = vsBlueprintInfo['vsBlueprint'];
-        for(var vs of this.vsBlueprint['endPoints']){
-            if(vs['ranConnection']){
-              console.log("ran connection tue",vs['endPointId'])
-               this.ranCon.push(vs['endPointId'])
-               if(vs['sliceType']=='EMBB'){
-                 this.embbMode=true;
-               }else if(vs['sliceType']=='URLLC'){
-                 this.urllcMode=true;
-               }
+  // getVsBlueprint(vsBlueprintId: string) {
+  // var coverageAreaBySite={
+  //   "_embedded": {
+  //     "coverageAreas": [
+  //       {
+  //         "id": 1,
+  //         "name": "ITALY.TIM_LAB",
+  //         "radioAccessTechnologies": [
+  //           "4G",
+  //           "5GSA",
+  //           "5GNSA"
+  //         ],
+  //         "latitude": 45.0984399,
+  //         "longitude": 7.6608915,
+  //         "radius": 1.0,
+  //         "frequencies": [
+  //           "800MHz"
+  //         ],
+  //         "_links": {
+  //           "self": {
+  //             "href": "http://10.3.3.30:8087/coverageAreas/1"
+  //           },
+  //           "coverageArea": {
+  //             "href": "http://10.3.3.30:8087/coverageAreas/1"
+  //           },
+  //           "ranOrchestrator": {
+  //             "href": "http://10.3.3.30:8087/coverageAreas/1/ranOrchestrator"
+  //           }
+  //         }
+  //       }
+  //     ]
+  //   },
+  //   "_links": {
+  //     "self": {
+  //       "href": "http://10.3.3.30:8087/coverageAreas/search/findBySiteName?name=ITALY_TURIN"
+  //     }
+  //   }
+  // }
+  // for(var cva of coverageAreaBySite._embedded.coverageAreas){
+  //   this.radioAccessTechnology=cva['radioAccessTechnologies'];
+  // }
+  //   this.ranCon=[];
+  //   this.blueprintsVsService.getVsBlueprint(vsBlueprintId).subscribe((vsBlueprintInfo: VsBlueprintInfo) =>
+  //     {
+  //       this.vsBlueprint = vsBlueprintInfo['vsBlueprint'];
+  //       for(var vs of this.vsBlueprint['endPoints']){
+  //           if(vs['ranConnection'] && vs['coverageArea']){
+  //             console.log("ran connection tue",vs['endPointId'])
+  //              this.ranCon.push(vs['endPointId'])
+  //              if(vs['sliceType']=='EMBB'){
+  //                this.embbMode=true;
+  //              }else if(vs['sliceType']=='URLLC'){
+  //                this.urllcMode=true;
+  //              }
 
-              /*
-              if(this.vsBlueprint['interSite']){
-                for(var assosiatedVsb of this.vsBlueprint['atomicComponents']){
-      
-                 // this.vasbIds.push(assosiatedVsb['associatedVsbId'])
-                }
-      
-              } 
-              */
-            }
-            else{
-             // console.log("vsBlueprintInfo",vsBlueprintInfo)
+  //             /*
+  //             if(this.vsBlueprint['interSite']){
+  //               for(var assosiatedVsb of this.vsBlueprint['atomicComponents']){
 
-            }
-          }
+  //                // this.vasbIds.push(assosiatedVsb['associatedVsbId'])
+  //               }
 
+  //             }
+  //             */
+  //           }
+  //           else{
+  //            // console.log("vsBlueprintInfo",vsBlueprintInfo)
+
+  //           }
+  //         }
 
 
 
-      });
-  }
+
+  //     });
+  // }
 
   getCtxBlueprint(ctxBlueprintId: string) {
     this.blueprintsCtxService.getCtxBlueprint(ctxBlueprintId).subscribe((ctxBlueprintInfo: CtxBlueprintInfo) =>
@@ -291,28 +408,37 @@ export class DescriptorsEStepperComponent implements OnInit {
 
  //   this.sliceProfilesMap.set(String(vsbId), this.nsdArr[0]);
 
-    var onBoardExpRequest = JSON.parse('{}');
-    onBoardExpRequest['testCaseConfiguration'] = [];
-    onBoardExpRequest['contextDetails'] = [];
-    onBoardExpRequest['vsDescriptor'] = {};
 
-    onBoardExpRequest['experimentBlueprintId'] = this.firstFormGroup.get('expBlueprintId').value;
-    onBoardExpRequest['name'] = this.firstFormGroup.get('expDescName').value;
-    onBoardExpRequest['version'] = this.firstFormGroup.get('expDescVersion').value;
-    onBoardExpRequest['tenantId'] = localStorage.getItem('username');
-    onBoardExpRequest['kpiThresholds'] = {};
+    // construct experimentDescriptorRequest element
+
+    this.experimentDescriptorRequest.experimentBlueprintId = this.firstFormGroup.get('expBlueprintId').value;
+    this.experimentDescriptorRequest.version = this.firstFormGroup.get('expDescVersion').value;
+    this.experimentDescriptorRequest.name = this.firstFormGroup.get('expDescName').value;
+    this.experimentDescriptorRequest.tenantId = localStorage.getItem('username');
+
+//    var onBoardExpRequest = JSON.parse('{}');
+//    onBoardExpRequest['testCaseConfiguration'] = [];
+//    onBoardExpRequest['contextDetails'] = [];
+//    onBoardExpRequest['vsDescriptor'] = {};
+
+//    onBoardExpRequest['experimentBlueprintId'] = this.firstFormGroup.get('expBlueprintId').value;
+//    onBoardExpRequest['name'] = this.firstFormGroup.get('expDescName').value;
+//    onBoardExpRequest['version'] = this.firstFormGroup.get('expDescVersion').value;
+//    onBoardExpRequest['tenantId'] = localStorage.getItem('username');
+//    onBoardExpRequest['kpiThresholds'] = {};
 
     if (this.expBlueprint['kpis'] !== undefined && this.expBlueprint['kpis'] !== []) {
       for (var j = 0; j < this.expBlueprint['kpis'].length; j++) {
         var expb_kpiId = {};
         expb_kpiId['lowerBound'] = this.document.getElementById('metric_' + this.expBlueprint['kpis'][j]['kpiId'] + 'lowerBound').value;
         expb_kpiId['upperBound'] = this.document.getElementById('metric_' + this.expBlueprint['kpis'][j]['kpiId'] + 'upperBound').value;
-        onBoardExpRequest['kpiThresholds'][this.expBlueprint['kpis'][j]['kpiId']] = expb_kpiId;
+        //onBoardExpRequest['kpiThresholds'][this.expBlueprint['kpis'][j]['kpiId']] = expb_kpiId;
+        this.experimentDescriptorRequest.kpiThresholds[this.expBlueprint['kpis'][j]['kpiId']] = expb_kpiId;
       }
     }
 
     for (var i = 0; i < this.ctxBlueprints.length; i++) {
-      var tempCtx = {};
+      var tempCtx: object = {};
       tempCtx['blueprintId'] = this.ctxBlueprints[i].value;
       tempCtx['parameters'] = {};
       if (this.ctxBlueprints[i]['item']['parameters'] !== [] && this.ctxBlueprints[i]['item']['parameters'] !== undefined) {
@@ -320,35 +446,83 @@ export class DescriptorsEStepperComponent implements OnInit {
           tempCtx['parameters'][this.ctxBlueprints[i]['item']['parameters'][j]['parameterId']] =
           this.document.getElementById(this.ctxBlueprints[i]['item']['parameters'][j]['parameterId']).value;
         }
-        onBoardExpRequest['contextDetails'].push(tempCtx);
+        //onBoardExpRequest['contextDetails'].push(tempCtx);
+        this.experimentDescriptorRequest.contextDetails.push(tempCtx);
       }
 
     }
+    this.experimentDescriptorRequest.vsDescriptor.name = this.secondFormGroup.get('vsDescName').value;
+//    onBoardExpRequest['vsDescriptor']['name'] = this.secondFormGroup.get('vsDescName').value;
+    this.experimentDescriptorRequest.vsDescriptor.version = this.secondFormGroup.get('vsDescVersion').value;
+//    onBoardExpRequest['vsDescriptor']['version'] = this.secondFormGroup.get('vsDescVersion').value;
+    this.experimentDescriptorRequest.vsDescriptor.vsBlueprintId = this.vsBlueprint['blueprintId'];
+//    onBoardExpRequest['vsDescriptor']['vsBlueprintId'] = this.vsBlueprint['blueprintId'];
+    // let jsonObject = {};
+    // this.sliceProfilesMap.forEach((value, key) => {
+    //     jsonObject[key] = value
+    // });
+    // onBoardExpRequest['vsDescriptor']['sliceProfiles'] = jsonObject;
+    var sliceProfiles = new Map();
+    for (let i = 0; i < this.activeCoverageAreas.length; i ++){
+      for (let j = 0; j < this.tempSliceProfiles.length; j++){
+        var sliceElement = {};
+        if (this.activeCoverageAreas[i].coverageArea === this.tempSliceProfiles[j]['coverageArea']){
+          if(this.tempSliceProfiles[j]['radioAccessTechnology'] !== undefined){
+            switch(this.tempSliceProfiles[j]['radioAccessTechnology']){
+              case '5GSA': {
+                sliceElement['radioAccessTechnology'] = 'FIVEG_SA'; break;
+              }
+              case '5GNSA': {
+                sliceElement['radioAccessTechnology'] = 'FIVEG_NSA'; break;
+              }
+              case '4G': {
+                sliceElement['radioAccessTechnology'] = 'FOURG'; break;
+              }
+              case '5GmmWave': {
+                sliceElement['radioAccessTechnology'] = 'FIVEG_mmWave'; break;
+              }
+              default: {
+                sliceElement['radioAccessTechnology'] = this.tempSliceProfiles[j]['radioAccessTechnology']; break;
+              }
 
-    onBoardExpRequest['vsDescriptor']['name'] = this.secondFormGroup.get('vsDescName').value;
-    onBoardExpRequest['vsDescriptor']['version'] = this.secondFormGroup.get('vsDescVersion').value;
-    onBoardExpRequest['vsDescriptor']['vsBlueprintId'] = this.vsBlueprint['blueprintId'];
-    let jsonObject = {};  
-    this.sliceProfilesMap.forEach((value, key) => {  
-        jsonObject[key] = value  
-    });  
-    onBoardExpRequest['vsDescriptor']['sliceProfiles'] = jsonObject;
-  //  console.log("sssssss",jsonObject)
+            }
+          }
+          if (this.tempSliceProfiles[j]['uplinkThroughput'] !== undefined){
+            sliceElement['uplinkThroughput'] = this.tempSliceProfiles[j]['uplinkThroughput'];
+          }
+          if (this.tempSliceProfiles[j]['downlinkThroughput'] !== undefined){
+            sliceElement['downlinkThroughput'] = this.tempSliceProfiles[j]['downlinkThroughput'];
+          }
+          if (this.tempSliceProfiles[j]['latency'] !== undefined ){
+            sliceElement['latency'] = this.tempSliceProfiles[j]['latency'];
+          }
+          console.log("endPointId: " + this.activeCoverageAreas[i].endPointId + " : " + JSON.stringify(sliceElement));
+          sliceProfiles[this.activeCoverageAreas[i].endPointId] = sliceElement;
+        }
+      }
+    }
+    console.log(JSON.stringify(sliceProfiles));
+    this.experimentDescriptorRequest.vsDescriptor.sliceProfiles = sliceProfiles;
+
+//  console.log("sssssss",jsonObject)
    // onBoardExpRequest['vsDescriptor']['sst'] = this.secondFormGroup.get('ssType').value;
     if (this.secondFormGroup.get('managementType').value === '') {
-      onBoardExpRequest['vsDescriptor']['managementType'] = "PROVIDER_MANAGED";
+//      onBoardExpRequest['vsDescriptor']['managementType'] = "PROVIDER_MANAGED";
+      this.experimentDescriptorRequest.vsDescriptor.managementType = "PROVIDER_MANAGED";
     } else {
-      onBoardExpRequest['vsDescriptor']['managementType'] = this.secondFormGroup.get('managementType').value;
+      this.experimentDescriptorRequest.vsDescriptor.managementType = this.secondFormGroup.get('managementType').value;
+//      onBoardExpRequest['vsDescriptor']['managementType'] = this.secondFormGroup.get('managementType').value;
     }
 
-    var qosParameters = {};
+    var qosParameters = new Map<string, string>();
 
     if(this.vsBlueprint['parameters'] !== undefined){
       for (var i = 0; i < this.vsBlueprint['parameters'].length; i++) {
         qosParameters[this.vsBlueprint['parameters'][i]['parameterId']] =
           this.document.getElementById('qos_' + this.vsBlueprint['parameters'][i]['parameterId']).value;
       }
-      onBoardExpRequest['vsDescriptor']['qosParameters'] = qosParameters;
+      this.experimentDescriptorRequest.vsDescriptor.qosParameters = qosParameters;
+//      onBoardExpRequest['vsDescriptor']['qosParameters'] = qosParameters;
     }
 
 
@@ -394,12 +568,14 @@ export class DescriptorsEStepperComponent implements OnInit {
         }
       }
       */
-      onBoardExpRequest['testCaseConfiguration'].push(tempTc);
+//     onBoardExpRequest['testCaseConfiguration'].push(tempTc);
+     this.experimentDescriptorRequest.testCaseConfiguration.push(tempTc);
     }
 
 
-    console.log('onBoardExpRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
-    this.descriptorsExpService.postExpDescriptor(onBoardExpRequest)
+    console.log('onBoardExpRequest: ' + JSON.stringify(this.experimentDescriptorRequest, null, 4));
+
+    this.descriptorsExpService.postExpDescriptor(this.experimentDescriptorRequest)
       .subscribe(expDescriptortId => {
         //console.log("Successfully uploaded new Exp Descriptor with id " + expDescriptortId);
         this.descriptorExperiments.selectedIndex = 0;

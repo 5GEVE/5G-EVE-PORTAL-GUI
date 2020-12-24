@@ -33,7 +33,7 @@ export class DescriptorsEDetailsComponent implements OnInit {
   }
 
   getExpDescriptor(expdId: string) {
-    this.descriptorsExpService.getExpDescriptor(expdId).subscribe((expDescriptorInfo: ExpDescriptorInfo) => 
+    this.descriptorsExpService.getExpDescriptor(expdId).subscribe((expDescriptorInfo: ExpDescriptorInfo) =>
       {
         //console.log(vsDescriptorInfo);
 
@@ -53,7 +53,7 @@ export class DescriptorsEDetailsComponent implements OnInit {
           });
           this.tableData.push({key: "KPIs Thresholds", value: values});
         }
-        
+
         this.dataSource = new DescriptorsEDetailsDataSource(this.tableData);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
@@ -166,7 +166,9 @@ export class DescriptorsEDetailsComponent implements OnInit {
         }
 
         var values = [];
-        for(var j = 0; j < expDescriptorInfo['testCaseDescriptorIds'].length; j++){
+        console.log(JSON.stringify(expDescriptorInfo));
+        if (expBlueprintInfo['testCaseDescriptorsIds'] !== undefined){
+          for(var j = 0; j < expDescriptorInfo['testCaseDescriptorIds'].length; j++){
             for (var i = 0; i < tcDescriptorsInfo.length; i++){
               if (expDescriptorInfo['testCaseDescriptorIds'][j] === tcDescriptorsInfo[i]['testCaseDescriptorId'] ){
                 if (tcDescriptorsInfo[i]['userParameters'] !== undefined){
@@ -180,8 +182,10 @@ export class DescriptorsEDetailsComponent implements OnInit {
             }
 
         }
-        //values.push("- aggiunta a mano: 50" );
-        this.tableData.push({key: "Test Case Descriptor", value: values});
+                //values.push("- aggiunta a mano: 50" );
+                this.tableData.push({key: "Test Case Descriptor", value: values});
+
+        }
         var values = [];
 
         if (expDescriptorInfo['kpiThresholds']) {

@@ -1,15 +1,14 @@
 <mat-horizontal-stepper [linear]="isLinear" #stepper class="full-width-table blvss-container full-width-table-md full-width-table-xs">
-    <mat-step [stepControl]="firstFormGroup" > 
+    <mat-step [stepControl]="firstFormGroup" >
         <form [formGroup]="firstFormGroup">
             <ng-template matStepLabel>Upload Blueprint</ng-template>
             <input #blueprintFile type="file" formControlName="firstCtrl" (change)="onUploadedVsb($event,blueprintFile.files)" required/>
             <div class="margin-top">
                 <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid" id="firstNext">Next</button>
-                <button mat-raised-button color="accent" id="submitButtonFirst" class="margin-all" (click)="createOnBoardingRequestWithoutNsds(blueprintFile.files);" [disabled]="firstFormGroup.invalid" style="display: none;">Submit</button>
             </div>
         </form>
     </mat-step>
-<div *ngIf="showSteps">
+<div>
     <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup" >
             <ng-template matStepLabel>Upload NSDs</ng-template>
@@ -23,10 +22,10 @@
             </div>
         </form>
     </mat-step>
-    
+
 
     <mat-step [stepControl]="thirdFormGroup" >
-   
+
         <form [formGroup]="thirdFormGroup" class="rules-form" fxFlex="100%"  fxLayout.xs="column" fxLayout="column"  style="width: 100%;">
             <ng-template matStepLabel>Create Translation Rules</ng-template>
             <table class="rules-full-width" cellspacing="0" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="text-align: center;">
@@ -62,10 +61,13 @@
                     <h4>Parameters</h4>
                     <div formArrayName="items" *ngFor="let item of thirdFormGroup.get('items')?.controls; let i=index;" fxFlex="100%"  fxLayout.xs="row" fxLayout="row" fxLayoutAlign="center center">
                         <div [formGroupName]="i" fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
-                            
+
                             <td fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
                                 <label style="color: black;">{{this.translationParams[i]}}</label>
                             </td>
+                            <mat-form-field appearance="outline" color=primary class="invisible rules-full-width" >
+                              <input matInput placeholder="{{this.translationParams[i]}}" [ngModel]="this.translationParams[i]" formControlName="parameterId" >
+                            </mat-form-field>
                             <td fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
                                 <mat-form-field appearance="outline" color=primary class="rules-full-width">
                                     <input matInput placeholder="Min Value" required formControlName="minValue">
@@ -90,7 +92,7 @@
                 </tr>
             </table>
         </form>
-    
+
     </mat-step>
 </div>
 </mat-horizontal-stepper>

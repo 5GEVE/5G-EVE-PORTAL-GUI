@@ -94,31 +94,31 @@ export class BlueprintsVsStepperComponent implements OnInit {
         this.translationParams.push(this.vsbObj['parameters'][i]['parameterId']);
       }
     }
-      
-    if(this.vsbObj.hasOwnProperty('interSite')){
-      (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'none';
-      (<HTMLInputElement> document.getElementById("submitButtonFirst")).style.display = 'inline';
-      this.showSteps=false;
-      }
-      else{
-        
-        (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'inline';
-        (<HTMLInputElement> document.getElementById("submitButtonFirst")).style.display = 'none';
-        this.showSteps=true;
-        /*
-        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
-        .subscribe(res => {
-          if(res===undefined){
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
-          }else{
-            (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;
-    
-          }
-    
-        });
-        */
-      }
-      
+
+    // if(this.vsbObj.hasOwnProperty('interSite')){
+    //   (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'none';
+    //   (<HTMLInputElement> document.getElementById("submitButtonFirst")).style.display = 'inline';
+    //   this.showSteps=false;
+    //   }
+    //   else{
+
+    //     (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'inline';
+    //     (<HTMLInputElement> document.getElementById("submitButtonFirst")).style.display = 'none';
+    //     this.showSteps=true;
+    //     /*
+    //     this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+    //     .subscribe(res => {
+    //       if(res===undefined){
+    //         (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
+    //       }else{
+    //         (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;
+
+    //       }
+
+    //     });
+    //     */
+    //   }
+
   /*
     this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
     .subscribe(res => {
@@ -131,11 +131,10 @@ export class BlueprintsVsStepperComponent implements OnInit {
 
     });
     */
-
   });
  }
 
-       
+
 
   }
 
@@ -171,7 +170,7 @@ let promises = [];
         this.thirdFormGroup.get('nsdVersion').setValue(this.nsdObj['version']);
 
         this.dfs = this.nsdObj['nsDf'];
-        
+        //console.log("nsdid: " + this.thirdFormGroup.get('nsdId'));
       /*
         this.nsdsService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
@@ -229,7 +228,6 @@ let promises = [];
       });
       promises.push(blueprintPromise);
 
-
       Promise.all(promises).then(fileContents => {
           onBoardVsRequest['vsBlueprint'] = JSON.parse(fileContents[0]);
           for (var i = 1; i < fileContents.length; i++) {
@@ -241,7 +239,7 @@ let promises = [];
 
           this.blueprintsVsService.postVsBlueprint(onBoardVsRequest)
           .subscribe(vsBlueprintId => {
-            console.log("VS Blueprint with id " + vsBlueprintId);
+            //console.log("VS Blueprint with id " + vsBlueprintId);
             this.blueprintsVsComponent.selectedIndex = 0;
             this.blueprintsVsComponent.getVsBlueprints();
           });
@@ -265,7 +263,7 @@ let promises = [];
       });
       promises.push(blueprintPromise);
 
-for (let nsd of nsds) {
+    for (let nsd of nsds) {
           let nsdPromise = new Promise(resolve => {
               let reader = new FileReader();
               reader.readAsText(nsd);
@@ -298,7 +296,7 @@ for (let nsd of nsds) {
 
                       //translationRule['blueprintId'] = blueprintId;
           var paramsRows = this.thirdFormGroup.controls.items as FormArray;
-         // console.log(paramsRows.controls);
+          //console.log(paramsRows.controls);
           var controls = paramsRows.controls;
           var paramsObj = [];
 

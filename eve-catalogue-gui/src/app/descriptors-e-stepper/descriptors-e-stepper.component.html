@@ -15,7 +15,7 @@
             </mat-form-field>
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
                 <input matInput #descVersion placeholder="Version" formControlName="expDescVersion" required>
-            </mat-form-field>            
+            </mat-form-field>
             <div class="margin-top">
                 <button mat-raised-button matStepperNext color="primary" class="margin-all" [disabled]="firstFormGroup.invalid">Next</button>
             </div>
@@ -30,52 +30,58 @@
             <mat-form-field appearance="outline" color=primary class="rules-full-width">
                 <input matInput placeholder="Version" formControlName="vsDescVersion" required>
             </mat-form-field>
-            <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                <mat-label>Management Type</mat-label>
-                <mat-select formControlName="managementType" name="managementType" >
-                    <mat-option *ngFor="let type of managementTypes" [value]="type" class="dee-table">
-                        {{type}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
             <mat-expansion-panel class="dee-table">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>QoS Parameters</mat-panel-title>
-                </mat-expansion-panel-header>
-                <div *ngFor="let param of vsBlueprint['parameters']; let i=index">                        
-                    <mat-form-field appearance="outline" class="rules-full-width">
-                        <mat-label>{{param.parameterId}}</mat-label>
-                        <input matInput [id]="'qos_' + param.parameterId">
-                    </mat-form-field>                      
-                </div>
-            </mat-expansion-panel>
-            <div class="margin-top"></div>
-            <div *ngFor="let con of ranCon">
+              <mat-expansion-panel-header>
+                  <mat-panel-title>QoS Parameters</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div *ngFor="let param of vsBlueprint['parameters']; let i=index">
+                  <mat-form-field appearance="outline" class="rules-full-width">
+                      <mat-label>{{param.parameterId}}</mat-label>
+                      <input matInput [id]="'qos_' + param.parameterId">
+                  </mat-form-field>
+              </div>
+          </mat-expansion-panel>
+          <div class="margin-top"></div>
+          <mat-expansion-panel class="dee-table">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Management type</mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-form-field appearance="outline" color=primary class="rules-full-width">
+            <mat-label>Management type</mat-label>
+            <mat-select formControlName="managementType" name="managementType" >
+                <mat-option *ngFor="let type of managementTypes" [value]="type" class="dee-table">
+                    {{type}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-expansion-panel>
+        <div class="margin-top"></div>
+            <div *ngFor="let con of activeCoverageAreas; let i = index;">
                 <mat-expansion-panel class="dee-table">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>Slice Parameters For {{con}}</mat-panel-title>
+                        <mat-panel-title>Slice Parameters For {{con.coverageArea}}</mat-panel-title>
                     </mat-expansion-panel-header>
                     <mat-form-field appearance="outline" color=primary class="rules-full-width">
                         <mat-label>Radio Access Technology</mat-label>
-                        <mat-select formControlName="radioAccessTechnology" name="radioAccessTechnology" (selectionChange)="sliceProfilesElements($event,con,'radio');">
-                            <mat-option *ngFor="let radio of radioAccessTechnology" [value]="radio" class="dee-table">
+                        <!-- <mat-select formControlName="radioAccessTechnology" name="radioAccessTechnology" (selectionChange)="sliceProfilesElements($event,con,'radio');"> -->
+                          <mat-select formControlName="radioAccessTechnology" name="radioAccessTechnology" (selectionChange)="selectRATElement($event,con.coverageArea,'radio', i);">
+                            <mat-option *ngFor="let radio of con.rat" [value]="radio" class="dee-table">
                                 {{radio}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-
-                    <div *ngIf="embbMode">
+                    <div *ngIf="con.sst === 'EMBB'">
                         <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                            <input matInput #descName placeholder="Uplink Throughput"  required (keyup)="sliceProfilesElements($event,con,'Uplink')">
+                            <input matInput #descName placeholder="Uplink Throughput"  (keyup)="selectRATElement($event,con,'Uplink', i);">
                         </mat-form-field>
-                        <mat-form-field appearance="outline" color=primary class="rules-full-width" (keyup)="sliceProfilesElements($event,con,'Downlink')">
-                            <input matInput #descName placeholder="Downlink Throughput"  required>
+                        <mat-form-field appearance="outline" color=primary class="rules-full-width" >
+                            <input matInput #descName placeholder="Downlink Throughput"  (keyup)="selectRATElement($event,con,'Downlink', i);">
                         </mat-form-field>
 
                     </div>
-                    <div *ngIf="urllcMode">
+                    <div *ngIf="con.sst === 'URLLC'">
                         <mat-form-field appearance="outline" color=primary class="rules-full-width">
-                            <input matInput #descName placeholder="latency"  required (keyup)="sliceProfilesElements($event,con,'latency')">
+                            <input matInput #descName placeholder="latency"  (keyup)="selectRATElement($event,con,'latency', i);">
                         </mat-form-field>
                     </div>
                     <!--
@@ -88,7 +94,7 @@
                         </mat-select>
                     </mat-form-field>
                     -->
-                  <!-- <mat-checkbox #publicVSD formControlName="isPublic">Public</mat-checkbox>--> 
+                  <!-- <mat-checkbox #publicVSD formControlName="isPublic">Public</mat-checkbox>-->
                 </mat-expansion-panel>
                 <div class="margin-top"></div>
             </div>
@@ -150,11 +156,11 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>{{ctx.viewValue}}</mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div *ngFor="let param of ctx.item['parameters']; let i=index">                        
+                    <div *ngFor="let param of ctx.item['parameters']; let i=index">
                         <mat-form-field appearance="outline" color=primary class="rules-full-width">
                             <mat-label>{{param.parameterId}}</mat-label>
                             <input matInput id={{param.parameterId}}>
-                        </mat-form-field>                      
+                        </mat-form-field>
                     </div>
                 </mat-expansion-panel>
             </div>

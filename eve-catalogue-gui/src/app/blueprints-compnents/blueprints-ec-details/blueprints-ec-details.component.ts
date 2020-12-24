@@ -50,7 +50,7 @@ export class BlueprintsEcDetailsComponent implements OnInit {
   }
 
   getCtxBlueprint(ctxbId: string) {
-    this.blueprintsEcService.getCtxBlueprint(ctxbId).subscribe((ctxBlueprintInfo: CtxBlueprintInfo) => 
+    this.blueprintsEcService.getCtxBlueprint(ctxbId).subscribe((ctxBlueprintInfo: CtxBlueprintInfo) =>
       {
         //console.log(vsBlueprintInfo);
         var ctxBlueprint = ctxBlueprintInfo['ctxBlueprint'];
@@ -95,9 +95,9 @@ export class BlueprintsEcDetailsComponent implements OnInit {
           values.push(ctxBlueprintInfo['activeCtxdId'][i]);
         }
         this.tableData.push({key: "Active Ctxds", value: values});
-      
+
         var atomicComponentsCps = [];
-      
+
         for (var i = 0; i < atomicComponents.length; i++) {
           this.graphData.nodes.push(
             { data: { id: atomicComponents[i]['componentId'], name: atomicComponents[i]['componentId'], weight: 70, colorCode: 'white', shapeType: 'ellipse' }, classes: 'bottom-center vnf' }
@@ -116,7 +116,7 @@ export class BlueprintsEcDetailsComponent implements OnInit {
             );
           }
         }
-        
+
         var connectivityServices = ctxBlueprint['connectivityServices'];
 
         for (var i = 0; i < connectivityServices.length; i++) {
@@ -133,7 +133,7 @@ export class BlueprintsEcDetailsComponent implements OnInit {
               }
             }
           }
-          
+
           for (var j = 0; j < sapCps.length; j++) {
             if (connectivityServices[i]['endPointIds'].includes(sapCps[j])) {
               this.graphData.edges.push(
@@ -207,7 +207,7 @@ export class BlueprintsEcDetailsComponent implements OnInit {
   }
 
   getCtxBlueprint(ctxbId: string) {
-    this.blueprintsEcService.getCtxBlueprint(ctxbId).subscribe((ctxBlueprintInfo: CtxBlueprintInfo) => 
+    this.blueprintsEcService.getCtxBlueprint(ctxbId).subscribe((ctxBlueprintInfo: CtxBlueprintInfo) =>
       {
         var ctxBlueprint = ctxBlueprintInfo['ctxBlueprint'];
         this.tableData.push({key: "Name", value: [ctxBlueprint['name']]});
@@ -226,7 +226,7 @@ export class BlueprintsEcDetailsComponent implements OnInit {
         values = [];
         var atomicComponents = ctxBlueprint['atomicComponents'];
         for (var i = 0; i < atomicComponents.length; i++) {
-          if(atomicComponents[i]['placement'] !== undefined && atomicComponents[i]['placement'] !== ''){
+          if(atomicComponents[i]['placement'] !== null && atomicComponents[i]['placement'] !== undefined && atomicComponents[i]['placement'] !== ''){
             values.push(atomicComponents[i]['componentId'] + " (" + atomicComponents[i]['placement'].toLowerCase() + ")");
           } else {
             values.push(atomicComponents[i]['componentId']);
@@ -252,7 +252,7 @@ export class BlueprintsEcDetailsComponent implements OnInit {
         values = [];
 
         var atomicComponentsCps = [];
-      
+
         for (var i = 0; i < atomicComponents.length; i++) {
           this.graphData.nodes.push(
             { data: { id: atomicComponents[i]['componentId'], name: atomicComponents[i]['componentId'], weight: 70, colorCode: 'white', shapeType: 'ellipse' }, classes: 'bottom-center vnf' }
@@ -289,7 +289,7 @@ export class BlueprintsEcDetailsComponent implements OnInit {
             }
           }
 
-          
+
           for (var j = 0; j < sapCps.length; j++) {
             if (connectivityServices[i]['endPointIds'].includes(sapCps[j])) {
               this.graphData.edges.push(

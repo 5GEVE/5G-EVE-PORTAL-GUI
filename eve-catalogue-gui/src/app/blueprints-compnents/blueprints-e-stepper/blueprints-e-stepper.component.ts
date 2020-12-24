@@ -128,7 +128,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   instLevels: String[] = [];
   allVsb:any;
   translationParams: String[] = [];
-  bluePrintsAssosiate:any;
+  bluePrintsAssosiate = [];
   compatibleSites:any;
   vsbs: Blueprint[] = [];
   ctxbs: Blueprint[] = [];
@@ -149,6 +149,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   nsdArrMandatory:any;
   nsdListMap : Map<string, any> = new Map<string, any>();
   activeTestsCases: ActiveTcb[] = [];
+  selectedContexts: Map<string, string> = new Map<string, string>();;
 
   constructor(private _formBuilder: FormBuilder,
     private blueprintsVsService: BlueprintsVsService,
@@ -215,10 +216,10 @@ export class BlueprintsEStepperComponent implements OnInit {
     return this.vsbs.filter(option =>
       option.viewValue.toLowerCase().includes(filterValue)
     );
-    
-    
+
+
   }
-  
+
   validateFormula(event: any, index){
     this.invalidFormula[index] = false;
     if (event.target.value === undefined || event.target.value === '') {
@@ -348,41 +349,51 @@ export class BlueprintsEStepperComponent implements OnInit {
   onVsbSelected(event: any,value) {
     this.selectedSite="";
     this.selectedVsb = value;
-    this.blueprintsVsService.getVsBlueprint(this.selectedVsb).subscribe((vsBlueprintInfos) =>
-    {
-      if(vsBlueprintInfos['vsBlueprint'].hasOwnProperty('interSite') && vsBlueprintInfos['vsBlueprint']['interSite']==true){
-        this.interSite=true;
-        this.showSiteinterMode=true;
-        this.showSiteNotinterMode=false;
-        this.bluePrintsAssosiate=vsBlueprintInfos['vsBlueprint']['atomicComponents'];
-        for(var bl of this.bluePrintsAssosiate){
-          if(!this.selectedSites.includes(bl['compatibleSite'])){
-            this.selectedSites.push(bl['compatibleSite']);
+    for(var i = 0; i < this.vsbs.length; i++){
+      if(this.vsbs[i]['obj']['blueprintId'] === this.selectedVsb){
+        if(this.vsbs[i]['obj']['interSite'] !== undefined && this.vsbs[i]['obj']['interSite'] === true){
+          this.interSite=true;
+          this.showSiteinterMode=true;
+          this.showSiteNotinterMode=false;
+          this.bluePrintsAssosiate=this.vsbs[i]['obj']['atomicComponents'];
+          for(var bl of this.bluePrintsAssosiate){
+            if(!this.selectedSites.includes(bl['compatibleSite'])){
+              this.selectedSites.push(bl['compatibleSite']);
+            }
+            this.selectedSiteArr[bl['associatedVsbId']]=bl['compatibleSite'];
           }
-          this.selectedSiteArr[bl['associatedVsbId']]=bl['compatibleSite'];
-        }
 
-    }
-    else{
-      this.bluePrintsAssosiate=vsBlueprintInfos['vsBlueprint']['compatibleSites'];
-      this.selectedSites=vsBlueprintInfos['vsBlueprint']['compatibleSites'];
-      this.showSiteNotinterMode=true;
-      this.interSite=false;
-      this.showSiteinterMode=false;
-    }
-    });
-
-    for (var i = 0; i < this.vsbs.length; i ++) {
-      if (this.vsbs[i]['obj']['blueprintId'] == event.value) {
-        if(this.vsbs[i]['obj']['parameters'] !== undefined){
-          for (var j = 0; j < this.vsbs[i]['obj']['parameters'].length; j++) {
-            this.translationParams.push(this.vsbs[i]['obj']['parameters'][j]['parameterId']);
-            this.items = this.fourthFormGroup.get('items') as FormArray;
-            this.items.push(this.createItem());
-          }
+      }
+      else{
+        this.bluePrintsAssosiate=this.vsbs[i]['obj']['compatibleSites'];
+        this.selectedSites=this.vsbs[i]['obj']['compatibleSites'];
+        this.showSiteNotinterMode=true;
+        this.interSite=false;
+        this.showSiteinterMode=false;
+      }
+      if(this.vsbs[i]['obj']['parameters'] !== undefined){
+        for (var j = 0; j < this.vsbs[i]['obj']['parameters'].length; j++) {
+          this.translationParams.push(this.vsbs[i]['obj']['parameters'][j]['parameterId']);
+          this.items = this.fourthFormGroup.get('items') as FormArray;
+          this.items.push(this.createItem());
         }
       }
+      }
+
+
     }
+    // for (var i = 0; i < this.vsbs.length; i ++) {
+    //   if (this.vsbs[i]['obj']['blueprintId'] == event.value) {
+
+    //     if(this.vsbs[i]['obj']['parameters'] !== undefined){
+    //       for (var j = 0; j < this.vsbs[i]['obj']['parameters'].length; j++) {
+    //         this.translationParams.push(this.vsbs[i]['obj']['parameters'][j]['parameterId']);
+    //         this.items = this.fourthFormGroup.get('items') as FormArray;
+    //         this.items.push(this.createItem());
+    //       }
+    //     }
+    //   }
+    // }
   }
 
 
@@ -398,32 +409,39 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.expBlueprintName = event.target.value;
   }
 
-  onSelectedCb(event: any) {
+  onSelectedCb(event: any, cb: string, vsbId: any) {
     if(event.checked){
+      console.log(event.source);
       this.secondFormGroup.controls['selectNoCbsCtrl'].disable();
       if(!this.selectedCbs.includes(event.source.value)){
         this.selectedCbs.push(event.source.value);
-        for (var i = 0; i < this.ctxbs.length; i ++) {
-          if (this.ctxbs[i]['obj']['blueprintId'] == event.source.value) {
-            if (this.ctxbs[i]['obj']['parameters'] !== undefined){
-              for (var j = 0; j < this.ctxbs[i]['obj']['parameters'].length; j++) {
-                this.items = this.fourthFormGroup.get('items') as FormArray;
-                this.items.push(this.createItem());
-                this.translationParams.push(this.ctxbs[i]['obj']['parameters'][j]['parameterId']);
+        if (!this.interSite){
+          for (var i = 0; i < this.ctxbs.length; i ++) {
+            if (this.ctxbs[i]['obj']['blueprintId'] == event.source.value) {
+              if (this.ctxbs[i]['obj']['parameters'] !== undefined){
+                for (var j = 0; j < this.ctxbs[i]['obj']['parameters'].length; j++) {
+                  this.items = this.fourthFormGroup.get('items') as FormArray;
+                  this.items.push(this.createItem());
+                  this.translationParams.push(this.ctxbs[i]['obj']['parameters'][j]['parameterId']);
+                }
               }
-    
             }
           }
+        } else {
+          this.selectedContexts[cb] = vsbId;
         }
       }
-
     }else{
       this.secondFormGroup.controls['selectNoCbsCtrl'].enable();
       const index: number = this.selectedCbs.indexOf(event.source.value);
       if (index !== -1) {
           this.selectedCbs.splice(index, 1);
-      } 
+      }
+      if (this.selectedContexts.hasOwnProperty(cb)) {
+          delete this.selectedContexts[cb];
+      }
     }
+    console.log("CB: " + JSON.stringify(this.selectedContexts));
   }
 
   onUploadedNsd(event: any, nsds: File[], vsbId ,mode) {
@@ -446,7 +464,7 @@ export class BlueprintsEStepperComponent implements OnInit {
 
       }
     }
-  if(promises.length > 0){   
+  if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.nsdObj = JSON.parse(fileContents[0]);
         if(mode=="optional"){
@@ -539,10 +557,10 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.blueprintsVsService.getVsBlueprints().subscribe((vsBlueprintInfos: VsBlueprintInfo[]) =>
       {
         for (var i = 0; i < vsBlueprintInfos.length; i++) {
-          this.vsbs.push({value: vsBlueprintInfos[i]['vsBlueprintId'], viewValue: vsBlueprintInfos[i]['vsBlueprint']['description'], sites: vsBlueprintInfos[i]['vsBlueprint']['compatibleSites'], obj: vsBlueprintInfos[i]['vsBlueprint']});
-          this.vsbName.push(vsBlueprintInfos[i]['vsBlueprint']['description']);
+          this.vsbs.push({value: vsBlueprintInfos[i]['vsBlueprintId'], viewValue: vsBlueprintInfos[i]['vsBlueprint']['name'], sites: vsBlueprintInfos[i]['vsBlueprint']['compatibleSites'], obj: vsBlueprintInfos[i]['vsBlueprint']});
+          this.vsbName.push(vsBlueprintInfos[i]['vsBlueprint']['name']);
         }
-        
+
         this.filteredOptions = this.myControl.valueChanges.pipe(
         startWith(""),
         map(value => this._filter(value))
@@ -579,7 +597,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       });
   }
 
-  filterCtxbsInSite(site){   
+  filterCtxbsInSite(site){
     if(site==null){
       site=this.selectedSite;
     }
@@ -605,20 +623,25 @@ export class BlueprintsEStepperComponent implements OnInit {
   }
 
   createOnBoardExpBlueprintRequest(nsds: File[]) {
-    
-    var onBoardExpRequest = JSON.parse('{}');
-    onBoardExpRequest['nsds']=[];
 
-    let jsonObject = {};  
-    this.nsdListMap.forEach((value, key) => {  
-        jsonObject[key] = value  
-    });  
-  //  console.log("fffffffffff",JSON.stringify(jsonObject)) 
+    var onBoardExpRequest = JSON.parse('{}');
+
+
+  //  console.log("fffffffffff",JSON.stringify(jsonObject))
 
     if (this.deploymentType !== "STATIC"){
+      let jsonObject = {};
+      this.nsdListMap.forEach((value, key) => {
+          jsonObject[key] = value
+      });
+
+
       onBoardExpRequest['enhancedVsbs']= jsonObject;
 
+      onBoardExpRequest['nsds'] = [];
+
       onBoardExpRequest['translationRules'] = [];
+      onBoardExpRequest['contextComponent'] = this.selectedContexts;
     }
 
 
@@ -629,21 +652,24 @@ export class BlueprintsEStepperComponent implements OnInit {
 
     if (this.deploymentType !== "STATIC"){
       onBoardExpRequest['nsds'].push(this.nsdArrMandatory);
-
-    
-/*
-      for (let nsd of this.nsdFiles) {
-        let nsdPromise = new Promise(resolve => {
-            let reader = new FileReader();
-            reader.readAsText(nsd);
-            reader.onload = () => resolve(reader.result);
-        });
-        promises.push(nsdPromise);
-    }
-    */
+  /*
+        for (let nsd of this.nsdFiles) {
+          let nsdPromise = new Promise(resolve => {
+              let reader = new FileReader();
+              reader.readAsText(nsd);
+              reader.onload = () => resolve(reader.result);
+          });
+          promises.push(nsdPromise);
+      }
+      */
   }
 
     Promise.all(promises).then(fileContents => {
+      var blueprintId = this.zeroFormGroup.get('bpIdCtrl').value;
+       var blueprintName = this.zeroFormGroup.get('bpNameCtrl').value;
+       var bluepritnVersion = this.zeroFormGroup.get('bpVersionCtrl').value;
+       var blueprintDesc = this.zeroFormGroup.get('bpDescriptionCtrl').value;
+
       if (this.deploymentType !== "STATIC"){
         /*
       for (var i = 0; i < fileContents.length; i++) {
@@ -651,13 +677,15 @@ export class BlueprintsEStepperComponent implements OnInit {
         }
         */
 
-        if (this.translationParams === []){
+
+        //console.log(this.translationParams);
+        if (this.translationParams !== []){
           var translationRule = JSON.parse('{}');
           var nsdId = this.fourthFormGroup.get('nsdIdCtrl').value;
           var nsdVersion = this.fourthFormGroup.get('nsdVersionCtrl').value;
           var nsFlavourId = this.fourthFormGroup.get('nsFlavourIdCtrl').value;
           var nsInstLevel = this.fourthFormGroup.get('nsInstLevelIdCtrl').value;
-          translationRule['blueprintId'] = blueprintId;
+          //translationRule['blueprintId'] = blueprintId;
           translationRule['nsdId'] = nsdId;
           translationRule['nsdVersion'] = nsdVersion;
           translationRule['nsFlavourId'] = nsFlavourId;
@@ -675,15 +703,13 @@ export class BlueprintsEStepperComponent implements OnInit {
         }
       }
 
-        var blueprintId = this.zeroFormGroup.get('bpIdCtrl').value;
-        var blueprintName = this.zeroFormGroup.get('bpNameCtrl').value;
-        var bluepritnVersion = this.zeroFormGroup.get('bpVersionCtrl').value;
-        var blueprintDesc = this.zeroFormGroup.get('bpDescriptionCtrl').value;
 
-        expBlueprint['expBlueprintId'] = blueprintId;
+
+
+
+        // expBlueprint['expBlueprintId'] = blueprintId;
         expBlueprint['description'] = blueprintDesc;
-        
-        expBlueprint['expBlueprintId']="";
+
         expBlueprint['name'] = blueprintName;
         expBlueprint['version'] = bluepritnVersion;
 
@@ -749,7 +775,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       this.blueprintsExpService.postExpBlueprint(onBoardExpRequest)
         .subscribe(expBlueprintId => {
          // console.log("EXP Blueprint with id " + expBlueprintId);
-         
+
           this.blueprintsEComponent.selectedIndex = 0;
           this.zeroFormGroup.reset();
           this.firstFormGroup.reset();
@@ -759,7 +785,7 @@ export class BlueprintsEStepperComponent implements OnInit {
           this.fifthFormGroup.reset();
           this.sixthFormGroup.reset();
           this.blueprintsEComponent.getEBlueprints();
-          
+
       });
     });
   }

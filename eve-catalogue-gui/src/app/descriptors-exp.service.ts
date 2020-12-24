@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 export class DescriptorsExpService {
 
   private baseUrl = environment.portalBaseUrl;
+  private iwfUrl = environment.iwfRepositoryUrl;
   private expDescriptorInfoUrl = 'expdescriptor';
 
   httpOptions = {
@@ -23,7 +24,9 @@ export class DescriptorsExpService {
 
   httpOptionsSecond = {
     headers: new HttpHeaders(
-      { 'Content-Type': 'application/json'})
+      { 'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    })
   };
   constructor(private http: HttpClient,
     private authService: AuthService) { }
@@ -60,7 +63,7 @@ export class DescriptorsExpService {
     );
   }
   getCoverageArea(compatibleSite: string): Observable<any> {
-    return this.http.get<any>("http://10.3.3.30:8087/coverageAreas/search/findBySiteName?name=" + compatibleSite,this.httpOptionsSecond)
+    return this.http.get<any>(this.iwfUrl + "coverageAreas/search/findBySiteName?name=" + compatibleSite,this.httpOptionsSecond)
       .pipe(
         tap(_ => console.log('fetched coverage area info - SUCCESS')),
         catchError(this.authService.handleError<any>('getCoverageArea'))
