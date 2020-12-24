@@ -34,6 +34,7 @@ export class DescriptorsESchedulerComponent implements OnInit {
   end_time;
   end_date: string = '';
   use_cases: string[] = [];
+  useCaseName: string = '';
 
   interSite: boolean = false;
 
@@ -61,14 +62,14 @@ export class DescriptorsESchedulerComponent implements OnInit {
 
     });
     this.getExpDescriptors();
-    this.getUseCases();
+  //  this.getUseCases();
   }
 
-  getUseCases(){
-    this.authService.getUseCases().subscribe((useCases: UseCases) => {
-      this.use_cases = useCases['details'];
-    });
-  }
+  // getUseCases(){
+  //   this.authService.getUseCases().subscribe((useCases: UseCases) => {
+  //     this.use_cases = useCases['details'];
+  //   });
+  // }
 
 
   getExpDescriptors() {
@@ -151,6 +152,12 @@ export class DescriptorsESchedulerComponent implements OnInit {
         }
       });
     });
+  }
+
+  filterUseCaseName(event: any){
+    console.log(event.value);
+    this.useCaseName = event.value.replace(/[^a-zA-Z0-9_]/g, '');
+    console.log(this.useCaseName);
   }
 
   scheduleExperiment() {

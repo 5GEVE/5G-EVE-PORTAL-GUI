@@ -24,14 +24,17 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="rules-full-width">
+            <mat-form-field appearance="outline" color=primary class="rules-full-width">
+              <input matInput #useCase [(ngModel)]="useCaseName" placeholder="UseCase" formControlName="useCase" (keyup)="filterUseCaseName($event.target)" required style="color: black;">
+            </mat-form-field>
+            <!-- <mat-form-field appearance="outline" class="rules-full-width">
                 <mat-label>Use Case</mat-label>
                 <mat-select formControlName="useCase" name="useCase">
                     <mat-option *ngFor="let useCase of use_cases" [value]="useCase">
                         {{useCase}}
                     </mat-option>
                 </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
             <table >
                 <tr fxFlex="100%"  fxLayout.xs="column" fxLayout="row" fxLayoutAlign="center center">
                     <td>

@@ -53,7 +53,7 @@ export class ExperimentsService {
   postExperiment(expRequest: Object, redirection: string): Observable<String> {
     return this.http.post(this.baseUrl + this.experimentInfoUrl, expRequest, this.httpOptions)
       .pipe(
-        tap((experimentId: String) => 
+        tap((experimentId: String) =>
         {
           this.authService.log(`created Experiment w/ id=${experimentId}`, 'SUCCESS', false);
           this.router.navigate([redirection]).then(() => {
@@ -153,7 +153,7 @@ export class ExperimentsService {
   }
 
   postExperiment(expRequest: object, redirection: string): Observable<any> {
-    return this.http.post(this.baseUrl + this.experimentInfoUrl, expRequest,  this.httpOptionsWithAccept)
+    return this.http.post(this.baseUrl + this.experimentInfoUrl, expRequest,  this.httpOptions)
       .pipe(
         tap(
           experimentId => {
