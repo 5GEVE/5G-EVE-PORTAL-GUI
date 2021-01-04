@@ -100,11 +100,14 @@ export class BlueprintsEStepperComponent implements OnInit {
   metricTypes: Metric[] = [
     {value: 'USER_DATA_RATE_DOWNLINK', viewValue: 'USER_DATA_RATE_DOWNLINK', unit: ["Mbps", "Gbps"]},
     {value: 'USER_DATA_RATE_UPLINK', viewValue: 'USER_DATA_RATE_UPLINK', unit: ["Mbps", "Gbps"]},
-    {value: 'CAPACITY', viewValue: 'CAPACITY', unit: ['Mbit/s/m2']},
-    {value: 'LATENCY_USERPLANE', viewValue: 'LATENCY_USERPLANE', unit: ['ms']},
-    {value: 'LATENCY_CONTROLPLANE', viewValue: 'LATENCY_CONTROLPLANE', unit: ['ms']},
-    {value: 'DEVICE_DENSITY', viewValue: 'DEVICE_DENSITY', unit: ['devices/km2']},
-    {value: 'MOBILITY', viewValue: 'MOBILITY', unit: ['km/h']}
+    {value: 'LATENCY_USERPLANE_RTT', viewValue: 'LATENCY_USERPLANE_RTT', unit: ['ms']},
+    {value: 'RELIABILITY', viewValue: 'RELIABILITY', unit: ['%']},
+    {value: 'AVAILABILITY', viewValue: 'AVAILABILITY', unit: ['%']}
+    //{value: 'CAPACITY', viewValue: 'CAPACITY', unit: ['Mbit/s/m2']},
+    //{value: 'LATENCY_USERPLANE', viewValue: 'LATENCY_USERPLANE', unit: ['ms']},
+    //{value: 'LATENCY_CONTROLPLANE', viewValue: 'LATENCY_CONTROLPLANE', unit: ['ms']},
+    //{value: 'DEVICE_DENSITY', viewValue: 'DEVICE_DENSITY', unit: ['devices/km2']},
+    //{value: 'MOBILITY', viewValue: 'MOBILITY', unit: ['km/h']}
   ];
 
   filteredMetricTypes: string[] = [];
