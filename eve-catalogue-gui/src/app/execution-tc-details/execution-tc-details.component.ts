@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 import { ExpDescriptorInfo } from '../descriptors-e/exp-descriptor-info';
-import { TcBlueprintInfo } from '../blueprints-compnents/blueprints-tc/tc-blueprint-info';
+import { TcBlueprintInfo } from '../blueprints-components/blueprints-tc/tc-blueprint-info';
 import { TcDescriptorInfo } from '../descriptors-tc/tc-descriptor-info';
 import { BlueprintsTcService } from '../blueprints-tc.service';
 import { DescriptorsTcService } from '../descriptors-tc.service';

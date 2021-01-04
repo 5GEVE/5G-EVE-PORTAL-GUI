@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BlueprintsVsDetailsItemKV } from './blueprints-compnents/blueprints-vs-details/blueprints-vs-details.datasource';
+import { BlueprintsVsDetailsItemKV } from './blueprints-components/blueprints-vs-details/blueprints-vs-details.datasource';
 
 @Injectable({
   providedIn: 'root'

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TcBlueprintInfo } from './blueprints-compnents/blueprints-tc/tc-blueprint-info';
+import { TcBlueprintInfo } from './blueprints-components/blueprints-tc/tc-blueprint-info';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
 
@@ -62,7 +62,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TcBlueprintInfo } from './blueprints-compnents/blueprints-tc/tc-blueprint-info';
+import { TcBlueprintInfo } from './blueprints-components/blueprints-tc/tc-blueprint-info';
 import { environment } from './environments/environments';
 import { AuthService } from './auth.service';
 

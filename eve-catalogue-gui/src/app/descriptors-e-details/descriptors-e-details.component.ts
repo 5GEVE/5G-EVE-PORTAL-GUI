@@ -68,7 +68,7 @@ import { MatTable } from '@angular/material/table';
 import { DescriptorsEDetailsDataSource, DescriptorsEDetailsItemKV } from './descriptors-e-details.datasource';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 import { ExpDescriptorInfo } from '../descriptors-e/exp-descriptor-info';
-import { ExpBlueprintInfo } from '../blueprints-compnents/blueprints-e/exp-blueprint-info';
+import { ExpBlueprintInfo } from '../blueprints-components/blueprints-e/exp-blueprint-info';
 import { BlueprintsExpService } from '../blueprints-exp.service';
 import { DescriptorsVsService } from '../descriptors-vs.service';
 import { VsDescriptorInfo } from '../descriptors-vs/vs-descriptor-info';

@@ -11,7 +11,7 @@ import { ExperimentsMgmtDialogComponent } from '../experiments-mgmt-dialog/exper
 import { ExperimentsExecuteDialogComponent } from '../experiments-execute-dialog/experiments-execute-dialog.component';
 import { ExperimentsResultsDialogComponent } from '../experiments-results-dialog/experiments-results-dialog.component';
 import { BlueprintsTcService } from '../blueprints-tc.service';
-import { TcBlueprintInfo } from '../blueprints-compnents/blueprints-tc/tc-blueprint-info';
+import { TcBlueprintInfo } from '../blueprints-components/blueprints-tc/tc-blueprint-info';
 import { TcDescriptorInfo } from '../descriptors-tc/tc-descriptor-info';
 import { DescriptorsTcService } from '../descriptors-tc.service';
 import { ExpDescriptorInfo } from '../descriptors-e/exp-descriptor-info';
