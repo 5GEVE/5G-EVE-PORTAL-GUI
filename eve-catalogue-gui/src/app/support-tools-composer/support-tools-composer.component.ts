@@ -6,7 +6,7 @@ import { NsdsService } from '../nsds.service';
 import { BlueprintsVsService } from '../blueprints-vs.service';
 import { BlueprintsEcService } from '../blueprints-ec.service';
 import { AuthService} from '../auth.service';
-
+import { EncService } from '../enc.service';
 
 @Component({
   selector: 'app-support-tools-composer',
@@ -31,7 +31,8 @@ export class SupportToolsComposerComponent implements OnInit {
     private nsdsService: NsdsService,
     private blueprintsVsService: BlueprintsVsService,
     private blueprintsEcService: BlueprintsEcService,
-    private authService: AuthService
+    private authService: AuthService,
+    private encService: EncService 
         
     ) {
   }
@@ -76,7 +77,7 @@ export class SupportToolsComposerComponent implements OnInit {
     Promise.all(promises).then(fileContents => {
         this.vsbObj = JSON.parse(fileContents[0]);
         
-        this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+        this.encService.validateVsBlueprint(this.vsbObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;  
@@ -109,7 +110,7 @@ export class SupportToolsComposerComponent implements OnInit {
   if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.vnsdObj = JSON.parse(fileContents[0]);
-        this.nsdsService.validateNsDescriptor(this.vnsdObj)
+        this.encService.validateNsDescriptor(this.vnsdObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;  
@@ -144,7 +145,7 @@ export class SupportToolsComposerComponent implements OnInit {
     Promise.all(promises).then(fileContents => {
         this.ctxObj = JSON.parse(fileContents[0]);
         
-        this.blueprintsEcService.validateCtxBlueprint(this.ctxObj)
+        this.encService.validateCtxBlueprint(this.ctxObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("thirdNext")).disabled = true;  
@@ -180,7 +181,7 @@ export class SupportToolsComposerComponent implements OnInit {
     Promise.all(promises).then(fileContents => {
         this.ctxnObj = JSON.parse(fileContents[0]);
         
-        this.nsdsService.validateNsDescriptor(this.ctxnObj)
+        this.encService.validateNsDescriptor(this.ctxnObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("download")).disabled = true;  
@@ -233,7 +234,7 @@ export class SupportToolsComposerComponent implements OnInit {
   }
 
   dynamicDownloadJson() {
-    this.nsdsService.composeNsDescriptor(this.bObj)
+    this.encService.composeNsDescriptor(this.bObj)
     .subscribe(res => {
       this.dyanmicDownloadByHtmlTag({
         fileName: 'compose_nsd.json',
@@ -284,7 +285,7 @@ export class SupportToolsComposerComponent implements OnInit {
     onBoardctxbRequest['ctxbRequest']['translationRules'].push(onBoardTrRequest);
     onBoardctxbRequest['ctxbRequest']['ctxBlueprint']=this.ctxObj
     if(this.isChecked==true){
-      this.nsdsService.composeNsDescriptorDetails(onBoardComNsdRequest)
+      this.encService.composeNsDescriptorDetails(onBoardComNsdRequest)
       .subscribe(res => {
         this.downLoadFile(res, "application/zip");
         /*
@@ -307,7 +308,7 @@ export class SupportToolsComposerComponent implements OnInit {
       
     }
     else{
-      this.nsdsService.composeNsDescriptor(onBoardComNsdRequest)
+      this.encService.composeNsDescriptor(onBoardComNsdRequest)
       .subscribe(res => {
         if(res!==undefined){
           this.dyanmicDownloadByHtmlTag({

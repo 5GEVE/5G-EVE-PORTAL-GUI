@@ -116,18 +116,4 @@ export class BlueprintsTcService {
       catchError(this.authService.handleError<String>('deleteTcBlueprint'))
     );
   }
-  validateTcBlueprint(onBoardTcRequest: Object): Observable<String> {
-    return this.http.post(this.supBaseUrl + "tcb/validate", onBoardTcRequest, this.httpOptions)
-      .pipe(
-        tap((blueprintId: String) => console.log("validate tcb")),
-        catchError(this.authService.handleValidatorError<String>('validateTcBlueprint'))
-      );
-  }
-  schemaTcBlueprint(): Observable<String> {
-    return this.http.get<any>(this.supBaseUrl+"tcb/schema", this.httpOptions)
-      .pipe(
-        tap(_ => console.log('fetched tc schema - SUCCESS')),
-        catchError(this.authService.handleError<any>('schemaTcBlueprint'))
-      );
-  }
 }

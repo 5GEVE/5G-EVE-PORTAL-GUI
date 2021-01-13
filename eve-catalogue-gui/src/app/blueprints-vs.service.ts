@@ -57,18 +57,4 @@ export class BlueprintsVsService {
       catchError(this.authService.handleError<String>('deleteVsBlueprint'))
     );
   }
-  validateVsBlueprint(onBoardVsRequest: Object): Observable<String> {
-    return this.http.post(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
-      .pipe(
-        tap((blueprintId: String) => console.log("validate vsb")),
-        catchError(this.authService.handleValidatorError<String>('validateVsBlueprint'))
-      );
-  }
-  schemaVsBlueprint(): Observable<String> {
-    return this.http.get<any>(this.supBaseUrl+ "vsb/schema", this.httpOptions)
-      .pipe(
-        tap(_ => console.log('fetched vsb schema - SUCCESS')),
-        catchError(this.authService.handleError<any>('schemaVsBlueprint'))
-      );
-  }
 }

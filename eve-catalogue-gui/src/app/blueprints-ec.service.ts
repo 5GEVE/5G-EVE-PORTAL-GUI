@@ -57,18 +57,4 @@ export class BlueprintsEcService {
       catchError(this.authService.handleError<String>('deleteCtxBlueprint'))
     );
   }
-  validateCtxBlueprint(onboardCtxBlueprintRequest: Object): Observable<String> {
-    return this.http.post(this.supBaseUrl + "ctx/validate", onboardCtxBlueprintRequest, this.httpOptions)
-      .pipe(
-        tap((blueprintId: String) => console.log("validate ctx")),
-        catchError(this.authService.handleValidatorError<String>('validateCtxBlueprint'))
-      );
-  }
-  schemaCtxBlueprint(): Observable<String> {
-    return this.http.get<any>(this.supBaseUrl+"ctx/schema", this.httpOptions)
-      .pipe(
-        tap(_ => console.log('fetched context blueprint schema - SUCCESS')),
-        catchError(this.authService.handleError<any>('schemaCtxBlueprint'))
-      );
-  }
 }

@@ -6,6 +6,8 @@ import { BlueprintsEcService } from '../blueprints-ec.service';
 import { BlueprintsExpService } from '../blueprints-exp.service';
 import { BlueprintsTcService } from '../blueprints-tc.service';
 import { NsdsService } from '../nsds.service';
+import { EncService } from '../enc.service';
+
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -36,7 +38,7 @@ export class SupportToolsSchemasComponent implements OnInit {
     private blueprintsEcService: BlueprintsEcService,
     private blueprintsExpService: BlueprintsExpService,
     private blueprintsTcService: BlueprintsTcService,
-    private nsdsService: NsdsService) { }
+    private nsdsService: NsdsService,private encService: EncService  ) { }
 
   ngOnInit() {
     if (localStorage.getItem('logged') != "true") {
@@ -61,7 +63,7 @@ export class SupportToolsSchemasComponent implements OnInit {
 
   dynamicDownloadJson(id) {
     if(id=='vsb'){
-      this.blueprintsVsService.schemaVsBlueprint()
+      this.encService.schemaVsBlueprint()
       .subscribe(res => {
         this.dyanmicDownloadByHtmlTag({
           fileName: 'vsb.json',
@@ -69,7 +71,7 @@ export class SupportToolsSchemasComponent implements OnInit {
         });
       });
   }else if(id=='ctx'){
-    this.blueprintsEcService.schemaCtxBlueprint()
+    this.encService.schemaCtxBlueprint()
     .subscribe(res => {
       this.dyanmicDownloadByHtmlTag({
         fileName: 'ctx.json',
@@ -77,7 +79,7 @@ export class SupportToolsSchemasComponent implements OnInit {
       });
     });
   }else if(id=='exp'){
-    this.blueprintsExpService.schemaExpBlueprint()
+    this.encService.schemaExpBlueprint()
     .subscribe(res => {
       this.dyanmicDownloadByHtmlTag({
         fileName: 'exp.json',
@@ -85,7 +87,7 @@ export class SupportToolsSchemasComponent implements OnInit {
       });
     });
   }else if(id=='tcb'){
-    this.blueprintsTcService.schemaTcBlueprint()
+    this.encService.schemaTcBlueprint()
     .subscribe(res => {
       this.dyanmicDownloadByHtmlTag({
         fileName: 'tcb.json',
@@ -94,7 +96,7 @@ export class SupportToolsSchemasComponent implements OnInit {
     });
   }
   else if(id=='nsd'){
-    this.nsdsService.schemaNsDescriptor()
+    this.encService.schemaNsDescriptor()
     .subscribe(res => {
       this.dyanmicDownloadByHtmlTag({
         fileName: 'nsd.json',
@@ -125,28 +127,28 @@ export class SupportToolsSchemasComponent implements OnInit {
 
   downloadBlueprint(id){
     if(id=='vsb'){
-      this.blueprintsVsService.schemaVsBlueprint()
+      this.encService.schemaVsBlueprint()
       .subscribe(res => {
       console.log("ressss",res)
       });
     }else if(id=='ctx'){
-      this.blueprintsEcService.schemaCtxBlueprint()
+      this.encService.schemaCtxBlueprint()
       .subscribe(res => {
       //console.log("ressss",res)
       });
     }else if(id=='exp'){
-      this.blueprintsExpService.schemaExpBlueprint()
+      this.encService.schemaExpBlueprint()
       .subscribe(res => {
       //console.log("ressss",res)
       });
     }else if(id=='tc'){
-      this.blueprintsTcService.schemaTcBlueprint()
+      this.encService.schemaTcBlueprint()
       .subscribe(res => {
       //console.log("ressss",res)
       });
     }
     else if(id=='nsd'){
-      this.nsdsService.schemaNsDescriptor()
+      this.encService.schemaNsDescriptor()
       .subscribe(res => {
       //console.log("ressss",res)
       });

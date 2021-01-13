@@ -355,6 +355,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       if(this.vsbs[i]['obj']['blueprintId'] === this.selectedVsb){
         if(this.vsbs[i]['obj']['interSite'] !== undefined && this.vsbs[i]['obj']['interSite'] === true){
           this.interSite=true;
+          console.log("inter",this.interSite)
           this.showSiteinterMode=true;
           this.showSiteNotinterMode=false;
           this.bluePrintsAssosiate=this.vsbs[i]['obj']['atomicComponents'];
@@ -371,6 +372,7 @@ export class BlueprintsEStepperComponent implements OnInit {
         this.selectedSites=this.vsbs[i]['obj']['compatibleSites'];
         this.showSiteNotinterMode=true;
         this.interSite=false;
+        console.log("inter",this.interSite)
         this.showSiteinterMode=false;
       }
       if(this.vsbs[i]['obj']['parameters'] !== undefined){

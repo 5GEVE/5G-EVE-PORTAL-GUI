@@ -9,6 +9,8 @@ import { BlueprintsTcService } from '../../blueprints-tc.service';
 import { FormBuilder, FormArray, FormGroup, Validators, FormGroupName } from '@angular/forms';
 import { DescriptorsTcService } from '../../descriptors-tc.service';
 import { AuthService} from '../../auth.service';
+import { EncService } from '../../enc.service';
+
 
 @Component({
   selector: 'app-blueprints-tc',
@@ -37,7 +39,8 @@ export class BlueprintsTcComponent implements OnInit {
     private blueprintsTcService: BlueprintsTcService,
     private descriptorsTcService: DescriptorsTcService,
     private router: Router,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private encService: EncService ) { }
 
   ngOnInit() {
 
@@ -167,7 +170,7 @@ export class BlueprintsTcComponent implements OnInit {
   if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.tcbObj = JSON.parse(fileContents[0]);
-        this.blueprintsTcService.validateTcBlueprint(this.tcbObj)
+        this.encService.validateTcBlueprint(this.tcbObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("submit")).disabled = true;  
