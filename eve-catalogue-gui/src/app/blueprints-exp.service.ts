@@ -13,7 +13,6 @@ export class BlueprintsExpService {
 
   private baseUrl = environment.portalBaseUrl;
   private expBlueprintInfoUrl = 'expblueprint';
-  private supBaseUrl = environment.supportBaseUrl;
 
 
   httpOptions = {

@@ -348,14 +348,20 @@ export class BlueprintsEStepperComponent implements OnInit {
     Object.keys(this.selectedSiteArr).forEach(e =>  this.selectedSites.push(this.selectedSiteArr[e]));
 
   }
-  onVsbSelected(event: any,value) {
+  onVsbSelected($event: any) {
     this.selectedSite="";
-    this.selectedVsb = value;
+    for(var l of this.vsbs){
+      if(l.viewValue==$event.option.value){
+        this.selectedVsb =String(l.value) 
+      }
+    }
+
     for(var i = 0; i < this.vsbs.length; i++){
       if(this.vsbs[i]['obj']['blueprintId'] === this.selectedVsb){
+        
         if(this.vsbs[i]['obj']['interSite'] !== undefined && this.vsbs[i]['obj']['interSite'] === true){
           this.interSite=true;
-          console.log("inter",this.interSite)
+        //  console.log("composite mode",this.interSite)
           this.showSiteinterMode=true;
           this.showSiteNotinterMode=false;
           this.bluePrintsAssosiate=this.vsbs[i]['obj']['atomicComponents'];
@@ -372,7 +378,7 @@ export class BlueprintsEStepperComponent implements OnInit {
         this.selectedSites=this.vsbs[i]['obj']['compatibleSites'];
         this.showSiteNotinterMode=true;
         this.interSite=false;
-        console.log("inter",this.interSite)
+       // console.log("composite mode",this.interSite)
         this.showSiteinterMode=false;
       }
       if(this.vsbs[i]['obj']['parameters'] !== undefined){
@@ -625,6 +631,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   updateUnits(event, index){
     this.selectedMetric[index] = event.value;
   }
+
 
   createOnBoardExpBlueprintRequest(nsds: File[]) {
 

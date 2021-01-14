@@ -15,7 +15,6 @@ export class NsdsService {
 
   private baseUrl = environment.iwlBaseUrl;
   private nsdsInfoUrl = 'nsd/v1/ns_descriptors';
-  private supBaseUrl = environment.supportBaseUrl;
 
   httpOptions = {
     headers: new HttpHeaders(

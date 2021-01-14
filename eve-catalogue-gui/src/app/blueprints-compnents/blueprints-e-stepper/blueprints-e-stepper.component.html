@@ -44,14 +44,15 @@
 
                        [matAutocomplete]="auto"
                        style="cursor: pointer;">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.viewValue" (onSelectionChange)="onVsbSelected($event,option.value);">
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onVsbSelected($event)" >
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.viewValue" >
                     {{option.viewValue}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
 
               <!--
+                  (onSelectionChange)="onVsbSelected($event,option.value);"
                 <div *ngIf="interSite && showSiteinterMode">
                     <div *ngFor="let blue of bluePrintsAssosiate" style="color: black;margin-bottom: 20px;">
                         <b>{{blue.associatedVsbId}}</b>

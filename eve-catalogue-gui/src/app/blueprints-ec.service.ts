@@ -12,7 +12,6 @@ import { AuthService } from './auth.service';
 export class BlueprintsEcService {
 
   private baseUrl = environment.portalBaseUrl;
-  private supBaseUrl = environment.supportBaseUrl;
 
   private ctxBlueprintUrl = 'ctxblueprint';
 
