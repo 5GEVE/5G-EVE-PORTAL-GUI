@@ -60,7 +60,8 @@ export class ExperimentsExecuteDialogComponent implements OnInit {
   ngOnInit(): void {
     this.expExecForm = this._formBuilder.group({
       selectedAction: ['', Validators.required],
-      executionName: ['']
+      executionName: [''],
+      perfDiag: ['']
     });
   }
 

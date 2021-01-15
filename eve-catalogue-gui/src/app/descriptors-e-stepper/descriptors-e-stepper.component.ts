@@ -285,21 +285,21 @@ export class DescriptorsEStepperComponent implements OnInit {
         vsbId = this.expBlueprints[i]['item']['vsBlueprintId'];
       }
     }
-    // var ctxBlueprintIds = this.expBlueprint['ctxBlueprintIds'];
-    // var tcBlueprintIds = this.expBlueprint['tcBlueprintIds'];
-    // //console.log(ctxBlueprintIds);
-    // //console.log(tcBlueprintIds);
-    // if (ctxBlueprintIds !== undefined){
-    //   for (var i = 0; i < ctxBlueprintIds.length; i++) {
-    //     this.getCtxBlueprint(ctxBlueprintIds[i]);
-    //   }
-    // }
+    var ctxBlueprintIds = this.expBlueprint['ctxBlueprintIds'];
+    var tcBlueprintIds = this.expBlueprint['tcBlueprintIds'];
+    //console.log(ctxBlueprintIds);
+    //console.log(tcBlueprintIds);
+    if (ctxBlueprintIds !== undefined){
+      for (var i = 0; i < ctxBlueprintIds.length; i++) {
+        this.getCtxBlueprint(ctxBlueprintIds[i]);
+      }
+    }
 
 
-    // for (var i = 0; i < tcBlueprintIds.length; i++) {
-    //   this.getTcBlueprint(tcBlueprintIds[i]);
-    // }
-    //console.log(JSON.stringify(this.experimentDescriptorRequest));
+    for (var i = 0; i < tcBlueprintIds.length; i++) {
+      this.getTcBlueprint(tcBlueprintIds[i]);
+    }
+    console.log(JSON.stringify(this.experimentDescriptorRequest));
     this.getVsBlueprint(vsbId);
   }
 
@@ -400,7 +400,7 @@ export class DescriptorsEStepperComponent implements OnInit {
     this.blueprintsTcService.getTcBlueprint(tcBlueprintId).subscribe((tcBlueprintInfo: TcBlueprintInfo) =>
       {
         this.tcBlueprints.push({value: tcBlueprintInfo['testCaseBlueprintId'], viewValue: tcBlueprintInfo['testCaseBlueprint']['description'], item: tcBlueprintInfo['testCaseBlueprint']});
-        //console.log(this.tcBlueprints);
+        console.log(this.tcBlueprints);
       });
   }
 
@@ -470,16 +470,22 @@ export class DescriptorsEStepperComponent implements OnInit {
           if(this.tempSliceProfiles[j]['radioAccessTechnology'] !== undefined){
             switch(this.tempSliceProfiles[j]['radioAccessTechnology']){
               case '5GSA': {
-                sliceElement['radioAccessTechnology'] = 'FIVEG_SA'; break;
+                sliceElement['radioAccessTechnology'] = 'FIVE_G_SA'; break;
               }
               case '5GNSA': {
-                sliceElement['radioAccessTechnology'] = 'FIVEG_NSA'; break;
+                sliceElement['radioAccessTechnology'] = 'FIVE_G_NSA'; break;
               }
               case '4G': {
-                sliceElement['radioAccessTechnology'] = 'FOURG'; break;
+                sliceElement['radioAccessTechnology'] = 'FOUR_G'; break;
               }
               case '5GmmWave': {
-                sliceElement['radioAccessTechnology'] = 'FIVEG_mmWave'; break;
+                sliceElement['radioAccessTechnology'] = 'FIVE_G_mmWave'; break;
+              }
+              case 'LTE-M': {
+                sliceElement['radioAccessTechnology'] = 'LTE_M'; break;
+              }
+              case 'NB-IoT': {
+                sliceElement['radioAccessTechnology'] = 'NB_IoT'; break;
               }
               default: {
                 sliceElement['radioAccessTechnology'] = this.tempSliceProfiles[j]['radioAccessTechnology']; break;
@@ -546,11 +552,11 @@ export class DescriptorsEStepperComponent implements OnInit {
     onBoardExpRequest['vsDescriptor']['sla']['serviceCreationTime'] = this.secondFormGroup.get('timeType').value;
     onBoardExpRequest['vsDescriptor']['sla']['lowCostRequired'] = this.secondFormGroup.get('isLowCost').value;
     onBoardExpRequest['vsDescriptor']['isPublic'] = this.secondFormGroup.get('isPublic').value;*/
-
+    console.log(this.tcBlueprints);
     for (var i = 0; i < this.tcBlueprints.length; i++) {
       var tempTc = {};
       tempTc['blueprintId'] = this.tcBlueprints[i].value;
-      //console.log(this.tcBlueprints[i]);
+      console.log(this.tcBlueprints[i]);
 
       if(this.tcBlueprints[i]['item']['userParameters'] !== undefined){
         tempTc['parameters'] = {};
@@ -574,13 +580,11 @@ export class DescriptorsEStepperComponent implements OnInit {
 
 
     console.log('onBoardExpRequest: ' + JSON.stringify(this.experimentDescriptorRequest, null, 4));
-
     this.descriptorsExpService.postExpDescriptor(this.experimentDescriptorRequest)
       .subscribe(expDescriptortId => {
         //console.log("Successfully uploaded new Exp Descriptor with id " + expDescriptortId);
         this.descriptorExperiments.selectedIndex = 0;
         this.descriptorExperiments.getExpDescriptors();
-
       });
   }
 }

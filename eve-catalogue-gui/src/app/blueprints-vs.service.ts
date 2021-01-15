@@ -13,17 +13,17 @@ export class BlueprintsVsService {
 
   private baseUrl = environment.portalBaseUrl;
   private supBaseUrl = environment.supportBaseUrl;
-  
+
   private vsBlueprintInfoUrl = 'vsblueprint';
 
   httpOptions = {
     headers: new HttpHeaders(
       { 'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + localStorage.getItem('token')
-      })  
+      })
     };
 
-  constructor(private http: HttpClient, 
+  constructor(private http: HttpClient,
     private authService: AuthService) { }
 
   getVsBlueprints(): Observable<VsBlueprintInfo[]> {
@@ -58,6 +58,9 @@ export class BlueprintsVsService {
     );
   }
   validateVsBlueprint(onBoardVsRequest: Object): Observable<String> {
+    // Please remove the following two lines and enable the rest after the update of the ENC
+    // let alwaysTrue : Observable<String> = new Observable<String>();
+    // return alwaysTrue;
     return this.http.post(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
       .pipe(
         tap((blueprintId: String) => console.log("validate vsb")),

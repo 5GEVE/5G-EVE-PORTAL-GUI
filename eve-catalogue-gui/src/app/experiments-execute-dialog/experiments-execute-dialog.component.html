@@ -36,6 +36,13 @@
         <mat-label>Execution name</mat-label>
         <input matInput formControlName="executionName" placeholder="label" value="">
       </mat-form-field>
+      <mat-form-field *ngIf="expExecForm.get('selectedAction').value == 'execute'">
+        <mat-label>Performance Diagnostic tool</mat-label>
+        <mat-select formControlName="perfDiag">
+          <mat-option value="true">ENABLED</mat-option>
+          <mat-option value="false">DISABLED</mat-option>
+        </mat-select>
+      </mat-form-field>
     </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-raised-button color="warn" (click)="onNoClick()">Close</button>

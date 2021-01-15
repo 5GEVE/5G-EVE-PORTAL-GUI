@@ -31,6 +31,7 @@ export class ExecutionTcDetailsComponent implements OnInit {
   expId: string;
   expName: string;
   expDid: string;
+  perfDiag: string;
 
   experimentDescriptor: ExpDescriptorInfo;
 
@@ -67,6 +68,7 @@ export class ExecutionTcDetailsComponent implements OnInit {
     this.expId = localStorage.getItem('expId');
     this.expName = localStorage.getItem('expName');
     this.expDid = localStorage.getItem('expDid');
+    this.perfDiag = localStorage.getItem('perfDiag');
     this.getData(this.expDid);
     this.userParametersFormGroup = this._formBuilder.group({
 
@@ -131,6 +133,7 @@ export class ExecutionTcDetailsComponent implements OnInit {
   }
 
   createTcList() {
+    // console.log(this.experimentDescriptor);
     for (let i = 0; i < this.experimentDescriptor.testCaseDescriptorIds.length; i++){
       for (let j = 0; j < this.testCaseDescriptors.length; j ++) {
         this.isSelected[j] = false;
@@ -168,11 +171,14 @@ export class ExecutionTcDetailsComponent implements OnInit {
     }
     tempTc['experimentId'] = localStorage.getItem('expId');
     tempTc['executionName'] = localStorage.getItem('expName');
+    if(this.perfDiag === "true"){
+      tempTc['perfDiag'] = true;
+    }
     tempTc['testCaseDescriptorConfiguration'] = testCaseDescriptorConfiguration;
 
-    
+    //console.log(JSON.stringify(tempTc));
     this.experimentsService.executeExperimentAction(tempTc, 'execute').subscribe(
-      
+
           () => {
             this.getExperiments();
             this.router.navigate(['/experiments']);
@@ -180,5 +186,5 @@ export class ExecutionTcDetailsComponent implements OnInit {
         );
 
   }
-  
+
 }

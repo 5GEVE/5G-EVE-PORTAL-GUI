@@ -187,10 +187,10 @@ export class ExperimentsComponent implements OnInit {
     return localStorage.getItem('role');
   }
 
-  openMgmtDialog(expId: string, expStatus: string) {
+  openMgmtDialog(expId: string, expStatus: string, perfDiag) {
     const dialogRef = this.dialog.open(ExperimentsMgmtDialogComponent, {
       width: '30%',
-      data: {expId: expId, expStatus: expStatus, expExecutions: []}
+      data: {expId: expId, expStatus: expStatus, perfDiag: perfDiag, expExecutions: []}
     });
 
     dialogRef.afterClosed().subscribe(selectedStatus => {
@@ -199,6 +199,9 @@ export class ExperimentsComponent implements OnInit {
         var changeStatusRequest = {};
         changeStatusRequest['experimentId'] = expId;
         changeStatusRequest['status'] = selectedStatus;
+        if(perfDiag === 'true'){
+          changeStatusRequest['perfDiag'] = true;
+        }
 
         //console.log('changeStatusRequest: ' + JSON.stringify(changeStatusRequest, null, 4));
 
@@ -236,10 +239,12 @@ export class ExperimentsComponent implements OnInit {
         var actionRequested = formContent.get('selectedAction').value;
         actionRequest['experimentId'] = expId;
         actionRequest['executionName'] = formContent.get('executionName').value;
-        //console.log('changeStatusRequest: ' + JSON.stringify(actionRequest, null, 4));
+        actionRequest['perfDiag'] = formContent.get('perfDiag').value;
+        console.log('changeStatusRequest: ' + JSON.stringify(actionRequest, null, 4));
         localStorage.setItem('expId', expId);
         localStorage.setItem('expName', formContent.get('executionName').value);
         localStorage.setItem('expDid', expDId);
+        localStorage.setItem('perfDiag', formContent.get('perfDiag').value);
         if (formContent.get('selectedAction').value === 'execute') {
           this.router.navigate(['./execute_tc_details']);
         } else {
