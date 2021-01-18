@@ -1,6 +1,6 @@
 
 
-/*
+
 export const environment = {
   production: false,
   portalBaseUrl: 'http://10.5.7.10:8082/portal/catalogue/',
@@ -17,8 +17,9 @@ export const environment = {
   supportBaseUrl: 'http://10.5.7.10:8086/'
 };
 
-*/
 
+
+/*
 export const environment = {
   production: false,
   portalBaseUrl: 'http://10.30.8.17:8082/portal/catalogue/',
@@ -35,3 +36,5 @@ export const environment = {
   supportBaseUrl: 'http://10.30.8.17:8086/',
   iwfRepositoryUrl: 'http://10.3.3.30:8087/'
 };
+*/
+
