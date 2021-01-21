@@ -12,5 +12,5 @@ export const environment = {
     formulaCheckUrl: 'http://10.5.7.10:8989/check',
     backServerUrl: '',
     supportBaseUrl: 'http://10.30.8.17:8086/',
-    iwfUrl: 'http://10.3.3.30:8087/'
+    iwfRepositoryUrl: 'http://10.3.3.30:8087/'
   };

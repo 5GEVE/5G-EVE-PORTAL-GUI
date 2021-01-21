@@ -20,7 +20,7 @@ export class FooterComponent implements OnInit {
     "link":"https://portal.5g-eve.eu",
     "context":"Portal to to design, manage and monitor experiments over the 5G EVE end-to--end facility infrastructures."},
     {"title":"5G EVE Documentation",
-    "link":"https://www.it.uc3m.es/jgr/5G-EVE/5G_EVE_Portal_User_Manual.pdf",
+    "link":"https://portal.5g-eve.eu/5G-EVE_Portal_User_Manual.pdf",
     "context":"Documentation for experimenters and developers operating on 5G EVE."},
     {"title":"Report Issues",
     "link":"https://portal.5g-eve.eu/#/tickets",
