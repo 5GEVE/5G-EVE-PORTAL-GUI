@@ -6,6 +6,8 @@ export class VsDescriptorInfo {
     sst: string;
     managementType: string;
     qosParameters: Map<string, string>;
-    serviceConstraints: Object[];        
+    serviceConstraints: Object[];
     sla: Map<string, string>;
+    sliceProfiles: Map<string, object> = new Map<string, object>();
+
 }

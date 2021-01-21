@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
@@ -5,6 +6,7 @@ import { BlueprintsVsService } from '../../blueprints-vs.service';
 import { BlueprintsVsComponent} from '../blueprints-vs/blueprints-vs.component';
 import { NsdsService} from '../../nsds.service';
 import { AuthService} from '../../auth.service';
+import { EncService } from '../../enc.service';
 
 @Component({
   selector: 'app-blueprints-vs-stepper',
@@ -18,6 +20,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
   vsbObj: Object;
   validator:boolean;
   dfs: String[] = [];
+  showSteps:boolean;
 
   instLevels: String[] = [];
 
@@ -34,10 +37,11 @@ export class BlueprintsVsStepperComponent implements OnInit {
     private blueprintsVsService: BlueprintsVsService,
     private blueprintsVsComponent: BlueprintsVsComponent,
     private nsdsService: NsdsService,
-    private authService: AuthService) {
+    private authService: AuthService,private encService: EncService) {
   }
 
   ngOnInit() {
+    this.showSteps=true;
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
     });
@@ -76,7 +80,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
       });
       promises.push(vsbPromise);
      }else{
-      this.authService.log(`the file is not json`, 'FAILED', false);
+      this.authService.log('the file is not json', 'FAILED', false);
       (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
 
     }
@@ -91,7 +95,33 @@ export class BlueprintsVsStepperComponent implements OnInit {
         this.translationParams.push(this.vsbObj['parameters'][i]['parameterId']);
       }
     }
-    this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+
+    // if(this.vsbObj.hasOwnProperty('interSite')){
+    //   (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'none';
+    //   (<HTMLInputElement> document.getElementById("submitButtonFirst")).style.display = 'inline';
+    //   this.showSteps=false;
+    //   }
+    //   else{
+
+    //     (<HTMLInputElement> document.getElementById("firstNext")).style.display = 'inline';
+    //     (<HTMLInputElement> document.getElementById("submitButtonFirst")).style.display = 'none';
+    //     this.showSteps=true;
+    //     /*
+    //     this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+    //     .subscribe(res => {
+    //       if(res===undefined){
+    //         (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
+    //       }else{
+    //         (<HTMLInputElement> document.getElementById("firstNext")).disabled = false;
+
+    //       }
+
+    //     });
+    //     */
+    //   }
+
+  
+    this.encService.validateVsBlueprint(this.vsbObj)
     .subscribe(res => {
       if(res===undefined){
         (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
@@ -101,9 +131,10 @@ export class BlueprintsVsStepperComponent implements OnInit {
       }
 
     });
-
+    
   });
  }
+
 
 
   }
@@ -112,7 +143,8 @@ export class BlueprintsVsStepperComponent implements OnInit {
     //console.log(event);
     //this.uploadedNsdName = event.target.files[0].name;
 
-    let promises = [];
+
+let promises = [];
 
     for (let nsd of nsds) {
       if(nsd.type=='application/json' && nsd.name.includes('json')){
@@ -124,7 +156,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
         });
         promises.push(nsdPromise);
       }else{
-        this.authService.log(`the file is not json`, 'FAILED', false);
+        this.authService.log('the file is not json', 'FAILED', false);
         (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;
 
       }
@@ -139,8 +171,9 @@ export class BlueprintsVsStepperComponent implements OnInit {
         this.thirdFormGroup.get('nsdVersion').setValue(this.nsdObj['version']);
 
         this.dfs = this.nsdObj['nsDf'];
-
-        this.nsdsService.validateNsDescriptor(this.nsdObj)
+        //console.log("nsdid: " + this.thirdFormGroup.get('nsdId'));
+      
+        this.encService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;
@@ -149,6 +182,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
 
           }
         });
+        
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });
@@ -195,7 +229,6 @@ export class BlueprintsVsStepperComponent implements OnInit {
       });
       promises.push(blueprintPromise);
 
-
       Promise.all(promises).then(fileContents => {
           onBoardVsRequest['vsBlueprint'] = JSON.parse(fileContents[0]);
           for (var i = 1; i < fileContents.length; i++) {
@@ -207,7 +240,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
 
           this.blueprintsVsService.postVsBlueprint(onBoardVsRequest)
           .subscribe(vsBlueprintId => {
-            console.log("VS Blueprint with id " + vsBlueprintId);
+            //console.log("VS Blueprint with id " + vsBlueprintId);
             this.blueprintsVsComponent.selectedIndex = 0;
             this.blueprintsVsComponent.getVsBlueprints();
           });
@@ -231,7 +264,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
       });
       promises.push(blueprintPromise);
 
-      for (let nsd of nsds) {
+    for (let nsd of nsds) {
           let nsdPromise = new Promise(resolve => {
               let reader = new FileReader();
               reader.readAsText(nsd);
@@ -264,7 +297,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
 
                       //translationRule['blueprintId'] = blueprintId;
           var paramsRows = this.thirdFormGroup.controls.items as FormArray;
-         // console.log(paramsRows.controls);
+          //console.log(paramsRows.controls);
           var controls = paramsRows.controls;
           var paramsObj = [];
 
@@ -293,4 +326,3 @@ export class BlueprintsVsStepperComponent implements OnInit {
   }
   }
 }
-

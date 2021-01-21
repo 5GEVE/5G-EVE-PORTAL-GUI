@@ -11,4 +11,6 @@ export class VsBlueprint {
     applicationMetrics: Object[];
     compatibleSites: string[];
     compatibleContextBlueprint: string[];
+    interSite: boolean;
+    sliceType: string;
 }

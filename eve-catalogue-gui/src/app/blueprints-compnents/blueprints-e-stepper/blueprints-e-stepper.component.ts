@@ -15,8 +15,9 @@ import { FormulaCheckInfo} from '../../formula-check-info';
 import { BlueprintsEComponent} from '../blueprints-e/blueprints-e.component';
 import { NsdsService} from '../../nsds.service';
 import { AuthService} from '../../auth.service';
-
-
+import {FormControl} from '@angular/forms';
+import { Observable } from "rxjs";
+import { map, startWith } from "rxjs/operators";
 
 export interface Site {
   value: string;
@@ -55,7 +56,6 @@ export interface ActiveTcb {
 export class BlueprintsEStepperComponent implements OnInit {
 
 
-
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
   isLinear = true;
   currentStep = 0;
@@ -63,6 +63,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   invalidFormula: boolean[] = [];
   isRegularExpression = true;
   selectedSite: string;
+  selectedSites: any;
   selectedVsb: string;
   deploymentType: string;
   expBlueprintName: string;
@@ -72,6 +73,10 @@ export class BlueprintsEStepperComponent implements OnInit {
   metricNames: string[] = [];
   kpiNames: string[] = [];
   selectedTcbs: string[] = [];
+  interSite:boolean;
+  showSiteNotinterMode:boolean;
+  showSiteinterMode:boolean;
+  nsdFiles:any;
 
   sites: Site[] = [
     {value: 'ITALY_TURIN', viewValue: 'Turin, Italy'},
@@ -121,15 +126,17 @@ export class BlueprintsEStepperComponent implements OnInit {
   nsdObj: Object;
 
   dfs: String[] = [];
-
+  allVsbsElem:any;
   instLevels: String[] = [];
-
+  allVsb:any;
   translationParams: String[] = [];
-
+  bluePrintsAssosiate = [];
+  compatibleSites:any;
   vsbs: Blueprint[] = [];
   ctxbs: Blueprint[] = [];
   tcbs: Blueprint[] = [];
-
+  selectedSiteArr=[];
+  //nsdArr=[];
   items: FormArray;
   metric_items: FormArray;
   kpi_items: FormArray;
@@ -140,8 +147,11 @@ export class BlueprintsEStepperComponent implements OnInit {
   fourthFormGroup: FormGroup;
   fifthFormGroup: FormGroup;
   sixthFormGroup: FormGroup;
-
+  nsdArr: any;
+  nsdArrMandatory:any;
+  nsdListMap : Map<string, any> = new Map<string, any>();
   activeTestsCases: ActiveTcb[] = [];
+  selectedContexts: Map<string, string> = new Map<string, string>();;
 
   constructor(private _formBuilder: FormBuilder,
     private blueprintsVsService: BlueprintsVsService,
@@ -155,7 +165,15 @@ export class BlueprintsEStepperComponent implements OnInit {
     ) {
   }
 
+  myControl = new FormControl();
+  filteredOptions: Observable<any>;
+  vsbName:any;
   ngOnInit() {
+    this.selectedSites=[];
+    this.interSite=false;
+    this.showSiteNotinterMode=false;
+    this.showSiteinterMode=false;
+    this.getAllVsBlueprints();
     this.getVsBlueprints();
     this.getCtxBlueprints();
     this.getTcBlueprints();
@@ -168,11 +186,12 @@ export class BlueprintsEStepperComponent implements OnInit {
       deploymentTypeCtrl: ['', Validators.required]
     });
     this.firstFormGroup = this._formBuilder.group({
-      selectSiteCtrl: ['', Validators.required],
-      selectVsbCtrl: ['', Validators.required]
+      //selectSiteCtrl: ['', Validators.required],
+      selectVsbCtrl: ['']
     });
     this.secondFormGroup = this._formBuilder.group({
-      selectCbsCtrl: ['', Validators.required]
+      selectCbsCtrl: ['', Validators.required],
+      selectNoCbsCtrl: ['', Validators.required]
     });
     this.thirdFormGroup = this._formBuilder.group({
       uploadNsdCtrl: ['', Validators.required]
@@ -194,10 +213,17 @@ export class BlueprintsEStepperComponent implements OnInit {
 
   }
 
+  private _filter(value: string): Blueprint[] {
+    const filterValue = value.toLowerCase();
+    return this.vsbs.filter(option =>
+      option.viewValue.toLowerCase().includes(filterValue)
+    );
+
+
+  }
 
   validateFormula(event: any, index){
     this.invalidFormula[index] = false;
-    // console.log(value.target.value );
     if (event.target.value === undefined || event.target.value === '') {
       this.invalidFormula[index] = false;
     } else {
@@ -235,7 +261,8 @@ export class BlueprintsEStepperComponent implements OnInit {
       metricId: '',
       metricGraphType: '',
       name: '',
-      unit: ''
+      unit: '',
+      metricSelectSite:''
     });
   }
 
@@ -252,6 +279,7 @@ export class BlueprintsEStepperComponent implements OnInit {
       unit: ''
     });
   }
+
 
   goToStepIndex(index: number) {
     this.stepper.selectedIndex = index;
@@ -310,28 +338,75 @@ export class BlueprintsEStepperComponent implements OnInit {
     }
   }
 
-  onSiteSelected(event: any) {
-    //console.log(event);
+  onSiteSelected(event: any,associatedVsbId) {
+
     this.selectedSite = event.value;
+    //this.selectedSiteArr[associatedVsbId]=this.selectedSite;
+}
+
+  onClickSecondNext(){
+    Object.keys(this.selectedSiteArr).forEach(e =>  this.selectedSites.push(this.selectedSiteArr[e]));
+
   }
-
-  onVsbSelected(event: any) {
-    //console.log(event);
-    this.selectedVsb = event.value;
-
-    for (var i = 0; i < this.vsbs.length; i ++) {
-      if (this.vsbs[i]['obj']['blueprintId'] == event.value) {
-        if(this.vsbs[i]['obj']['parameters'] !== undefined){
-          for (var j = 0; j < this.vsbs[i]['obj']['parameters'].length; j++) {
-            this.translationParams.push(this.vsbs[i]['obj']['parameters'][j]['parameterId']);
-            this.items = this.fourthFormGroup.get('items') as FormArray;
-            this.items.push(this.createItem());
-          }
-          //console.log(this.translationParams);
-        }
+  onVsbSelected($event: any) {
+    this.selectedSite="";
+    for(var l of this.vsbs){
+      if(l.viewValue==$event.option.value){
+        this.selectedVsb =String(l.value) 
       }
     }
+
+    for(var i = 0; i < this.vsbs.length; i++){
+      if(this.vsbs[i]['obj']['blueprintId'] === this.selectedVsb){
+        
+        if(this.vsbs[i]['obj']['interSite'] !== undefined && this.vsbs[i]['obj']['interSite'] === true){
+          this.interSite=true;
+        //  console.log("composite mode",this.interSite)
+          this.showSiteinterMode=true;
+          this.showSiteNotinterMode=false;
+          this.bluePrintsAssosiate=this.vsbs[i]['obj']['atomicComponents'];
+          for(var bl of this.bluePrintsAssosiate){
+            if(!this.selectedSites.includes(bl['compatibleSite'])){
+              this.selectedSites.push(bl['compatibleSite']);
+            }
+            this.selectedSiteArr[bl['associatedVsbId']]=bl['compatibleSite'];
+          }
+
+      }
+      else{
+        this.bluePrintsAssosiate=this.vsbs[i]['obj']['compatibleSites'];
+        this.selectedSites=this.vsbs[i]['obj']['compatibleSites'];
+        this.showSiteNotinterMode=true;
+        this.interSite=false;
+       // console.log("composite mode",this.interSite)
+        this.showSiteinterMode=false;
+      }
+      if(this.vsbs[i]['obj']['parameters'] !== undefined){
+        for (var j = 0; j < this.vsbs[i]['obj']['parameters'].length; j++) {
+          this.translationParams.push(this.vsbs[i]['obj']['parameters'][j]['parameterId']);
+          this.items = this.fourthFormGroup.get('items') as FormArray;
+          this.items.push(this.createItem());
+        }
+      }
+      }
+
+
+    }
+    // for (var i = 0; i < this.vsbs.length; i ++) {
+    //   if (this.vsbs[i]['obj']['blueprintId'] == event.value) {
+
+    //     if(this.vsbs[i]['obj']['parameters'] !== undefined){
+    //       for (var j = 0; j < this.vsbs[i]['obj']['parameters'].length; j++) {
+    //         this.translationParams.push(this.vsbs[i]['obj']['parameters'][j]['parameterId']);
+    //         this.items = this.fourthFormGroup.get('items') as FormArray;
+    //         this.items.push(this.createItem());
+    //       }
+    //     }
+    //   }
+    // }
   }
+
+
   verifyForm(step: number){
     if(step == 0){
       if(this.zeroFormGroup.valid){
@@ -344,29 +419,44 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.expBlueprintName = event.target.value;
   }
 
-  onSelectedCb(event: any) {
-    //console.log(event);
-    this.selectedCbs.push(event.value);
-
-    for (var i = 0; i < this.ctxbs.length; i ++) {
-      if (this.ctxbs[i]['obj']['blueprintId'] == event.value) {
-        if (this.ctxbs[i]['obj']['parameters'] !== undefined){
-          for (var j = 0; j < this.ctxbs[i]['obj']['parameters'].length; j++) {
-            this.items = this.fourthFormGroup.get('items') as FormArray;
-            this.items.push(this.createItem());
-            this.translationParams.push(this.ctxbs[i]['obj']['parameters'][j]['parameterId']);
+  onSelectedCb(event: any, cb: string, vsbId: any) {
+    if(event.checked){
+      console.log(event.source);
+      this.secondFormGroup.controls['selectNoCbsCtrl'].disable();
+      if(!this.selectedCbs.includes(event.source.value)){
+        this.selectedCbs.push(event.source.value);
+        if (!this.interSite){
+          for (var i = 0; i < this.ctxbs.length; i ++) {
+            if (this.ctxbs[i]['obj']['blueprintId'] == event.source.value) {
+              if (this.ctxbs[i]['obj']['parameters'] !== undefined){
+                for (var j = 0; j < this.ctxbs[i]['obj']['parameters'].length; j++) {
+                  this.items = this.fourthFormGroup.get('items') as FormArray;
+                  this.items.push(this.createItem());
+                  this.translationParams.push(this.ctxbs[i]['obj']['parameters'][j]['parameterId']);
+                }
+              }
+            }
           }
-
+        } else {
+          this.selectedContexts[cb] = vsbId;
         }
-        //console.log(this.translationParams);
+      }
+    }else{
+      this.secondFormGroup.controls['selectNoCbsCtrl'].enable();
+      const index: number = this.selectedCbs.indexOf(event.source.value);
+      if (index !== -1) {
+          this.selectedCbs.splice(index, 1);
+      }
+      if (this.selectedContexts.hasOwnProperty(cb)) {
+          delete this.selectedContexts[cb];
       }
     }
+    console.log("CB: " + JSON.stringify(this.selectedContexts));
   }
 
-  onUploadedNsd(event: any, nsds: File[]) {
-    //console.log(event);
+  onUploadedNsd(event: any, nsds: File[], vsbId ,mode) {
     this.uploadedNsdName = event.target.files[0].name;
-
+    this.nsdArr=[];
     let promises = [];
 
     for (let nsd of nsds) {
@@ -387,11 +477,21 @@ export class BlueprintsEStepperComponent implements OnInit {
   if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.nsdObj = JSON.parse(fileContents[0]);
+        if(mode=="optional"){
+          this.nsdArr.push(this.nsdObj);
+        }
+        if(vsbId!=null){
+          this.nsdListMap.set(String(vsbId), this.nsdArr[0]);
 
+        }
+        if(mode=="mandatory"){
+          this.nsdArrMandatory=this.nsdObj;
+        }
         this.fourthFormGroup.get('nsdIdCtrl').setValue(this.nsdObj['nsdIdentifier']);
         this.fourthFormGroup.get('nsdVersionCtrl').setValue(this.nsdObj['version']);
 
         this.dfs = this.nsdObj['nsDf'];
+        /*
         this.nsdsService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
           if(res===undefined){
@@ -401,6 +501,7 @@ export class BlueprintsEStepperComponent implements OnInit {
 
           }
         });
+        */
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });
@@ -443,7 +544,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   }
 
   onSelectedTcbs(event: any, tcb: any) {
-    console.log(tcb);
+    //console.log(tcb);
     this.selectedTcbs = [];
     for (let i = 0; i < this.activeTestsCases.length; i++){
       if(this.activeTestsCases[i].value === tcb){
@@ -456,20 +557,31 @@ export class BlueprintsEStepperComponent implements OnInit {
       if (this.activeTestsCases[i].enabled === true){
         this.selectedTcbs.push(this.activeTestsCases[i].value);
       }
-      console.log(this.selectedTcbs);
+     // console.log(this.selectedTcbs);
     }
 
   }
 
   getVsBlueprints() {
+    this.vsbName=[];
     this.blueprintsVsService.getVsBlueprints().subscribe((vsBlueprintInfos: VsBlueprintInfo[]) =>
       {
         for (var i = 0; i < vsBlueprintInfos.length; i++) {
-          this.vsbs.push({value: vsBlueprintInfos[i]['vsBlueprintId'], viewValue: vsBlueprintInfos[i]['vsBlueprint']['description'], sites: vsBlueprintInfos[i]['vsBlueprint']['compatibleSites'], obj: vsBlueprintInfos[i]['vsBlueprint']});
+          this.vsbs.push({value: vsBlueprintInfos[i]['vsBlueprintId'], viewValue: vsBlueprintInfos[i]['vsBlueprint']['name'], sites: vsBlueprintInfos[i]['vsBlueprint']['compatibleSites'], obj: vsBlueprintInfos[i]['vsBlueprint']});
+          this.vsbName.push(vsBlueprintInfos[i]['vsBlueprint']['name']);
         }
+
+        this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(""),
+        map(value => this._filter(value))
+      );
       });
   }
 
+  getAllVsBlueprints() {
+    return this.vsbs;
+
+  }
   filterVsbsInSite(){
     return this.vsbs.filter(x => x.sites.indexOf(this.selectedSite) >= 0);
   }
@@ -495,8 +607,11 @@ export class BlueprintsEStepperComponent implements OnInit {
       });
   }
 
-  filterCtxbsInSite(){
-    return this.ctxbs.filter(x => x.sites.indexOf(this.selectedSite) >= 0);
+  filterCtxbsInSite(site){
+    if(site==null){
+      site=this.selectedSite;
+    }
+    return this.ctxbs.filter(x => x.sites.indexOf(site) >= 0);
   }
 
   getTcBlueprints() {
@@ -517,11 +632,27 @@ export class BlueprintsEStepperComponent implements OnInit {
     this.selectedMetric[index] = event.value;
   }
 
+
   createOnBoardExpBlueprintRequest(nsds: File[]) {
+
     var onBoardExpRequest = JSON.parse('{}');
+
+
+  //  console.log("fffffffffff",JSON.stringify(jsonObject))
+
     if (this.deploymentType !== "STATIC"){
+      let jsonObject = {};
+      this.nsdListMap.forEach((value, key) => {
+          jsonObject[key] = value
+      });
+
+
+      onBoardExpRequest['enhancedVsbs']= jsonObject;
+
       onBoardExpRequest['nsds'] = [];
+
       onBoardExpRequest['translationRules'] = [];
+      onBoardExpRequest['contextComponent'] = this.selectedContexts;
     }
 
 
@@ -529,30 +660,43 @@ export class BlueprintsEStepperComponent implements OnInit {
 
     let promises = [];
 
+
     if (this.deploymentType !== "STATIC"){
-      for (let nsd of nsds) {
-        let nsdPromise = new Promise(resolve => {
-            let reader = new FileReader();
-            reader.readAsText(nsd);
-            reader.onload = () => resolve(reader.result);
-        });
-        promises.push(nsdPromise);
-    }
+      onBoardExpRequest['nsds'].push(this.nsdArrMandatory);
+  /*
+        for (let nsd of this.nsdFiles) {
+          let nsdPromise = new Promise(resolve => {
+              let reader = new FileReader();
+              reader.readAsText(nsd);
+              reader.onload = () => resolve(reader.result);
+          });
+          promises.push(nsdPromise);
+      }
+      */
   }
+
     Promise.all(promises).then(fileContents => {
+      var blueprintId = this.zeroFormGroup.get('bpIdCtrl').value;
+       var blueprintName = this.zeroFormGroup.get('bpNameCtrl').value;
+       var bluepritnVersion = this.zeroFormGroup.get('bpVersionCtrl').value;
+       var blueprintDesc = this.zeroFormGroup.get('bpDescriptionCtrl').value;
+
       if (this.deploymentType !== "STATIC"){
-
+        /*
       for (var i = 0; i < fileContents.length; i++) {
-          onBoardExpRequest['nsds'].push(JSON.parse(fileContents[i]));
+        onBoardExpRequest['nsds'].push(JSON.parse(fileContents[i]));
         }
+        */
 
-        if (this.translationParams === []){
+
+        //console.log(this.translationParams);
+        if (this.translationParams !== []){
           var translationRule = JSON.parse('{}');
           var nsdId = this.fourthFormGroup.get('nsdIdCtrl').value;
           var nsdVersion = this.fourthFormGroup.get('nsdVersionCtrl').value;
           var nsFlavourId = this.fourthFormGroup.get('nsFlavourIdCtrl').value;
           var nsInstLevel = this.fourthFormGroup.get('nsInstLevelIdCtrl').value;
-          translationRule['blueprintId'] = blueprintId;
+          //translationRule['blueprintId'] = blueprintId;
           translationRule['nsdId'] = nsdId;
           translationRule['nsdVersion'] = nsdVersion;
           translationRule['nsFlavourId'] = nsFlavourId;
@@ -564,33 +708,31 @@ export class BlueprintsEStepperComponent implements OnInit {
 
           for (var j = 0; j < controls.length; j++) {
             paramsObj.push(controls[j].value);
-            //console.log(paramsObj);
           }
           translationRule['input'] = paramsObj;
           onBoardExpRequest.translationRules.push(translationRule);
         }
       }
 
-        var blueprintId = this.zeroFormGroup.get('bpIdCtrl').value;
-        var blueprintName = this.zeroFormGroup.get('bpNameCtrl').value;
-        var bluepritnVersion = this.zeroFormGroup.get('bpVersionCtrl').value;
-        var blueprintDesc = this.zeroFormGroup.get('bpDescriptionCtrl').value;
 
-        //expBlueprint['expBlueprintId'] = blueprintId;
+
+
+
+        // expBlueprint['expBlueprintId'] = blueprintId;
         expBlueprint['description'] = blueprintDesc;
+
         expBlueprint['name'] = blueprintName;
         expBlueprint['version'] = bluepritnVersion;
 
         expBlueprint['vsBlueprintId'] = this.selectedVsb;
         expBlueprint['ctxBlueprintIds'] = this.selectedCbs;
         expBlueprint['tcBlueprintIds'] = this.selectedTcbs;
-        expBlueprint['sites'] = [this.selectedSite];
+        expBlueprint['sites']=this.selectedSites;
         expBlueprint['deploymentType'] = this.zeroFormGroup.get('deploymentTypeCtrl').value;
 
 
         var metrics = this.fifthFormGroup.controls.metric_items as FormArray;
         var metric_controls = metrics.controls;
-        console.log(metric_controls);
         var metricsObj = [];
 
         for (var j = 0; j < metric_controls.length; j++) {
@@ -600,16 +742,14 @@ export class BlueprintsEStepperComponent implements OnInit {
             newMetric['interval'] = metric_controls[j].value['interval'];
             newMetric['metricCollectionType'] = metric_controls[j].value['metricCollectionType'];
             newMetric['metricGraphType'] = metric_controls[j].value['metricGraphType'];
-            newMetric['metricId'] = metric_controls[j].value['iMetricType'];
+            newMetric['targetSite'] = metric_controls[j].value['metricSelectSite'];
+            newMetric['metricId'] = metric_controls[j].value['metricId'];
             newMetric['name'] = metric_controls[j].value['name'];
             newMetric['unit'] = metric_controls[j].value['unit'];
             metricsObj.push(newMetric);
           }
         }
-        //console.log(metricsObj);
           expBlueprint['metrics'] = metricsObj;
-        //console.log(expBlueprint);
-
 
         var kpis = this.fifthFormGroup.controls.kpi_items as FormArray;
         var kpi_controls = kpis.controls;
@@ -633,17 +773,20 @@ export class BlueprintsEStepperComponent implements OnInit {
             }
             kpisObj.push(newKpiObj);
           }
-          //console.log(kpisObj);
        }
           expBlueprint['kpis'] = kpisObj;
 
         onBoardExpRequest['expBlueprint'] = expBlueprint;
 
-        //console.log('onBoardVsRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
+       // console.log('onBoardExpRequest: ' + JSON.stringify(onBoardExpRequest, null, 4));
+
+
+
 
       this.blueprintsExpService.postExpBlueprint(onBoardExpRequest)
         .subscribe(expBlueprintId => {
          // console.log("EXP Blueprint with id " + expBlueprintId);
+
           this.blueprintsEComponent.selectedIndex = 0;
           this.zeroFormGroup.reset();
           this.firstFormGroup.reset();
@@ -653,6 +796,7 @@ export class BlueprintsEStepperComponent implements OnInit {
           this.fifthFormGroup.reset();
           this.sixthFormGroup.reset();
           this.blueprintsEComponent.getEBlueprints();
+
       });
     });
   }

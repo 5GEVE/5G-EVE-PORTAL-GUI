@@ -16,7 +16,8 @@ export const environment = {
     fsBaseUrl: 'https://portal.5g-eve.eu/portal/fs/',
     formulaCheckUrl: 'https://portal.5g-eve.eu/portal/formula/check',
     supportBaseUrl: 'https://portal.5g-eve.eu/portal/enc/',
-    backServerUrl: ''
+    backServerUrl: '',
+    iwfRepositoryUrl: 'http://172.17.73.101:8087/'      //to be mapped in the nginx
 };
 ​
 /*

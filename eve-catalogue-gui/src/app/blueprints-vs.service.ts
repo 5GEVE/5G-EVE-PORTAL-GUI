@@ -12,7 +12,6 @@ import { AuthService } from './auth.service';
 export class BlueprintsVsService {
 
   private baseUrl = environment.portalBaseUrl;
-  private supBaseUrl = environment.supportBaseUrl;
   
   private vsBlueprintInfoUrl = 'vsblueprint';
 
@@ -56,19 +55,5 @@ export class BlueprintsVsService {
       tap((result: String) => this.authService.log(`deleted VS Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
       catchError(this.authService.handleError<String>('deleteVsBlueprint'))
     );
-  }
-  validateVsBlueprint(onBoardVsRequest: Object): Observable<String> {
-    return this.http.post(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
-      .pipe(
-        tap((blueprintId: String) => console.log("validate vsb")),
-        catchError(this.authService.handleValidatorError<String>('validateVsBlueprint'))
-      );
-  }
-  schemaVsBlueprint(): Observable<String> {
-    return this.http.get<any>(this.supBaseUrl+ "vsb/schema", this.httpOptions)
-      .pipe(
-        tap(_ => console.log('fetched vsb schema - SUCCESS')),
-        catchError(this.authService.handleError<any>('schemaVsBlueprint'))
-      );
   }
 }

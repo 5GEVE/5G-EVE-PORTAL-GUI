@@ -5,6 +5,7 @@ import { BlueprintsEcService } from '../../blueprints-ec.service';
 import { BlueprintsEcComponent} from '../blueprints-ec/blueprints-ec.component';
 import { NsdsService} from '../../nsds.service';
 import { AuthService} from '../../auth.service';
+import { EncService } from '../../enc.service';
 
 @Component({
   selector: 'app-blueprints-ec-stepper',
@@ -35,7 +36,8 @@ export class BlueprintsEcStepperComponent implements OnInit {
   private blueprintsEcService: BlueprintsEcService,
   private blueprintEcComponent: BlueprintsEcComponent,
   private nsdsService: NsdsService,
-  private authService: AuthService) { }
+  private authService: AuthService,
+  private encService: EncService) { }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
@@ -111,7 +113,8 @@ export class BlueprintsEcStepperComponent implements OnInit {
             this.translationParams.push(this.ctxbObj['parameters'][i]['parameterId']);
           }
         }
-        this.blueprintsEcService.validateCtxBlueprint(this.ctxbObj)
+        
+        this.encService.validateCtxBlueprint(this.ctxbObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
@@ -120,6 +123,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
 
           }
         });
+        
     });
   }
   }
@@ -152,7 +156,8 @@ export class BlueprintsEcStepperComponent implements OnInit {
         this.thirdFormGroup.get('nsdVersion').setValue(this.nsdObj['version']);
 
         this.dfs = this.nsdObj['nsDf'];
-        this.nsdsService.validateNsDescriptor(this.nsdObj)
+        
+        this.encService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;
@@ -161,6 +166,7 @@ export class BlueprintsEcStepperComponent implements OnInit {
 
           }
         });
+        
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });

@@ -16,7 +16,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="rules-full-width">
+            <mat-form-field appearance="outline" class="rules-full-width" *ngIf="!interSite">
                 <mat-label>Target Site</mat-label>
                 <mat-select formControlName="targetSite" name="targetSite">
                     <mat-option *ngFor="let site of availableSites" [value]="site">

@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { ExpDescriptorInfo } from '../descriptors-e/exp-descriptor-info';
 import { ExpBlueprintInfo } from '../blueprints-compnents/blueprints-e/exp-blueprint-info';
@@ -9,6 +8,7 @@ import { ExperimentsService } from '../experiments.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { AuthService, UseCases} from '../auth.service';
+import { BlueprintsVsService } from '../blueprints-vs.service';
 
 export interface ViewValue {
   value: string;
@@ -36,6 +36,8 @@ export class DescriptorsESchedulerComponent implements OnInit {
   use_cases: string[] = [];
   useCaseName: string = '';
 
+  interSite: boolean = false;
+
   endLowerThenStart = false;
   endInThePast = false;
 
@@ -46,7 +48,8 @@ export class DescriptorsESchedulerComponent implements OnInit {
     private descriptorsExpService: DescriptorsExpService,
     private blueprintsExpService: BlueprintsExpService,
     private experimentService: ExperimentsService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private vsBlueprintService: BlueprintsVsService) { }
 
   ngOnInit() {
     this.scheduleFormGroup = this._formBuilder.group({
@@ -54,7 +57,7 @@ export class DescriptorsESchedulerComponent implements OnInit {
       expDescriptorId: ['', Validators.required],
       timeSlotStart: [undefined, Validators.required],
       timeSlotEnd: [undefined, Validators.required],
-      targetSite: ['', Validators.required],
+      targetSite: [''],
       useCase: ['', Validators.required]
 
     });
@@ -139,8 +142,15 @@ export class DescriptorsESchedulerComponent implements OnInit {
 
   getExpBlueprint(expBId: string) {
     this.blueprintsExpService.getExpBlueprint(expBId).subscribe(expBlueprintInfo => {
-      //console.log(expBlueprintInfo['expBlueprint']['sites']);
-      this.availableSites = expBlueprintInfo['expBlueprint']['sites'];
+      this.vsBlueprintService.getVsBlueprint(expBlueprintInfo.expBlueprint['vsBlueprintId']).subscribe((vsBlueprint) => {
+        //console.log(expBlueprintInfo['expBlueprint']['sites']);
+        this.availableSites = expBlueprintInfo['expBlueprint']['sites'];
+        if (vsBlueprint.vsBlueprint.interSite){
+          this.interSite = true;
+        } else {
+          this.interSite = false;
+        }
+      });
     });
   }
 
@@ -156,7 +166,12 @@ export class DescriptorsESchedulerComponent implements OnInit {
     var expDescriptorId = this.scheduleFormGroup.get('expDescriptorId').value;
     var startDate = this.scheduleFormGroup.get('timeSlotStart').value;
     var endDate = this.scheduleFormGroup.get('timeSlotEnd').value;
-    var targetSite = this.scheduleFormGroup.get('targetSite').value;
+    var targetSite: string[] = [];
+    if(this.interSite) {
+      targetSite = this.availableSites;
+    } else {
+      targetSite.push(this.scheduleFormGroup.get('targetSite').value);
+    }
     var useCase = this.scheduleFormGroup.get('useCase').value;
 
     endDate.setHours(23,59,59,999);
@@ -167,10 +182,10 @@ export class DescriptorsESchedulerComponent implements OnInit {
     scheduleExperimentRequest['proposedTimeSlot'] = {};
     scheduleExperimentRequest['proposedTimeSlot']['startTime'] = startDate;
     scheduleExperimentRequest['proposedTimeSlot']['stopTime'] = endDate;
-    scheduleExperimentRequest['targetSites'] = [targetSite];
+    scheduleExperimentRequest['targetSites'] = targetSite;
     scheduleExperimentRequest['useCase'] = useCase;
 
-    //console.log(JSON.stringify(scheduleExperimentRequest, null, 4));
+    console.log(JSON.stringify(scheduleExperimentRequest, null, 4));
 
     this.experimentService.postExperiment(scheduleExperimentRequest, '/experiments')
           .subscribe(experimentId => {

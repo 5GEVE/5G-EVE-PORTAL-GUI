@@ -12,7 +12,6 @@ import { AuthService } from './auth.service';
 export class BlueprintsEcService {
 
   private baseUrl = environment.portalBaseUrl;
-  private supBaseUrl = environment.supportBaseUrl;
 
   private ctxBlueprintUrl = 'ctxblueprint';
 
@@ -56,19 +55,5 @@ export class BlueprintsEcService {
       tap((result: String) => this.authService.log(`deleted CTX Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
       catchError(this.authService.handleError<String>('deleteCtxBlueprint'))
     );
-  }
-  validateCtxBlueprint(onboardCtxBlueprintRequest: Object): Observable<String> {
-    return this.http.post(this.supBaseUrl + "ctx/validate", onboardCtxBlueprintRequest, this.httpOptions)
-      .pipe(
-        tap((blueprintId: String) => console.log("validate ctx")),
-        catchError(this.authService.handleValidatorError<String>('validateCtxBlueprint'))
-      );
-  }
-  schemaCtxBlueprint(): Observable<String> {
-    return this.http.get<any>(this.supBaseUrl+"ctx/schema", this.httpOptions)
-      .pipe(
-        tap(_ => console.log('fetched context blueprint schema - SUCCESS')),
-        catchError(this.authService.handleError<any>('schemaCtxBlueprint'))
-      );
   }
 }

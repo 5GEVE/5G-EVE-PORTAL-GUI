@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import {MetricDashboardService} from '../metric-dashboard.service';
 import { ExperimentUrls } from './experiment-urls';
+import { IFrameService}  from '../iframe.service';
 
 
 
@@ -16,6 +17,7 @@ export class ExperimentMetricDashboardComponent implements OnInit {
   experimentUrls: ExperimentUrls ;
 
   constructor(private sanitizer: DomSanitizer,
+              private iFrame: IFrameService,
               private metricDashboardService: MetricDashboardService ) {
 
   }
@@ -39,7 +41,11 @@ export class ExperimentMetricDashboardComponent implements OnInit {
     {
         this.experimentUrls = metricUrls;
         for (var i = 0; i < this.experimentUrls.urls.length; i++){
-          this.dashboards.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.experimentUrls.urls[i]['url']));
+          this.iFrame.getBlobContent(this.experimentUrls.urls[i]['url']).subscribe(blob => {
+            const url = URL.createObjectURL(blob);
+            this.dashboards.push(this.sanitizer.bypassSecurityTrustResourceUrl(url));
+          });
+          // this.dashboards.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.experimentUrls.urls[i]['url']));
         }
 
     });
@@ -47,3 +53,5 @@ export class ExperimentMetricDashboardComponent implements OnInit {
   }
 
 }
+
+
