@@ -1,0 +1,28 @@
+@import '~@angular/material/theming';
+@mixin blueprints-e-stepper-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .bles-container{
+        background-color: mat-color($themestyle-primary,50);
+        color: white;
+        overflow-y: hidden
+         
+    }
+
+    .bles-title{
+        background-color: mat-color($themestyle-primary,50);
+       
+    }
+
+    .bles-table{
+        background-color: mat-color($themestyle-primary,50);
+       
+    }
+    @media (max-width: 400px) {
+        .mat-horizontal-stepper-header-container{
+            display:none !important
+        }
+    }
+    
+}

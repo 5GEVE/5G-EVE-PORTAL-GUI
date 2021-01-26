@@ -1,0 +1,47 @@
+@import '~@angular/material/theming';
+@mixin blueprints-ec-details-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .bed-container{
+        background-color: mat-color($themestyle-primary,100);
+        height: 100%;
+        color: white;
+       
+    }
+
+    .bed-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .bed-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+    .full-width-table {
+        width: 80%;
+        height: auto;
+        margin-right: 10%;
+        margin-left: 10%;
+      }
+    @media (max-width: 400px) {
+        .full-width-table-xs {
+          width: 100%;
+          margin-left:0; 
+          margin-right:0;
+          padding: 0;
+
+        }
+      }
+      @media (max-width: 800px) {
+        .full-width-table {
+          width: 100%;
+          margin-left:0; 
+          margin-right:0;
+        }
+      }
+
+
+}

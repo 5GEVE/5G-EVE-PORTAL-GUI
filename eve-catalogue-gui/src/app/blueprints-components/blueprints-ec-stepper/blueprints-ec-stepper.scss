@@ -1,0 +1,25 @@
+@import '~@angular/material/theming';
+@mixin blueprints-ec-stepper-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .bles-container{
+        background-color: mat-color($themestyle-primary,100);
+        height: 100%;
+        color: white;
+       
+    }
+
+    .bles-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .bles-table{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+    
+
+
+}

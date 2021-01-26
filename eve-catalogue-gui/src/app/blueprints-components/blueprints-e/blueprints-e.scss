@@ -1,0 +1,24 @@
+@import '~@angular/material/theming';
+@mixin blueprints-e-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .ble-container{
+        background-color: mat-color($themestyle-primary,100);
+        color: white;
+       
+    }
+
+    .ble-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .ble-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+
+
+}

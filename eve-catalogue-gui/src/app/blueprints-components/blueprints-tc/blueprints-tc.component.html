@@ -1,0 +1,196 @@
+<app-catalogue-sub-toolbar></app-catalogue-sub-toolbar>
+<mat-toolbar class="bltc-title">
+    <span style="margin-left: 15px;"><h1 class="mat-h1">Test Case Blueprints</h1></span>
+</mat-toolbar>
+<mat-tab-group [(selectedIndex)]="selectedIndex" class="bltc-container">
+    <mat-tab label="View">
+        <div style="padding: 30px;" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center">
+            <table mat-table class="full-width-table bltc-table full-width-table-xs " matSort aria-label="Elements">
+                <!-- Id Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+                    <td mat-cell *matCellDef="let row"><b>{{row.testCaseBlueprintId}}</b></td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell *matCellDef="let row"><b>{{row.name}}</b></td>
+                </ng-container>
+
+                <!-- Version Column -->
+                <ng-container matColumnDef="version">
+                    <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>Version</th>
+                    <td fxShow.xs="false" mat-cell *matCellDef="let row">{{row.version}}</td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                    <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>Description</th>
+                    <td fxShow.xs="false" mat-cell *matCellDef="let row">{{row.testCaseBlueprint.description}}</td>
+                </ng-container>
+
+                <!-- Script Column -->
+                <!--ng-container matColumnDef="script">
+                    <th mat-header-cell *matHeaderCellDef>Script</th>
+                    <td mat-cell *matCellDef="let row">{{row.testCaseBlueprint.script}}</td>
+                </ng-container-->
+
+                <!-- User Parameters Column -->
+                <ng-container matColumnDef="user_params">
+                    <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>User Parameters</th>
+                    <td fxShow.xs="false" mat-cell *matCellDef="let row"><tr *ngFor="let param of row.testCaseBlueprint.userParameters | keyvalue"><td> - {{param.key}}: {{param.value}}</td></tr></td>
+                </ng-container>
+
+                <!-- Infrastructure Parameters Column -->
+                <ng-container matColumnDef="infra_params">
+                    <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>Infrastructure Parameters</th>
+                    <td fxShow.xs="false" mat-cell *matCellDef="let row">
+                        <tr *ngFor="let param of row.testCaseBlueprint.infrastructureParameters | keyvalue"><td> - {{param.key}}: {{param.value}}</td></tr>
+                    </td>
+                </ng-container>
+
+                <!-- TCDs Column 
+                <ng-container matColumnDef="tcds">
+                    <th fxShow.xs="false" mat-header-cell *matHeaderCellDef>TCDs</th>
+                    <td fxShow.xs="false" mat-cell *matCellDef="let row">
+                        <tr *ngFor="let name of idToTcdIds.get(row.testCaseBlueprintId) | keyvalue"><td><a (click)="viewTcDescriptor(name.key)" style="color: black">{{name.value}}</a></td></tr>
+                    </td>
+                </ng-container>
+                -->
+                <!-- Button Column -->
+                <ng-container matColumnDef="buttons">
+                <th  mat-header-cell *matHeaderCellDef></th>
+                <td  mat-cell *matCellDef="let row">
+                    <mat-button-toggle-group name="operations" aria-label="Operations" class="margin-all">
+                    <!-- mat-button-toggle value="view_blueprint" (click)="viewTcBlueprintGraph(row.testCaseBlueprintId)"><mat-icon color="primary">remove_red_eye</mat-icon></mat-button-toggle -->
+                    <mat-button-toggle style="background-color: #b3b3b3;" value="delete" (click)="deleteTcBlueprint(row.testCaseBlueprintId)"><mat-icon>delete_forever</mat-icon></mat-button-toggle>
+                    </mat-button-toggle-group>
+                </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator #paginator
+                [length]="dataSource?.data.length"
+                [pageIndex]="0"
+                [pageSize]="50"
+                [pageSizeOptions]="[25, 50, 100, 250]"
+                class="bltc-table">
+            </mat-paginator>
+        </div>
+    </mat-tab>
+    <mat-tab label="Onboard" class="bltc-table">
+        <div>
+            <div class="rules-div rules-div-xs" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center">
+                <table style="margin: 15px auto 25px;">
+                    <tr>
+                      <td>
+                        <mat-checkbox (change)="hideNextShowSubmit($event);">Switch to TCB upload via JSON file</mat-checkbox>
+                      </td>
+                    </tr>
+                  </table>
+            <form id="guidedProcedure" [formGroup]="tcFormGroup" class="rules-form" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center" style="text-align: center;">
+                <h3>Create Test Case</h3>
+                <table class="rules-full-width full-width-table-xs" fxFlex="100%"  fxLayout.xs="column" fxLayout="column" fxLayoutAlign="center center">
+                    <tr>
+                        <td>
+                            <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                                <input matInput #nsdVersion placeholder="Name" formControlName="name" required>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                              <input matInput #nsdId placeholder="Description" formControlName="description">
+                          </mat-form-field>
+                          <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                                <input matInput #nsFlavourId placeholder="Version" formControlName="version" required>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                              <input matInput #nsInstLevel placeholder="Configuration script" formControlName="configurationScript">
+                          </mat-form-field>
+                          <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                                <input matInput #nsInstLevel placeholder="Execution script" formControlName="executionScript" required>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                              <input matInput #nsInstLevel placeholder="Reset configuration script" formControlName="resetConfigScript">
+                          </mat-form-field>
+                      </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <h4>User Parameters</h4>
+                        <div formArrayName="user_items" *ngFor="let user_item of tcFormGroup.get('user_items')['controls']; let i=index">
+                            <div [formGroupName]="i" fxFlex="100%"  fxLayout.xs="column"  fxLayout="row" fxLayoutAlign="center center" style="width: 100%;">
+                                <h5 style="margin-right:10px">Param {{i + 1}}</h5>
+                                <td>
+                                    <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                                        <input matInput placeholder="Name" formControlName="userParamName">
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                                        <input matInput placeholder="Value" formControlName="userParamValue">
+                                    </mat-form-field>
+                                </td>
+                            </div>
+                        </div>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div>
+                                <button style="margin-bottom: 10px;" mat-fab (click)="removeUserItem();" *ngIf="user_items?.length > 1" color="primary"><mat-icon>remove</mat-icon></button>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <button style="margin-bottom: 10px;" mat-fab (click)="addUserItem();" color="primary"><mat-icon>add</mat-icon></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <h4>Infrastructure Parameters</h4>
+                        <div formArrayName="infra_items" *ngFor="let infra_item of tcFormGroup.get('infra_items')['controls']; let i=index">
+                            <div [formGroupName]="i" fxFlex="100%"  fxLayout.xs="column"  fxLayout="row" fxLayoutAlign="center center" style="width: 100%;">
+                                <h5  style="margin-right:10px">Param {{i + 1}}</h5>
+                                <td>
+                                    <mat-form-field appearance="outline" color=primary class="rules-full-width">
+                                        <input matInput placeholder="Name" formControlName="infraParamName">
+                                    </mat-form-field>
+                                </td>
+                            </div>
+                        </div>
+                    </tr>
+                    <tr >
+                        <td></td>
+                        <td>
+                            <div>
+                                <button style="margin-bottom: 10px;" mat-fab (click)="removeInfraItem();" *ngIf="infra_items?.length > 1" color="primary"><mat-icon>remove</mat-icon></button>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <button style="margin-bottom: 10px;" mat-fab (click)="addInfraItem();" color="primary"><mat-icon>add</mat-icon></button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="margin-top">
+                    <button mat-raised-button color="accent" class="margin-all" (click)="createOnBoardTcBlueprintRequest();" [disabled]="tcFormGroup.invalid">Submit</button>
+                </div>
+            </form>
+            <form id="uploadProcedure" [formGroup]="uploadFormGroup" class="rules-form">
+                <h3>Upload Test Case from JSON file</h3>
+                <table class="rules-full-width">
+                  <tr><td><input #tcbFile type="file" id="uploadFile" formControlName="tcbFileCtrl" (change)="onUploadedTcb($event,tcbFile.files)" required/></td></tr>
+                  <tr><td><button mat-raised-button color="accent" class="margin-all" (click)="createTCBViaJSONFile(tcbFile.files);" [disabled]="uploadFormGroup.invalid" id="submit">Submit</button></td></tr>
+                </table>
+
+
+            </form>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,24 @@
+@import '~@angular/material/theming';
+@mixin blueprints-vs-details-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .bvsd-container{
+        background-color: mat-color($themestyle-primary,100);
+        height: 100%;
+        color: white;
+       
+    }
+
+    .bvsd-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .bvsd-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+
+}

@@ -1,0 +1,30 @@
+@import '~@angular/material/theming';
+@mixin blueprints-vs-component-theme($themestyle){
+    $primary:map-get($themestyle,primary);
+    $accent:map-get($themestyle,accent);
+    //put all your theming styles here
+    .blvs-container{
+        background-color: mat-color($themestyle-primary,100);
+       
+        color: white;
+       
+    }
+
+    .blvs-title{
+        background-color: mat-color($themestyle-primary,100);
+       
+    }
+
+    .blvs-table{
+        background-color: mat-color($themestyle-primary,100);
+
+       
+    }
+    /*
+    .mat-sidenav-container{
+        background-color:mat-color($themestyle-primary,100) !important;
+
+        }
+        */
+        
+}
