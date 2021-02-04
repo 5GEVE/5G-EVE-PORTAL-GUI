@@ -1,4 +1,4 @@
-import { Blueprint } from './../blueprints-compnents/blueprints-e-stepper/blueprints-e-stepper.component';
+import { Blueprint } from './../blueprints-components/blueprints-e-stepper/blueprints-e-stepper.component';
 
 import { Component, OnInit } from '@angular/core';
 import { BlueprintsVsService } from '../blueprints-vs.service';

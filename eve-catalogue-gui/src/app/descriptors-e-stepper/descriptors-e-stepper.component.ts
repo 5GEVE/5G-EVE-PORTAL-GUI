@@ -4,15 +4,15 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DescriptorsExpService } from '../descriptors-exp.service';
 import { BlueprintsVsService } from '../blueprints-vs.service';
 import { BlueprintsExpService } from '../blueprints-exp.service';
-import { VsBlueprintInfo } from '../blueprints-compnents/blueprints-vs/vs-blueprint-info';
-import { ExpBlueprintInfo } from '../blueprints-compnents/blueprints-e/exp-blueprint-info';
-import { VsBlueprint } from '../blueprints-compnents/blueprints-vs/vs-blueprint';
+import { VsBlueprintInfo } from '../blueprints-components/blueprints-vs/vs-blueprint-info';
+import { ExpBlueprintInfo } from '../blueprints-components/blueprints-e/exp-blueprint-info';
+import { VsBlueprint } from '../blueprints-components/blueprints-vs/vs-blueprint';
 import { BlueprintsEcService } from '../blueprints-ec.service';
 import { BlueprintsTcService } from '../blueprints-tc.service';
 import { IWFRepository }  from '../iwf-repository.service';
 import { DescriptorsEComponent } from '../descriptors-e/descriptors-e.component';
-import { CtxBlueprintInfo } from '../blueprints-compnents/blueprints-ec/ctx-blueprint-info';
-import { TcBlueprintInfo } from '../blueprints-compnents/blueprints-tc/tc-blueprint-info';
+import { CtxBlueprintInfo } from '../blueprints-components/blueprints-ec/ctx-blueprint-info';
+import { TcBlueprintInfo } from '../blueprints-components/blueprints-tc/tc-blueprint-info';
 import { CoverageAreaInfo } from './coverage-area-info';
 
 import { DOCUMENT } from '@angular/common';
@@ -470,16 +470,22 @@ export class DescriptorsEStepperComponent implements OnInit {
           if(this.tempSliceProfiles[j]['radioAccessTechnology'] !== undefined){
             switch(this.tempSliceProfiles[j]['radioAccessTechnology']){
               case '5GSA': {
-                sliceElement['radioAccessTechnology'] = 'FIVEG_SA'; break;
+                sliceElement['radioAccessTechnology'] = 'FIVE_G_SA'; break;
               }
               case '5GNSA': {
-                sliceElement['radioAccessTechnology'] = 'FIVEG_NSA'; break;
+                sliceElement['radioAccessTechnology'] = 'FIVE_G_NSA'; break;
               }
               case '4G': {
-                sliceElement['radioAccessTechnology'] = 'FOURG'; break;
+                sliceElement['radioAccessTechnology'] = 'FOUR_G'; break;
               }
               case '5GmmWave': {
-                sliceElement['radioAccessTechnology'] = 'FIVEG_mmWave'; break;
+                sliceElement['radioAccessTechnology'] = 'FIVE_G_mmWave'; break;
+              }
+              case 'LTE-M': {
+                sliceElement['radioAccessTechnology'] = 'LTE_M'; break;
+              }
+              case 'NB-IoT': {
+                sliceElement['radioAccessTechnology'] = 'NB_IoT'; break;
               }
               default: {
                 sliceElement['radioAccessTechnology'] = this.tempSliceProfiles[j]['radioAccessTechnology']; break;

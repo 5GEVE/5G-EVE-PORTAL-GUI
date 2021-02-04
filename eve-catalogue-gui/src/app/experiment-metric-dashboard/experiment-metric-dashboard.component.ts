@@ -41,11 +41,7 @@ export class ExperimentMetricDashboardComponent implements OnInit {
     {
         this.experimentUrls = metricUrls;
         for (var i = 0; i < this.experimentUrls.urls.length; i++){
-          this.iFrame.getBlobContent(this.experimentUrls.urls[i]['url']).subscribe(blob => {
-            const url = URL.createObjectURL(blob);
-            this.dashboards.push(this.sanitizer.bypassSecurityTrustResourceUrl(url));
-          });
-          // this.dashboards.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.experimentUrls.urls[i]['url']));
+           this.dashboards.push(this.sanitizer.bypassSecurityTrustResourceUrl(this.experimentUrls.urls[i]['url']));
         }
 
     });

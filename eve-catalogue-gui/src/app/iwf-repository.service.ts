@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
 })
 export class IWFRepository {
 
-  private iwfUrl = environment.iwlBaseUrl;
+  private iwfUrl = environment.iwfRepositoryUrl;
 
   httpOptions = {
     headers: new HttpHeaders(

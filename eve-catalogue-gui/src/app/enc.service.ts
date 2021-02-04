@@ -52,15 +52,15 @@ export class EncService {
       }
 
       validateVsBlueprint(onBoardVsRequest: Object) {
+        /*
         let alwaysTrue : Observable<String> = new Observable<String>();
         return alwaysTrue
-        /*
-        return this.http.post(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
+          */
+         return this.http.post(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
           .pipe(
             tap((blueprintId: String) => console.log("validate vsb")),
             catchError(this.authService.handleValidatorError<String>('validateVsBlueprint'))
           );
-          */
       }
       schemaVsBlueprint(): Observable<String> {
         return this.http.get<any>(this.supBaseUrl+ "vsb/schema", this.httpOptions)
@@ -70,15 +70,15 @@ export class EncService {
           );
       }
       validateNsDescriptor(onBoardNsdRequest: Object){
+       /*
         let alwaysTrue : Observable<String> = new Observable<String>();
         return alwaysTrue;
-       /*
-       return this.http.post(this.supBaseUrl + "nsd/validate", onBoardNsdRequest, this.httpOptions)
+         */
+        return this.http.post(this.supBaseUrl + "nsd/validate", onBoardNsdRequest, this.httpOptions)
          .pipe(
            tap((nsd: String) => console.log("validate nsd")),
            catchError(this.authService.handleValidatorError<String>('validateNsDescriptor'))
          );
-         */
      }
      composeNsDescriptor(onBoardNsdRequest: Object): Observable<String> {
         return this.http.post(this.supBaseUrl + "nsd/compose", onBoardNsdRequest, this.httpOptions)
@@ -110,15 +110,15 @@ export class EncService {
       }
 
       validateCtxBlueprint(onboardCtxBlueprintRequest: Object) {
+       /*
         let alwaysTrue : Observable<String> = new Observable<String>();
         return alwaysTrue;
-       /*
-       return this.http.post(this.supBaseUrl + "ctx/validate", onboardCtxBlueprintRequest, this.httpOptions)
+         */
+        return this.http.post(this.supBaseUrl + "ctx/validate", onboardCtxBlueprintRequest, this.httpOptions)
          .pipe(
            tap((blueprintId: String) => console.log("validate ctx")),
            catchError(this.authService.handleValidatorError<String>('validateCtxBlueprint'))
          );
-         */
      }
      schemaCtxBlueprint(): Observable<String> {
        return this.http.get<any>(this.supBaseUrl+"ctx/schema", this.httpOptions)
