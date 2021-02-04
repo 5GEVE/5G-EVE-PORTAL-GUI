@@ -400,7 +400,7 @@ export class DescriptorsEStepperComponent implements OnInit {
     this.blueprintsTcService.getTcBlueprint(tcBlueprintId).subscribe((tcBlueprintInfo: TcBlueprintInfo) =>
       {
         this.tcBlueprints.push({value: tcBlueprintInfo['testCaseBlueprintId'], viewValue: tcBlueprintInfo['testCaseBlueprint']['description'], item: tcBlueprintInfo['testCaseBlueprint']});
-        console.log(this.tcBlueprints);
+        //console.log(this.tcBlueprints);
       });
   }
 
@@ -552,11 +552,11 @@ export class DescriptorsEStepperComponent implements OnInit {
     onBoardExpRequest['vsDescriptor']['sla']['serviceCreationTime'] = this.secondFormGroup.get('timeType').value;
     onBoardExpRequest['vsDescriptor']['sla']['lowCostRequired'] = this.secondFormGroup.get('isLowCost').value;
     onBoardExpRequest['vsDescriptor']['isPublic'] = this.secondFormGroup.get('isPublic').value;*/
-    console.log(this.tcBlueprints);
+
     for (var i = 0; i < this.tcBlueprints.length; i++) {
       var tempTc = {};
       tempTc['blueprintId'] = this.tcBlueprints[i].value;
-      console.log(this.tcBlueprints[i]);
+      //console.log(this.tcBlueprints[i]);
 
       if(this.tcBlueprints[i]['item']['userParameters'] !== undefined){
         tempTc['parameters'] = {};
@@ -580,11 +580,13 @@ export class DescriptorsEStepperComponent implements OnInit {
 
 
     console.log('onBoardExpRequest: ' + JSON.stringify(this.experimentDescriptorRequest, null, 4));
+
     this.descriptorsExpService.postExpDescriptor(this.experimentDescriptorRequest)
       .subscribe(expDescriptortId => {
         //console.log("Successfully uploaded new Exp Descriptor with id " + expDescriptortId);
         this.descriptorExperiments.selectedIndex = 0;
         this.descriptorExperiments.getExpDescriptors();
+
       });
   }
 }
