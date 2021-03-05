@@ -52,10 +52,7 @@ export class EncService {
       }
 
       validateVsBlueprint(onBoardVsRequest: Object) {
-        //let alwaysTrue : Observable<String> = new Observable<String>();
-        //return alwaysTrue
 
-        return this.http.post(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
           .pipe(
             tap((blueprintId: String) => console.log("validate vsb")),
             catchError(this.authService.handleValidatorError<String>('validateVsBlueprint'))
@@ -70,10 +67,7 @@ export class EncService {
           );
       }
       validateNsDescriptor(onBoardNsdRequest: Object){
-        //let alwaysTrue : Observable<String> = new Observable<String>();
-        //return alwaysTrue;
 
-       return this.http.post(this.supBaseUrl + "nsd/validate", onBoardNsdRequest, this.httpOptions)
          .pipe(
            tap((nsd: String) => console.log("validate nsd")),
            catchError(this.authService.handleValidatorError<String>('validateNsDescriptor'))
@@ -110,10 +104,7 @@ export class EncService {
       }
 
       validateCtxBlueprint(onboardCtxBlueprintRequest: Object) {
-       // let alwaysTrue : Observable<String> = new Observable<String>();
-       // return alwaysTrue;
 
-       return this.http.post(this.supBaseUrl + "ctx/validate", onboardCtxBlueprintRequest, this.httpOptions)
          .pipe(
            tap((blueprintId: String) => console.log("validate ctx")),
            catchError(this.authService.handleValidatorError<String>('validateCtxBlueprint'))

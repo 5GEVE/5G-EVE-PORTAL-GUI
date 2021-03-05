@@ -16,7 +16,7 @@ export const environment = {
     fsBaseUrl: 'https://portal.5g-eve.eu/portal/fs/',
     formulaCheckUrl: 'https://portal.5g-eve.eu/portal/formula/check',
     supportBaseUrl: 'https://portal.5g-eve.eu/portal/enc/',
-    backServerUrl: ''
+
 };
 ​
 /*

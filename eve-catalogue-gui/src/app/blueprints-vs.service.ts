@@ -12,7 +12,6 @@ import { AuthService } from './auth.service';
 export class BlueprintsVsService {
 
   private baseUrl = environment.portalBaseUrl;
-  private supBaseUrl = environment.supportBaseUrl;
 
   private vsBlueprintInfoUrl = 'vsblueprint';
 
@@ -57,21 +56,5 @@ export class BlueprintsVsService {
       catchError(this.authService.handleError<String>('deleteVsBlueprint'))
     );
   }
-  validateVsBlueprint(onBoardVsRequest: Object): Observable<String> {
-    // Please remove the following two lines and enable the rest after the update of the ENC
-    // let alwaysTrue : Observable<String> = new Observable<String>();
-    // return alwaysTrue;
-    return this.http.post(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
-      .pipe(
-        tap((blueprintId: String) => console.log("validate vsb")),
-        catchError(this.authService.handleValidatorError<String>('validateVsBlueprint'))
-      );
-  }
-  schemaVsBlueprint(): Observable<String> {
-    return this.http.get<any>(this.supBaseUrl+ "vsb/schema", this.httpOptions)
-      .pipe(
-        tap(_ => console.log('fetched vsb schema - SUCCESS')),
-        catchError(this.authService.handleError<any>('schemaVsBlueprint'))
-      );
-  }
+
 }

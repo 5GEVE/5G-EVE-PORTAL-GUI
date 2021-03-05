@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { NsdsService } from '../nsds.service';
 import { AuthService} from '../auth.service';
+import { EncService } from '../enc.service';
 
 @Component({
   selector: 'app-support-tools-nsd',
@@ -19,7 +20,8 @@ export class SupportToolsNsdComponent implements OnInit {
   constructor(@Inject(DOCUMENT) document,
     private _formBuilder: FormBuilder,
     private nsdsService: NsdsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private encService: EncService
     
     ) {
   }
@@ -88,7 +90,7 @@ export class SupportToolsNsdComponent implements OnInit {
   if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.bObj = JSON.parse(fileContents[0]);
-        this.nsdsService.generateNsDescriptor(this.bObj)
+        this.encService.generateNsDescriptor(this.bObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("download")).disabled = true;  
@@ -102,7 +104,7 @@ export class SupportToolsNsdComponent implements OnInit {
 }
 
   dynamicDownloadJson() {
-    this.nsdsService.generateNsDescriptor(this.bObj)
+    this.encService.generateNsDescriptor(this.bObj)
     .subscribe(res => {
       this.dyanmicDownloadByHtmlTag({
         fileName: 'nsd.json',

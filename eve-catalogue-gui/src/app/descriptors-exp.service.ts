@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 export class DescriptorsExpService {
 
   private baseUrl = environment.portalBaseUrl;
-  private iwfUrl = environment.iwfRepositoryUrl;
+  private iwfUrl = environment.iwlBaseUrl;
   private expDescriptorInfoUrl = 'expdescriptor';
 
   httpOptions = {

@@ -103,11 +103,13 @@ export class BlueprintsEStepperComponent implements OnInit {
     {value: 'LATENCY_USERPLANE_RTT', viewValue: 'LATENCY_USERPLANE_RTT', unit: ['ms']},
     {value: 'RELIABILITY', viewValue: 'RELIABILITY', unit: ['%']},
     {value: 'AVAILABILITY', viewValue: 'AVAILABILITY', unit: ['%']}
+
     //{value: 'CAPACITY', viewValue: 'CAPACITY', unit: ['Mbit/s/m2']},
     //{value: 'LATENCY_USERPLANE', viewValue: 'LATENCY_USERPLANE', unit: ['ms']},
     //{value: 'LATENCY_CONTROLPLANE', viewValue: 'LATENCY_CONTROLPLANE', unit: ['ms']},
     //{value: 'DEVICE_DENSITY', viewValue: 'DEVICE_DENSITY', unit: ['devices/km2']},
     //{value: 'MOBILITY', viewValue: 'MOBILITY', unit: ['km/h']}
+
   ];
 
   filteredMetricTypes: string[] = [];
@@ -351,13 +353,20 @@ export class BlueprintsEStepperComponent implements OnInit {
     Object.keys(this.selectedSiteArr).forEach(e =>  this.selectedSites.push(this.selectedSiteArr[e]));
 
   }
-  onVsbSelected(event: any,value) {
+  onVsbSelected($event: any) {
     this.selectedSite="";
-    this.selectedVsb = value;
+    for(var l of this.vsbs){
+      if(l.viewValue==$event.option.value){
+        this.selectedVsb =String(l.value)
+      }
+    }
+
     for(var i = 0; i < this.vsbs.length; i++){
       if(this.vsbs[i]['obj']['blueprintId'] === this.selectedVsb){
+
         if(this.vsbs[i]['obj']['interSite'] !== undefined && this.vsbs[i]['obj']['interSite'] === true){
           this.interSite=true;
+        //  console.log("composite mode",this.interSite)
           this.showSiteinterMode=true;
           this.showSiteNotinterMode=false;
           this.bluePrintsAssosiate=this.vsbs[i]['obj']['atomicComponents'];
@@ -374,6 +383,7 @@ export class BlueprintsEStepperComponent implements OnInit {
         this.selectedSites=this.vsbs[i]['obj']['compatibleSites'];
         this.showSiteNotinterMode=true;
         this.interSite=false;
+       // console.log("composite mode",this.interSite)
         this.showSiteinterMode=false;
       }
       if(this.vsbs[i]['obj']['parameters'] !== undefined){
@@ -626,6 +636,7 @@ export class BlueprintsEStepperComponent implements OnInit {
   updateUnits(event, index){
     this.selectedMetric[index] = event.value;
   }
+
 
   createOnBoardExpBlueprintRequest(nsds: File[]) {
 

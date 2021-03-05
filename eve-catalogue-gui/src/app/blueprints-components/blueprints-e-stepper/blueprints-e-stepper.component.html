@@ -44,14 +44,15 @@
 
                        [matAutocomplete]="auto"
                        style="cursor: pointer;">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.viewValue" (onSelectionChange)="onVsbSelected($event,option.value);">
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onVsbSelected($event)" >
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.viewValue" >
                     {{option.viewValue}}
                   </mat-option>
                 </mat-autocomplete>
               </mat-form-field>
 
               <!--
+                  (onSelectionChange)="onVsbSelected($event,option.value);"
                 <div *ngIf="interSite && showSiteinterMode">
                     <div *ngFor="let blue of bluePrintsAssosiate" style="color: black;margin-bottom: 20px;">
                         <b>{{blue.associatedVsbId}}</b>
@@ -147,11 +148,11 @@
     <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup" class="data-form">
             <ng-template matStepLabel>CB Selection</ng-template>
-            <mat-checkbox-group style="margin-bottom: 20px;" >
-              <mat-checkbox (change)="disableCtxb($event);" class="margin-top" style="color: black;" id="noCtx" formControlName="selectNoCbsCtrl">No Context Blueprints</mat-checkbox>
-            </mat-checkbox-group>
+                <mat-checkbox-group style="margin-bottom: 20px;" >
+                <mat-checkbox (change)="disableCtxb($event);" class="margin-top" style="color: black" id="noCtx" formControlName="selectNoCbsCtrl">No Context Blueprints</mat-checkbox>
+                </mat-checkbox-group>
             <div *ngIf="interSite">
-              <div *ngFor="let vsbas of bluePrintsAssosiate">
+              <div *ngFor="let vsbas of bluePrintsAssosiate" style="margin-top: 20px;">
                     <b class="margin-top" style="color: black;">{{vsbas.componentId}}</b>
                     <mat-checkbox-group style="margin-bottom: 20px;" *ngFor="let cb of filterCtxbsInSite(vsbas.compatibleSite);" class="flex-column"  id="ctxbChoise">
                         <mat-checkbox [value]="cb.value" class="margin-top" style="color: black;" (change)="onSelectedCb($event, cb.value, vsbas.componentId)" formControlName="selectCbsCtrl">{{cb.viewValue}}</mat-checkbox>
@@ -195,10 +196,10 @@
                     <input type="file" #nsdFiles formControlName="uploadNsdCtrl"  required (change)="onUploadedNsd($event,nsdFiles.files,null,'mandatory')" style="color: black;margin-bottom: 20px" />
                 </div>
                 <mat-divider></mat-divider>
-                <label class="input-label" style="width: 200px;margin-top: 20px;margin-bottom: 20px;">Nested NSDs :</label>
-                <br style="margin-bottom: 30px;">
+                <label class="input-label" style="width: 200px;margin-top: 20px;margin-bottom: 20px;float: none;">Nested NSDs :</label>
+                
                 <div *ngFor="let vsbas of bluePrintsAssosiate" style="margin-top: 20px;">
-                    <label for="nsd" class="input-label"  style="width: 200px;" > NSD For {{vsbas.componentId}} (Optional) </label>
+                    <label for="nsd" class="input-label"  style="width: 220px;" > NSD For {{vsbas.componentId}} (Optional) </label>
                     <input type="file" #nsdFiles required (change)="onUploadedNsd($event,nsdFiles.files,vsbas.componentId,'optional')" style="color: black;margin-bottom: 20px" />
                 </div>
             </div>

@@ -8,6 +8,7 @@ import { BlueprintsVsService } from '../blueprints-vs.service';
 import { BlueprintsEcService } from '../blueprints-ec.service';
 import { BlueprintsExpService } from '../blueprints-exp.service';
 import { BlueprintsTcService} from '../blueprints-tc.service';
+import { EncService } from '../enc.service';
 
 @Component({
   selector: 'app-support-tools-validation',
@@ -31,6 +32,7 @@ export class SupportToolsValidationComponent implements OnInit {
     private blueprintsEcService: BlueprintsEcService,
     private blueprintsExpService: BlueprintsExpService,
     private blueprintsTcService: BlueprintsTcService,
+    private encService: EncService
 
     
 
@@ -72,7 +74,7 @@ export class SupportToolsValidationComponent implements OnInit {
       Promise.all(promises).then(fileContents => {
           this.vsbObj = JSON.parse(fileContents[0]);
           
-          this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+          this.encService.validateVsBlueprint(this.vsbObj)
           .subscribe(res => {
             if(res===undefined){
               this.authService.handleValidatorError<String>('validateVsBlueprint')
@@ -106,7 +108,7 @@ export class SupportToolsValidationComponent implements OnInit {
     Promise.all(promises).then(fileContents => {
         this.ctxObj = JSON.parse(fileContents[0]);
         
-        this.blueprintsEcService.validateCtxBlueprint(this.ctxObj)
+        this.encService.validateCtxBlueprint(this.ctxObj)
         .subscribe(res => {
           if(res===undefined){
             this.authService.handleValidatorError<String>('validateCtxBlueprint')
@@ -142,7 +144,7 @@ export class SupportToolsValidationComponent implements OnInit {
     Promise.all(promises).then(fileContents => {
         this.tcbObj = JSON.parse(fileContents[0]);
         
-        this.blueprintsTcService.validateTcBlueprint(this.tcbObj)
+        this.encService.validateTcBlueprint(this.tcbObj)
         .subscribe(res => {
           if(res===undefined){
             this.authService.handleValidatorError<String>('validateExpBlueprint')
@@ -176,7 +178,7 @@ export class SupportToolsValidationComponent implements OnInit {
   if(promises.length > 0){
     Promise.all(promises).then(fileContents => {
         this.expObj = JSON.parse(fileContents[0]);
-        this.blueprintsExpService.validateExpBlueprint(this.expObj)
+        this.encService.validateExpBlueprint(this.expObj)
         .subscribe(res => {
           if(res===undefined){
             this.authService.handleValidatorError<String>('validateExpBlueprint')
@@ -210,7 +212,7 @@ if(promises.length > 0){
   Promise.all(promises).then(fileContents => {
       this.nsdObj = JSON.parse(fileContents[0]);
       
-      this.nsdsService.validateNsDescriptor(this.nsdObj)
+      this.encService.validateNsDescriptor(this.nsdObj)
       .subscribe(res => {
         if(res===undefined){
           this.authService.handleValidatorError<String>('validateNsDescriptor')

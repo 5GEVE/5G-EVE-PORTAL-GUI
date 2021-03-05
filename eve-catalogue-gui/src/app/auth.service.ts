@@ -239,8 +239,6 @@ export class AuthService {
     };
   }
 
-
-  
   /** Log a Service message with the MessageService */
   log(message: string, action: string, reload: boolean) {
     this.messageService.add(`${message}`);

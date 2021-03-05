@@ -133,13 +133,14 @@ export class BlueprintsVsDetailsComponent implements OnInit {
                     this.tableData.push({ key: "Components", value: values });
 
                     values = [];
-
-                    var endPoints = vsBlueprint["endPoints"];
-                    for (var i = 0; i < endPoints.length; i++) {
-                      values.push(endPoints[i]["endPointId"]);
+                    if(vsBlueprint["endPoints"]){
+                      var endPoints = vsBlueprint["endPoints"];
+                      for (var i = 0; i < endPoints.length; i++) {
+                        values.push(endPoints[i]["endPointId"]);
+                      }
+                      this.tableData.push({ key: "Endpoints", value: values });  
                     }
-                    this.tableData.push({ key: "Endpoints", value: values });
-
+  
                     values = [];
                     /*
         if( vsBlueprint['compatibleContextBlueprint'] !== undefined){

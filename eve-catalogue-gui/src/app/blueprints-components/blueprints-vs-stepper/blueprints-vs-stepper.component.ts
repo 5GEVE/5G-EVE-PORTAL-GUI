@@ -6,6 +6,7 @@ import { BlueprintsVsService } from '../../blueprints-vs.service';
 import { BlueprintsVsComponent} from '../blueprints-vs/blueprints-vs.component';
 import { NsdsService} from '../../nsds.service';
 import { AuthService} from '../../auth.service';
+import { EncService } from '../../enc.service';
 
 @Component({
   selector: 'app-blueprints-vs-stepper',
@@ -36,7 +37,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
     private blueprintsVsService: BlueprintsVsService,
     private blueprintsVsComponent: BlueprintsVsComponent,
     private nsdsService: NsdsService,
-    private authService: AuthService) {
+    private authService: AuthService,private encService: EncService) {
   }
 
   ngOnInit() {
@@ -119,8 +120,8 @@ export class BlueprintsVsStepperComponent implements OnInit {
     //     */
     //   }
 
-  /*
-    this.blueprintsVsService.validateVsBlueprint(this.vsbObj)
+  
+    this.encService.validateVsBlueprint(this.vsbObj)
     .subscribe(res => {
       if(res===undefined){
         (<HTMLInputElement> document.getElementById("firstNext")).disabled = true;
@@ -130,7 +131,7 @@ export class BlueprintsVsStepperComponent implements OnInit {
       }
 
     });
-    */
+    
   });
  }
 
@@ -171,8 +172,8 @@ let promises = [];
 
         this.dfs = this.nsdObj['nsDf'];
         //console.log("nsdid: " + this.thirdFormGroup.get('nsdId'));
-      /*
-        this.nsdsService.validateNsDescriptor(this.nsdObj)
+      
+        this.encService.validateNsDescriptor(this.nsdObj)
         .subscribe(res => {
           if(res===undefined){
             (<HTMLInputElement> document.getElementById("secondNext")).disabled = true;
@@ -181,7 +182,7 @@ let promises = [];
 
           }
         });
-        */
+        
         //this.fourthFormGroup.get('nsFlavourIdCtrl').setValue(nsdObj['nsDf'][0]['nsDfId']);
         //this.fourthFormGroup.get('nsInstLevelIdCtrl').setValue(nsdObj['nsDf'][0]['nsInstantiationLevel'][0]['nsLevelId']);
     });
