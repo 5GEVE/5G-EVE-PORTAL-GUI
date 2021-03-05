@@ -22,9 +22,9 @@ export class EncService {
     private authService: AuthService) { }
 
     validateExpBlueprint(onBoardExpRequest: Object): Observable<String> {
-        return this.http.post(this.supBaseUrl + "exp/validate", onBoardExpRequest, this.httpOptions)
+        return this.http.post<any>(this.supBaseUrl + "exp/validate", onBoardExpRequest, this.httpOptions)
           .pipe(
-            tap((blueprintId: String) => this.authService.log(`validate exp Blueprint w/ id=${blueprintId}`, 'SUCCESS', true)),
+            tap(_ => console.log('Experiment Blueprint validated')),
             catchError(this.authService.handleValidatorError<String>('validateExpBlueprint'))
           );
       }
@@ -37,9 +37,9 @@ export class EncService {
       }
 
       validateTcBlueprint(onBoardTcRequest: Object): Observable<String> {
-        return this.http.post(this.supBaseUrl + "tcb/validate", onBoardTcRequest, this.httpOptions)
+        return this.http.post<any>(this.supBaseUrl + "tcb/validate", onBoardTcRequest, this.httpOptions)
           .pipe(
-            tap((blueprintId: String) => console.log("validate tcb")),
+            tap(_ => console.log("validatated tcb")),
             catchError(this.authService.handleValidatorError<String>('validateTcBlueprint'))
           );
       }
@@ -52,9 +52,9 @@ export class EncService {
       }
 
       validateVsBlueprint(onBoardVsRequest: Object) {
-
+        return this.http.post<any>(this.supBaseUrl + "vsb/validate", onBoardVsRequest, this.httpOptions)
           .pipe(
-            tap((blueprintId: String) => console.log("validate vsb")),
+            tap(_ => console.log("validated vsb")),
             catchError(this.authService.handleValidatorError<String>('validateVsBlueprint'))
           );
 
@@ -67,15 +67,15 @@ export class EncService {
           );
       }
       validateNsDescriptor(onBoardNsdRequest: Object){
-
+        return this.http.post<any>(this.supBaseUrl + "vsb/validate", onBoardNsdRequest, this.httpOptions)
          .pipe(
-           tap((nsd: String) => console.log("validate nsd")),
+           tap(_ => console.log("validated nsd")),
            catchError(this.authService.handleValidatorError<String>('validateNsDescriptor'))
          );
 
      }
      composeNsDescriptor(onBoardNsdRequest: Object): Observable<String> {
-        return this.http.post(this.supBaseUrl + "nsd/compose", onBoardNsdRequest, this.httpOptions)
+        return this.http.post<any>(this.supBaseUrl + "nsd/compose", onBoardNsdRequest, this.httpOptions)
           .pipe(
             tap((nsd: String) => console.log("compose Ns Descriptor")),
             catchError(this.authService.handleValidatorError<String>('composeNsDescriptor'))
@@ -89,7 +89,7 @@ export class EncService {
           );
       }
       generateNsDescriptor(onBoardNsdRequest: Object): Observable<String> {
-        return this.http.post(this.supBaseUrl + "nsd/generate", onBoardNsdRequest, this.httpOptions)
+        return this.http.post<any>(this.supBaseUrl + "nsd/generate", onBoardNsdRequest, this.httpOptions)
           .pipe(
             tap((nsd: String) => console.log("generate Ns Descriptor")),
             catchError(this.authService.handleValidatorError<any>('generateNsDescriptor'))
@@ -104,9 +104,9 @@ export class EncService {
       }
 
       validateCtxBlueprint(onboardCtxBlueprintRequest: Object) {
-
+        return this.http.post<any>(this.supBaseUrl + "ctx/validate", onboardCtxBlueprintRequest, this.httpOptions)
          .pipe(
-           tap((blueprintId: String) => console.log("validate ctx")),
+           tap((blueprintId: String) => console.log("validated ctx")),
            catchError(this.authService.handleValidatorError<String>('validateCtxBlueprint'))
          );
 
