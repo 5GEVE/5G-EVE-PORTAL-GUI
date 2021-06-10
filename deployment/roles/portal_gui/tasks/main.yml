@@ -1,0 +1,60 @@
+- name: creating directory
+  file:
+    path: "{{ default_folder }}"
+    state: directory
+    
+- name: get eve gui
+  shell: cd {{ default_folder }} && git clone --branch {{ eve_gui_branch }} {{ eve_gui_path }}
+  
+- name: get nodejs
+  shell: curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+  become: yes
+
+# this will install also npm   
+- name: installing NodeJs
+  apt: 
+    name: 
+      - nodejs
+    state: present
+  become: yes
+
+- name: Installing apache
+  apt:
+    name:
+    - apache2
+    state: present
+  become: yes
+
+- name: Install Angular.js
+  npm:
+    name: "@angular/cli@9"
+    global: yes
+    state: present
+  become: yes
+
+- name: Install ddevkit
+  npm:
+    name: "@angular-devkit/build-angular"
+    global: yes
+    state: present
+  become: yes
+
+- name: run npm install
+  shell: cd {{ default_folder }}/5G-EVE-PORTAL-GUI/eve-catalogue-gui && npm install
+
+- name: Copy file with owner and permissions
+  copy:
+    src: ./files/{{ eve_env_file }}
+    dest: "{{ default_folder }}/5G-EVE-PORTAL-GUI/eve-catalogue-gui/src/app/environments"
+    mode: '0664'
+    backup: yes
+
+- name: config build
+  shell: ng config -g cli.warnings.versionMismatch false
+
+- name: building application
+  shell: cd {{ default_folder }}/5G-EVE-PORTAL-GUI/eve-catalogue-gui && ng build --common-chunk=true --named-chunks=true --optimization=true --source-map=false
+
+- name: Copy file var/www/html
+  shell: cp -r  {{ default_folder }}/5G-EVE-PORTAL-GUI/eve-catalogue-gui/dist/responsive-mat/* /var/www/html/
+  become: yes

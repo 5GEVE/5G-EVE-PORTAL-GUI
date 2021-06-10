@@ -1,0 +1,17 @@
+- hosts: localhost
+  connection: local
+  #debugger: on_failed
+  gather_facts: no
+  vars_files:
+    - ./vars/dependency_vars.yml
+
+  tasks:
+
+  - name: remove gui
+    shell: rm -rf /var/wwww/html/*
+    become: yes
+
+  - name: remove files
+    file:
+      state: absent
+      path: "{{default_folder}}"
